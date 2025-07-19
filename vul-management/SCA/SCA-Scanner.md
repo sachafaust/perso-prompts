@@ -118,13 +118,11 @@ We maintain accuracy through **selective validation** - using traditional APIs o
 
 ### **Core Components**
 
-#### **1. AI Vulnerability Client (Using Critique Library)**
+#### **1. AI Vulnerability Client**
 ```python
-from critique import Critique
-
 class AIVulnerabilityClient:
     def __init__(self, model: str, config: Dict, enable_live_search: bool = False):
-        self.critique = Critique()
+        self.ai_client = self._create_ai_client()
         self.model = model
         self.config = config
         self.enable_live_search = enable_live_search
@@ -135,6 +133,12 @@ class AIVulnerabilityClient:
         
         # Configure API keys and provider settings
         self._configure_providers(config)
+    
+    def _create_ai_client(self):
+        """Create AI client based on selected provider"""
+        # Initialize appropriate AI client (OpenAI, Anthropic, Google, etc.)
+        # Implementation will depend on chosen AI provider library
+        pass
     
     def _check_live_search_support(self) -> bool:
         """Check if current model supports live web search"""
@@ -150,14 +154,13 @@ class AIVulnerabilityClient:
         """Configure API keys from environment variables only (never from config)"""
         import os
         # Security: API keys ONLY from environment variables
-        if os.getenv('OPENAI_API_KEY'):
-            self.critique.configure_openai(api_key=os.getenv('OPENAI_API_KEY'))
-        if os.getenv('ANTHROPIC_API_KEY'):
-            self.critique.configure_anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
-        if os.getenv('GOOGLE_AI_API_KEY'):
-            self.critique.configure_google(api_key=os.getenv('GOOGLE_AI_API_KEY'))
-        if os.getenv('XAI_API_KEY'):
-            self.critique.configure_xai(api_key=os.getenv('XAI_API_KEY'))
+        # Configure based on selected provider
+        self.api_keys = {
+            'openai': os.getenv('OPENAI_API_KEY'),
+            'anthropic': os.getenv('ANTHROPIC_API_KEY'),
+            'google': os.getenv('GOOGLE_AI_API_KEY'),
+            'xai': os.getenv('XAI_API_KEY')
+        }
     
     async def bulk_analyze(self, packages: List[Package]) -> VulnerabilityResults:
         """Analyze packages with optional live search for current CVE data"""
@@ -170,7 +173,7 @@ class AIVulnerabilityClient:
         """Analyze with live web search for current vulnerability data"""
         optimized_prompt = self.token_optimizer.create_prompt_with_live_search(packages)
         
-        response = await self.critique.generate(
+        response = await self.ai_client.generate(
             model=self.model,
             prompt=optimized_prompt,
             temperature=0.1,
@@ -184,7 +187,7 @@ class AIVulnerabilityClient:
         """Analyze using model's training knowledge only"""
         optimized_prompt = self.token_optimizer.create_prompt(packages)
         
-        response = await self.critique.generate(
+        response = await self.ai_client.generate(
             model=self.model,
             prompt=optimized_prompt,
             temperature=0.1,
