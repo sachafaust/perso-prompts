@@ -1,10 +1,5 @@
 # Product Design Requirements (PDR): AI-Powered SCA Vulnerability Analysis
 
-**Document Version**: 1.0  
-**Author**: Enhanced SCA Scanner Team  
-**Date**: July 19, 2025  
-**Status**: Draft for Review  
-
 ---
 
 ## 📋 Executive Summary
