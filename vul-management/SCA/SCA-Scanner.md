@@ -2,19 +2,82 @@
 
 ---
 
-## 📋 Executive Summary
+## 📋 Overview
 
-This PDR outlines the integration of AI-powered vulnerability analysis into the Enhanced SCA Scanner v2.1, designed with an **AI Agent First** philosophy where everything is optimized for autonomous AI agent operation. The solution enables bulk dependency analysis with balanced token efficiency, prioritizing data accuracy and usefulness while maintaining reasonable cost efficiency.
-
-### **Problem Statement**
-Current SCA scanning faces significant challenges:
-- **Rate Limiting**: 6-second delays for NVD API without keys
-- **API Costs**: Multiple database queries per package (NVD + OSV + GitHub)
-- **Limited Context**: Raw CVE data without business impact assessment
-- **Scalability Issues**: Linear scaling with dependency count
+This Product Design Requirements (PDR) document outlines the design and implementation of an AI-powered SCA vulnerability scanner, designed with an **AI Agent First** philosophy where everything is optimized for autonomous AI agent operation. The solution enables bulk dependency analysis with balanced token efficiency, prioritizing data accuracy and usefulness while maintaining reasonable cost efficiency.
 
 ### **Proposed Solution**
 AI-powered bulk vulnerability analysis designed for AI Agent First operation, with balanced token efficiency, intelligent batching, and hybrid validation for accurate, fast, and cost-effective dependency scanning.
+
+### **Core Hypothesis: AI Agent Centric Architecture**
+
+#### **Fundamental Shift: Context Windows vs Sequential Processing**
+Traditional SCA scanning is constrained by **sequential API limitations** - analyzing one package at a time through multiple database calls. Each package requires separate requests, creating linear scaling bottlenecks.
+
+Our core hypothesis: **Context windows are the true performance limit, not individual CVE lookups.** Modern AI models can process hundreds of packages simultaneously within a single context window, transforming vulnerability analysis from sequential operations to massive parallel processing at near-zero marginal cost increase.
+
+#### **Context Window Performance Breakthrough**
+- **Massive Parallelization**: 75+ packages analyzed in one API call vs 75+ individual database requests
+- **Marginal Cost Scaling**: Adding more packages to context window costs ~5-10 additional tokens vs full API request overhead
+- **Context Window Utilization**: Modern models handle 128K+ tokens - we can fit hundreds of packages in single requests
+- **Zero Rate Limiting**: No sequential wait times between package analyses
+
+#### **Cost Efficiency Through Context Window Optimization**
+```
+Traditional Model (Sequential):
+1000 packages × 3 API calls each = 3000 individual requests
++ 6-second rate limits × 3000 = 5+ hours processing time
++ Linear cost scaling per package
+
+AI Model (Context Window):
+1000 packages ÷ 75 per context window = 13 total API calls
++ Processing time: <30 minutes (limited by AI inference, not rate limits)
++ Marginal cost per additional package: ~5-10 tokens vs full API overhead
+```
+
+**Key Insight**: Context windows enable massive parallelization at negligible marginal cost increase. The bottleneck shifts from API rate limits to AI inference speed, delivering 10x+ performance improvements.
+
+#### **AI Agent First Consumer Model**
+Traditional tools optimize for human consumption (dashboards, reports, UIs). We optimize for **AI agent consumption**:
+- **Structured Data**: Machine-readable output formats
+- **Actionable Intelligence**: Data that enables autonomous decision-making  
+- **Composable Workflows**: Output designed for downstream AI agent processing
+- **Precise Location Mapping**: File/line-level data for automated remediation
+
+#### **Addressing Stale Data Risk: Live Web Search Integration**
+A critical risk with AI model knowledge is **temporal staleness** - vulnerability databases update daily with new CVEs, but AI training data has cutoff dates. This conflicts with our quality and up-to-date data goals.
+
+**Solution: AI Models with Live Web Search Capabilities**
+- **OpenAI with Search**: Live web access for current vulnerability data
+- **Anthropic Claude with Tools**: Web search tools for real-time CVE lookup
+- **Google Gemini**: Live search integration for current vulnerability information
+
+**Hybrid Approach for Data Freshness**:
+1. **AI Knowledge Base**: Use model's training data for well-known, established vulnerabilities
+2. **Live Web Search**: Query current vulnerability databases for recent CVEs (last 30-90 days)
+3. **Traditional API Fallback**: Critical findings verification against authoritative sources
+
+**Implementation Strategy**:
+```python
+async def get_vulnerabilities_with_live_data(packages: List[Package]):
+    # Use AI knowledge for established vulnerabilities
+    ai_results = await ai_client.bulk_analyze(packages)
+    
+    # Live web search for recent vulnerabilities
+    recent_packages = filter_packages_needing_fresh_data(packages)
+    live_results = await ai_client.search_current_vulnerabilities(recent_packages)
+    
+    # Merge results with recency priority
+    return merge_vulnerability_data(ai_results, live_results)
+```
+
+**Cost-Benefit Analysis**:
+- **Additional Cost**: ~20% increase for live search queries on recent packages
+- **Quality Gain**: Current vulnerability data, no missed recent CVEs
+- **Performance Impact**: Minimal - live search only for subset requiring fresh data
+
+#### **Validation Through Hybrid Intelligence**
+We maintain accuracy through **selective validation** - using traditional APIs only for critical findings verification, achieving the best of both approaches while minimizing traditional API dependency.
 
 ### **Core Design Tenets**
 1. **AI Agent First**: AI agents are the primary consumers. Everything optimized for autonomous AI agent operation by default. Humans interface only via CLI.
@@ -60,14 +123,28 @@ AI-powered bulk vulnerability analysis designed for AI Agent First operation, wi
 from critique import Critique
 
 class AIVulnerabilityClient:
-    def __init__(self, model: str, config: Dict):
+    def __init__(self, model: str, config: Dict, enable_live_search: bool = False):
         self.critique = Critique()
-        self.model = model  # e.g., "gpt-4o-mini", "claude-3.5-haiku"
+        self.model = model
         self.config = config
+        self.enable_live_search = enable_live_search
         self.token_optimizer = TokenOptimizer()
+        
+        # Determine if model supports live search
+        self.supports_live_search = self._check_live_search_support()
         
         # Configure API keys and provider settings
         self._configure_providers(config)
+    
+    def _check_live_search_support(self) -> bool:
+        """Check if current model supports live web search"""
+        live_search_models = [
+            "gpt-4o-with-search", "gpt-4o-mini-with-search",
+            "claude-3.5-sonnet-tools", "claude-3.5-haiku-tools", 
+            "gemini-2.5-pro-search", "gemini-2.0-flash-search",
+            "grok-3-web", "grok-3-mini-web"
+        ]
+        return any(live_model in self.model for live_model in live_search_models)
     
     def _configure_providers(self, config: Dict):
         """Configure API keys from environment variables only (never from config)"""
@@ -83,7 +160,28 @@ class AIVulnerabilityClient:
             self.critique.configure_xai(api_key=os.getenv('XAI_API_KEY'))
     
     async def bulk_analyze(self, packages: List[Package]) -> VulnerabilityResults:
-        """Analyze packages in optimized batches using critique library"""
+        """Analyze packages with optional live search for current CVE data"""
+        if self.enable_live_search and self.supports_live_search:
+            return await self._analyze_with_live_search(packages)
+        else:
+            return await self._analyze_knowledge_only(packages)
+    
+    async def _analyze_with_live_search(self, packages: List[Package]) -> VulnerabilityResults:
+        """Analyze with live web search for current vulnerability data"""
+        optimized_prompt = self.token_optimizer.create_prompt_with_live_search(packages)
+        
+        response = await self.critique.generate(
+            model=self.model,
+            prompt=optimized_prompt,
+            temperature=0.1,
+            max_tokens=2048,
+            tools=["web_search", "cve_lookup"] if "tools" in self.model else None
+        )
+        
+        return self._parse_response(response)
+    
+    async def _analyze_knowledge_only(self, packages: List[Package]) -> VulnerabilityResults:
+        """Analyze using model's training knowledge only"""
         optimized_prompt = self.token_optimizer.create_prompt(packages)
         
         response = await self.critique.generate(
@@ -99,9 +197,26 @@ class AIVulnerabilityClient:
 #### **2. Token Optimization Engine**
 ```python
 class TokenOptimizer:
-    def optimize_prompt(self, packages: List[Package]) -> str:
-        """Generate ultra-compact vulnerability analysis prompt"""
-        return f"CVE:{','.join(f'{p.name}:{p.version}' for p in packages)}\nJSON:{{pkg,cves[],sev,fix}}"
+    def create_prompt(self, packages: List[Package]) -> str:
+        """Generate vulnerability analysis prompt for knowledge-only models"""
+        package_list = ','.join(f'{p.name}:{p.version}' for p in packages)
+        return f"""Analyze these packages for known vulnerabilities from your training data:
+{package_list}
+
+Return JSON: {{pkg: {{cves: [{{id, severity, description}}], confidence: 0.0-1.0}}}}"""
+    
+    def create_prompt_with_live_search(self, packages: List[Package]) -> str:
+        """Generate prompt for models with live search capabilities"""
+        package_list = ','.join(f'{p.name}:{p.version}' for p in packages)
+        return f"""Search current vulnerability databases for these packages:
+{package_list}
+
+Use web search to find:
+1. Recent CVEs and security vulnerabilities
+2. Current security advisories and patches  
+3. Latest vulnerability disclosures
+
+Return JSON with current data: {{pkg: {{cves: [{{id, severity, description, publish_date}}], data_source: "live_search", confidence: 0.0-1.0}}}}"""
     
     def compress_response(self, ai_response: str) -> CompactResults:
         """Parse and validate AI response with minimal tokens"""
@@ -134,7 +249,7 @@ Dependencies → Security-First Filtering → AI Batching → Bulk Analysis → 
 - **Risk Assessment**: Contextual analysis of business impact and exploitability
 - **Actionable Intelligence**: Structured vulnerability data optimized for AI agent consumption
 - **Source Location Tracking**: Precise file/line mapping for each vulnerable dependency
-- **Multi-Provider Support**: Flexible AI model selection with fallback chains
+- **Multi-Provider Support**: Flexible AI model selection across providers
 
 ### **Out of Scope: Remediation Implementation**
 The following capabilities are **explicitly out of scope** and should be handled by specialized remediation AI agents:
@@ -228,7 +343,7 @@ Estimated Token Usage:
 1. **CRITICAL/HIGH Findings**: Always validate against NVD/OSV databases
 2. **Medium Findings**: Spot-check 20% against traditional databases
 3. **Low/No Issues**: Accept AI assessment with confidence >0.9
-4. **Confidence <0.8**: Fallback to traditional database scanning
+4. **Confidence <0.8**: Report low confidence with explicit error details
 
 #### **Confidence Scoring**
 - **High Confidence (0.9+)**: AI provides specific CVE IDs that exist in databases
@@ -307,16 +422,13 @@ Estimated Token Usage:
 #### **AI Configuration File Format**
 ```yaml
 # ~/.sca_ai_config.yml - AI model and API configuration
-# Supports multiple providers with fallback chains
+# Single model configuration with explicit error handling
 
 # Note: API keys are NEVER stored in config files for security
 # All API keys must be provided via environment variables only
 
-# Model preferences (ordered by preference)
-models:
-  primary: "gpt-4o-mini"                # Primary model for cost efficiency
-  fallback: ["claude-3.5-haiku", "gemini-2.0-flash"]  # Fallback chain
-  reasoning: "o1-mini"                  # For complex analysis (optional)
+# Model selection (single model, no fallbacks)
+model: "gpt-4o-mini-with-search"        # Selected model for all analysis
 
 # Provider-specific settings
 providers:
@@ -367,14 +479,13 @@ optimization:
 
 ```bash
 # API Keys (Required - never passed via CLI)
-export OPENAI_API_KEY="sk-..."
-export ANTHROPIC_API_KEY="sk-ant-..."
-export GOOGLE_AI_API_KEY="AIza..."
-export XAI_API_KEY="xai-..."
+export OPENAI_API_KEY="sk-..."              # For gpt-4o models (with or without search)
+export ANTHROPIC_API_KEY="sk-ant-..."       # For claude models (with or without tools)
+export GOOGLE_AI_API_KEY="AIza..."          # For gemini models (with or without search)
+export XAI_API_KEY="xai-..."                # For grok models (with or without web access)
 
-# Optional model defaults
-export SCA_DEFAULT_MODEL="gpt-4o-mini"
-export SCA_FALLBACK_MODELS="claude-3.5-haiku,gemini-2.0-flash"
+# Model defaults (live search enabled by default)
+export SCA_DEFAULT_MODEL="gpt-4o-mini-with-search"
 ```
 
 **Security Requirements**:
@@ -431,7 +542,7 @@ policy:
 #### **AI Hallucination**
 - **Risk**: AI generates non-existent CVE IDs
 - **Mitigation**: Validate all CRITICAL/HIGH findings against authoritative databases
-- **Fallback**: Revert to traditional scanning for low-confidence results
+- **Error Handling**: Explicit validation failure messages with specific next steps
 
 #### **Cost Overrun**
 - **Risk**: Unexpected token usage spikes
@@ -447,13 +558,54 @@ policy:
 
 #### **API Dependency**
 - **Risk**: AI service outages
-- **Mitigation**: Graceful fallback to traditional database scanning
-- **Monitoring**: Health checks and automatic failover
+- **Error Handling**: Clear failure messages with specific provider/API key issues
+- **Monitoring**: Health checks with explicit error reporting
 
 #### **Token Cost Management**
 - **Risk**: Runaway costs from inefficient usage
 - **Mitigation**: Token usage budgets and optimization monitoring
 - **Controls**: Pre-scan cost estimation and approval workflows
+
+### **Explicit Error Handling (No Fallbacks)**
+
+**Design Principle**: Fail fast with clear, actionable error messages rather than hiding problems with fallback mechanisms.
+
+#### **Common Failure Scenarios**
+```bash
+# API Key Missing
+❌ Error: OPENAI_API_KEY not found in environment
+   → Set your API key: export OPENAI_API_KEY="sk-..."
+   → Or use different provider: --model claude-3.5-haiku-tools
+
+# Model Not Supported
+❌ Error: Model 'gpt-4o-mini' does not support live search
+   → Use: --model gpt-4o-mini-with-search
+   → Or disable live search: --knowledge-only
+
+# Rate Limit Exceeded
+❌ Error: OpenAI rate limit exceeded (requests: 3000/min)
+   → Wait 60 seconds and retry
+   → Or reduce batch size: --batch-size 25
+   → Current usage: 2847/3000 requests this minute
+
+# Invalid API Key
+❌ Error: OpenAI API key invalid (HTTP 401)
+   → Check API key format: sk-...
+   → Verify key has not expired
+   → Test key: curl -H "Authorization: Bearer $OPENAI_API_KEY" https://api.openai.com/v1/models
+
+# Budget Exceeded
+❌ Error: Daily budget limit reached ($50.00)
+   → Current spend: $52.30
+   → Increase budget: --budget 100.00
+   → Or continue tomorrow
+```
+
+#### **Error Message Structure**
+- **Problem**: Clear description of what failed
+- **Root Cause**: Specific technical reason  
+- **Action Items**: Exact commands to resolve the issue
+- **Context**: Current state/usage information when relevant
 
 ---
 
@@ -496,43 +648,41 @@ Monthly Costs (10,000 packages):
 Multiple AI providers supported via unified interface, allowing users to choose based on cost, performance, and preference:
 
 **OpenAI Models:**
-- **Performance**: `gpt-4o`, `gpt-4o-mini` (recommended for cost efficiency)
-- **Reasoning**: `o1`, `o1-mini`, `o3`, `o3-mini` (advanced analysis)
-- **Legacy**: `gpt-4`, `gpt-3.5-turbo`
+- **With Live Search**: `gpt-4o-with-search`, `gpt-4o-mini-with-search` (current CVE data)
+- **Knowledge Only**: `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini` (training data cutoff)
+- **Legacy**: `gpt-4`, `gpt-3.5-turbo` (knowledge only)
 
 **Anthropic Models:**
-- **Latest**: `claude-4-opus`, `claude-4-sonnet` (highest quality)
-- **Production**: `claude-3.7-sonnet`, `claude-3.5-sonnet`, `claude-3.5-haiku`
-- **Legacy**: `claude-3-opus`, `claude-3-sonnet`, `claude-3-haiku`
+- **With Tool Use**: `claude-3.5-sonnet-tools`, `claude-3.5-haiku-tools` (live CVE lookup)
+- **Knowledge Only**: `claude-3.5-sonnet`, `claude-3.5-haiku`, `claude-3-opus`
 
 **Google Models:**
-- **Latest**: `gemini-2.5-pro`, `gemini-2.5-flash` (fast processing)
-- **Production**: `gemini-2.0-flash`
-- **Legacy**: `gemini-pro`
+- **With Live Search**: `gemini-2.5-pro-search`, `gemini-2.0-flash-search`
+- **Knowledge Only**: `gemini-2.5-pro`, `gemini-2.0-flash`, `gemini-pro`
+
 
 **X AI Models:**
-- **Advanced**: `grok-3`, `grok-3-mini`
-- **Reasoning**: `grok-3-reasoning`, `grok-3-mini-reasoning`
-- **Production**: `grok-beta`, `grok-2`
+- **With Web Access**: `grok-3-web`, `grok-3-mini-web` (current vulnerability data)
+- **Knowledge Only**: `grok-3`, `grok-3-mini`, `grok-beta`
 
 #### **Model Selection Guide**
 
-| Model | Cost | Speed | Accuracy | Best For |
-|-------|------|-------|----------|----------|
-| `gpt-4o-mini` | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | **Recommended default** - Best cost/performance |
-| `claude-3.5-haiku` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | High-speed scanning, good accuracy |
-| `gemini-2.0-flash` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Ultra-fast processing, cost-effective |
-| `claude-3.5-sonnet` | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | High accuracy, detailed analysis |
-| `gpt-4o` | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Premium accuracy, complex reasoning |
-| `o1-mini` | ⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | Advanced reasoning, complex vulnerabilities |
-| `claude-4-opus` | ⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | Highest quality analysis, enterprise use |
-| `grok-3-mini` | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | Alternative option, good performance |
+| Model | Cost | Speed | Accuracy | Live Data | Best For |
+|-------|------|-------|----------|-----------|----------|
+| `gpt-4o-mini-with-search` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | **Recommended for current CVEs** |
+| `claude-3.5-haiku-tools` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ✅ | Fast with live CVE lookup |
+| `gemini-2.0-flash-search` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | Ultra-fast with live search |
+| `claude-3.5-sonnet-tools` | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | High accuracy with current data |
+| `grok-3-mini-web` | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | Alternative with web access |
+| `gpt-4o-mini` | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ❌ | Cost-effective, knowledge only |
+| `claude-3.5-haiku` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ❌ | High-speed, knowledge only |
 
 **Recommendations:**
-- **Development/Testing**: `gpt-4o-mini` or `claude-3.5-haiku`
-- **Production/CI**: `gpt-4o-mini` with `claude-3.5-haiku` fallback
-- **Enterprise/Critical**: `claude-3.5-sonnet` or `gpt-4o`
-- **Research/Deep Analysis**: `o1-mini` or `claude-4-opus`
+- **Current Vulnerability Detection**: `gpt-4o-mini-with-search` (default)
+- **High-Speed Live Scanning**: `claude-3.5-haiku-tools` or `gemini-2.0-flash-search`
+- **Enterprise/Critical with Live Data**: `claude-3.5-sonnet-tools`
+- **Cost-Optimized (older CVEs acceptable)**: `gpt-4o-mini` or `claude-3.5-haiku`
+- **Development/Testing**: Knowledge-only models sufficient
 
 #### **Enhanced Caching**
 - **AI Results Cache**: 12-hour TTL (shorter due to potential variance)
@@ -599,7 +749,8 @@ class TelemetryEngine:
 #### **New Command Line Options**
 ```bash
 # AI Agent First Operation (Default Behavior)
---model MODEL_NAME           # AI model for analysis (default: gpt-4o-mini)
+--model MODEL_NAME           # AI model for analysis (default: gpt-4o-mini-with-search)
+--knowledge-only             # Disable live search, use training data only (opt-out from default)
 --provider openai|anthropic|google|xai  # AI provider (auto-detected from model)
 --config CONFIG_FILE         # YAML config with model preferences (API keys via environment only)
 
@@ -618,9 +769,9 @@ class TelemetryEngine:
 --audit-trail FILE         # Complete audit trail for AI agent review
 --validate-critical        # Always validate CRITICAL/HIGH findings
 
-# Legacy/Fallback Options
---traditional-scan          # Fallback to traditional database scanning only
---hybrid-validation         # Use both AI and traditional validation
+# Legacy Options (for testing/comparison only)
+--traditional-scan          # Use traditional database scanning for comparison testing
+--hybrid-validation         # Use both AI and traditional validation for verification
 
 # Note: API keys are provided via environment variables only for security
 # No CLI flags for API keys to prevent exposure in command history or process lists
@@ -628,24 +779,26 @@ class TelemetryEngine:
 
 #### **Usage Examples (AI Agent First by Default)**
 ```bash
-# Basic AI agent operation (default behavior)
+# Basic AI agent operation (live search enabled by default)
+export OPENAI_API_KEY="sk-..."
 sca_scanner_cli.py ~/code/project
 
-# AI agent with specific model (API keys from environment)
-export OPENAI_API_KEY="sk-..."
-sca_scanner_cli.py ~/code/project --model gpt-4o-mini
+# Knowledge-only model (opt-out from live search for cost savings)
+sca_scanner_cli.py ~/code/project --model gpt-4o-mini --knowledge-only
 
-# AI agent with configuration file
-sca_scanner_cli.py ~/code/project --config ~/.sca_ai_config.yml
+# High-speed scanning with live CVE lookup (default behavior)
+export ANTHROPIC_API_KEY="sk-ant-..."
+sca_scanner_cli.py ~/code/project --model claude-3.5-haiku-tools
 
-# Cost-optimized AI agent scanning
-sca_scanner_cli.py ~/code/project --model claude-3.5-haiku --budget 10.00
+# Ultra-fast scanning with live search
+export GOOGLE_AI_API_KEY="AIza..."
+sca_scanner_cli.py ~/code/project --model gemini-2.0-flash-search
 
-# High-quality AI agent analysis with reasoning models
-sca_scanner_cli.py ~/code/project --model o1-mini
+# Cost-optimized scanning (disable live search for development)
+sca_scanner_cli.py ~/code/project --model claude-3.5-haiku --knowledge-only --budget 10.00
 
-# Export structured vulnerability data for AI agents
-sca_scanner_cli.py ~/code/project --vulnerability-data vulnerabilities.json
+# Export structured vulnerability data with current CVE information (default)
+sca_scanner_cli.py ~/code/project --vulnerability-data vulns.json
 
 # AI agent with detailed telemetry for autonomous optimization
 sca_scanner_cli.py ~/code/project --telemetry-level debug --telemetry-file detailed_analysis.jsonl
@@ -655,10 +808,11 @@ sca_scanner_cli.py ~/code/project --telemetry-level debug --telemetry-file detai
 #### **AI Agent First Output (Default)**
 ```bash
 🤖 AI Agent First SCA Scanner v3.0
-   🎯 Model: gpt-4o-mini (OpenAI) - Optimized for AI agent consumption
+   🎯 Model: gpt-4o-mini-with-search (OpenAI) - Live CVE data enabled by default
+   🔍 Data Source: AI Knowledge + Live Web Search (current vulnerability databases)
    🔄 Agentic workflow: INPUT → SCAN → ANALYSIS → REMEDIATION
-   💰 Cost: $0.68 for 950 packages analyzed
-   🧠 AI agent confidence: 87.3% average (suitable for autonomous action)
+   💰 Cost: $0.82 for 950 packages analyzed (includes live search)
+   📊 Data Freshness: Current as of scan time (live lookup enabled by default)
 
 🔍 AI Agent Analysis Results:
    📦 Packages analyzed: 950/1000 (AI agent decision: 50 cached, secure)
@@ -677,6 +831,15 @@ sca_scanner_cli.py ~/code/project --telemetry-level debug --telemetry-file detai
    🤖 Remediation-ready: Data optimized for specialized remediation AI agents
    📊 Risk breakdown: Critical (3), High (8), Medium (10), Low (2)
    🔒 Source mapping: All vulnerabilities traced to exact file locations
+
+# Comparison: Knowledge-Only Model Output
+🤖 AI Agent First SCA Scanner v3.0 (Knowledge-Only Mode)
+   🎯 Model: gpt-4o-mini (OpenAI) - Training data only
+   📚 Data Source: AI Training Knowledge (cutoff: April 2024)
+   💰 Cost: $0.68 for 950 packages analyzed (no live search)
+   ⚠️  Data Freshness: Training cutoff date - may miss recent CVEs
+   
+   📋 Recommendation: Use live search models for production scanning
 ```
 
 ---
@@ -841,22 +1004,24 @@ export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-..."
 
 ### Supported Providers
-- **OpenAI**: gpt-4o-mini (recommended), gpt-4o, o1-mini
-- **Anthropic**: claude-3.5-haiku, claude-3.5-sonnet
-- **Google**: gemini-2.0-flash, gemini-2.5-pro
-- **X AI**: grok-3-mini, grok-3
+- **OpenAI**: gpt-4o-mini-with-search (recommended), gpt-4o-with-search, o1-mini (with web search for current data)
+- **Anthropic**: claude-3.5-haiku-tools, claude-3.5-sonnet-tools (with tool use for live CVE lookup)
+- **Google**: gemini-2.0-flash-search, gemini-2.5-pro-search (with live search integration)
+- **X AI**: grok-3-mini-web, grok-3-web (with live web access capabilities)
 
 ## Model Selection
-# Use fastest, most cost-effective model
-sca-scanner --model gpt-4o-mini
+# Use fastest, most cost-effective model with live search (default)
+sca-scanner --model gpt-4o-mini-with-search
 
-# Use highest accuracy model  
-sca-scanner --model claude-3.5-sonnet
+# Use knowledge-only model (opt-out from live search)
+sca-scanner --model gpt-4o-mini --knowledge-only
+
+# Use highest accuracy model with live CVE lookup
+sca-scanner --model claude-3.5-sonnet-tools
 
 ## Configuration File (~/.sca_ai_config.yml)
 models:
-  primary: "gpt-4o-mini"
-  fallback: ["claude-3.5-haiku", "gemini-2.0-flash"]
+  primary: "gpt-4o-mini-with-search"        # Live search enabled by default
 
 analysis:
   batch_size: 75
