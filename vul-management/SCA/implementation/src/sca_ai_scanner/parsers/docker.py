@@ -54,9 +54,13 @@ class DockerParser(DependencyParser):
         packages = []
         lines = self.read_file_lines(file_path)
         
-        for line_num, line in enumerate(lines, 1):
-            original_line = line
-            line = line.strip()
+        # Handle line continuations
+        processed_lines = self._process_line_continuations(lines)
+        
+        for line_info in processed_lines:
+            line = line_info['line'].strip()
+            line_num = line_info['line_num']
+            original_line = line_info['original']
             
             # Skip empty lines and comments
             if not line or line.startswith('#'):
@@ -84,6 +88,55 @@ class DockerParser(DependencyParser):
                 packages.extend(copy_packages)
         
         return packages
+    
+    def _process_line_continuations(self, lines: List[str]) -> List[dict]:
+        """Process line continuations (backslashes) in Dockerfile."""
+        processed = []
+        current_line = ""
+        current_line_num = 1
+        current_original = ""
+        
+        for line_num, line in enumerate(lines, 1):
+            stripped = line.strip()
+            
+            # If this is a continuation of the previous line
+            if current_line and stripped:
+                current_line += " " + stripped.rstrip('\\').strip()
+                current_original += " " + line.rstrip()
+            else:
+                # If we have an accumulated line, process it
+                if current_line:
+                    processed.append({
+                        'line': current_line,
+                        'line_num': current_line_num,
+                        'original': current_original
+                    })
+                
+                # Start new line
+                current_line = stripped.rstrip('\\').strip()
+                current_line_num = line_num
+                current_original = line.rstrip()
+            
+            # If line doesn't end with backslash, complete the instruction
+            if not stripped.endswith('\\'):
+                if current_line:
+                    processed.append({
+                        'line': current_line,
+                        'line_num': current_line_num,
+                        'original': current_original
+                    })
+                current_line = ""
+                current_original = ""
+        
+        # Handle final line if exists
+        if current_line:
+            processed.append({
+                'line': current_line,
+                'line_num': current_line_num,
+                'original': current_original
+            })
+        
+        return processed
     
     def _parse_from_instruction(
         self, 
@@ -176,11 +229,11 @@ class DockerParser(DependencyParser):
         """Parse apt/apt-get package installations."""
         packages = []
         
-        # Look for apt install commands
+        # Look for apt install commands (with optional environment variables)
         apt_patterns = [
-            r'apt-get\s+install\s+(.+)',
-            r'apt\s+install\s+(.+)',
-            r'aptitude\s+install\s+(.+)'
+            r'(?:[A-Z_]+=\S+\s+)?apt-get\s+install\s+(.+)',
+            r'(?:[A-Z_]+=\S+\s+)?apt\s+install\s+(.+)',
+            r'(?:[A-Z_]+=\S+\s+)?aptitude\s+install\s+(.+)'
         ]
         
         for pattern in apt_patterns:
@@ -188,8 +241,9 @@ class DockerParser(DependencyParser):
             if match:
                 package_list = match.group(1)
                 
-                # Clean up package list
-                package_list = re.sub(r'\s*-[a-zA-Z]\s*', ' ', package_list)  # Remove flags
+                # Clean up package list - remove common flags but preserve package names
+                package_list = re.sub(r'\s*-(y|yes|q|quiet|f|force)\s*', ' ', package_list)  # Remove short flags
+                package_list = re.sub(r'\s*--no-install-recommends\s*', ' ', package_list)  # Remove long flags
                 package_list = re.sub(r'\s*&&\s*.*', '', package_list)  # Remove chained commands
                 
                 # Split packages
@@ -371,8 +425,11 @@ class DockerParser(DependencyParser):
                 if '-r ' in package_list:
                     continue  # Skip requirements file installations
                 
-                # Clean up package list
-                package_list = re.sub(r'\s*--[a-zA-Z-]+\s*[^\s]*', ' ', package_list)
+                # Clean up package list - remove common pip flags
+                package_list = re.sub(r'\s*--no-cache-dir\b', ' ', package_list)
+                package_list = re.sub(r'\s*--user\b', ' ', package_list)
+                package_list = re.sub(r'\s*--upgrade\b', ' ', package_list)
+                package_list = re.sub(r'\s*--force-reinstall\b', ' ', package_list)
                 package_list = re.sub(r'\s*&&\s*.*', '', package_list)
                 
                 package_names = package_list.split()
@@ -402,6 +459,10 @@ class DockerParser(DependencyParser):
     
     def _parse_pip_package(self, pkg_spec: str) -> tuple[str, str]:
         """Parse pip package specification."""
+        # Remove extras like [standard] from package name
+        if '[' in pkg_spec:
+            pkg_spec = pkg_spec.split('[')[0]
+        
         # Handle version operators
         version_operators = ['>=', '<=', '==', '!=', '~=', '>', '<']
         

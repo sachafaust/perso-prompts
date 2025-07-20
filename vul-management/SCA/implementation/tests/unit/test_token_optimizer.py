@@ -53,11 +53,11 @@ class TestTokenOptimizer:
         prompt = optimizer.create_prompt(test_packages)
         
         # Verify prompt structure
-        assert "Analyze these 3 packages" in prompt
-        assert "requests==2.25.1" in prompt
-        assert "django==3.2.0" in prompt
-        assert "express==4.17.1" in prompt
-        assert "Return structured JSON" in prompt
+        assert "Find ALL known CVEs and security vulnerabilities for these 3 packages" in prompt
+        assert "requests:2.25.1" in prompt
+        assert "django:3.2.0" in prompt
+        assert "express:4.17.1" in prompt
+        assert "Return ONLY vulnerable packages in JSON format" in prompt
         assert "confidence" in prompt
     
     def test_create_prompt_with_live_search(self, optimizer, test_packages):
@@ -76,13 +76,13 @@ class TestTokenOptimizer:
         # Test balanced format (default)
         optimizer.strategy = "balanced"
         formatted = optimizer._format_package_list(test_packages)
-        assert "- requests==2.25.1 (pypi)" in formatted
-        assert "- django==3.2.0 (pypi)" in formatted
+        assert "- requests:2.25.1 (pypi)" in formatted
+        assert "- django:3.2.0 (pypi)" in formatted
         
         # Test compact format
         optimizer.strategy = "compact"
         formatted = optimizer._format_package_list(test_packages)
-        assert formatted == "requests==2.25.1, django==3.2.0, express==4.17.1"
+        assert formatted == "requests:2.25.1, django:3.2.0, express:4.17.1"
         
         # Test detailed format
         optimizer.strategy = "detailed"
@@ -231,7 +231,7 @@ class TestTokenOptimizer:
             ecosystem="npm"
         )
         prompt = optimizer.create_prompt([special_package])
-        assert "@scope/package-name==1.0.0-beta.1" in prompt
+        assert "@scope/package-name:1.0.0-beta.1" in prompt
         
         # Very long package list (test truncation/batching)
         many_packages = [

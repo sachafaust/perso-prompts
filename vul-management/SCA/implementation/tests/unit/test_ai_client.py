@@ -157,6 +157,8 @@ class TestAIVulnerabilityClient:
     @pytest.mark.asyncio
     async def test_budget_exceeded_error(self, mock_env_vars, openai_config):
         """Test budget exceeded error handling."""
+        # Enable budget checking for this test
+        openai_config.budget_enabled = True
         client = AIVulnerabilityClient(openai_config)
         client.daily_cost = 9.99  # Just under limit
         
@@ -246,6 +248,7 @@ class TestAIVulnerabilityClient:
         mock_response = Mock()
         mock_response.status = 429
         mock_response.text = AsyncMock(return_value="Rate limit exceeded")
+        mock_response.headers = {}
         
         # Mock aiohttp.ClientSession to prevent real network calls
         with patch('aiohttp.ClientSession') as mock_session_class:
@@ -271,6 +274,7 @@ class TestAIVulnerabilityClient:
         # Create mock session that returns 401
         mock_response = Mock()
         mock_response.status = 401
+        mock_response.headers = {}
         
         # Mock aiohttp.ClientSession to prevent real network calls
         with patch('aiohttp.ClientSession') as mock_session_class:

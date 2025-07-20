@@ -182,9 +182,20 @@ RUN apt-get update && apt-get install -y nginx
                 }]
             })
             
-            mock_session.return_value.__aenter__.return_value.get.return_value.__aenter__.return_value = mock_response
+            # Properly mock the session with async close
+            mock_session_instance = Mock()
+            mock_session_instance.close = AsyncMock()
+            
+            # Mock the get context manager properly
+            mock_get_context = AsyncMock()
+            mock_get_context.__aenter__.return_value = mock_response
+            mock_session_instance.get.return_value = mock_get_context
+            
+            mock_session.return_value.__aenter__.return_value = mock_session_instance
             
             validator = ValidationPipeline(validation_config)
+            # Mock the validator's session directly
+            validator.session = mock_session_instance
             async with validator:
                 validated_results = await validator.validate_findings(results)
         

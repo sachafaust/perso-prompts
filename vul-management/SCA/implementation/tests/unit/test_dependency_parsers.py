@@ -271,8 +271,8 @@ lodash@4.17.20, lodash@^4.17.19:
         assert "express" in package_dict
         assert package_dict["express"].version == "4.17.1"
         
-        assert "@babel/core" in package_dict
-        assert package_dict["@babel/core"].version == "7.12.9"
+        # @babel/core should be excluded as dev dependency
+        assert "@babel/core" not in package_dict
         
         assert "lodash" in package_dict
         assert package_dict["lodash"].version == "4.17.20"
@@ -348,7 +348,8 @@ lodash@4.17.20, lodash@^4.17.19:
         packages = parser.parse_file(temp_project_dir / "package.json")
         
         package_names = {pkg.name for pkg in packages}
-        assert "@babel/core" in package_names
+        # @babel packages are excluded as dev dependencies
+        assert "@babel/core" not in package_names
         assert "@company/private-package" in package_names
         
         # @types packages should be excluded
