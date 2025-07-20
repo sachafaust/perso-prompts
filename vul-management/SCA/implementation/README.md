@@ -1,6 +1,8 @@
-# AI-Powered SCA Vulnerability Scanner v3.0
+# AI-Powered SCA Vulnerability Scanner
 
 Enterprise-grade vulnerability scanning powered by Large Language Models. Built with **AI Agent First** principles for autonomous security workflows and seamless AI-to-AI communication.
+
+> **Implementation based on [PDR v1.0](../SCA-Scanner.md)** - Product Design Requirements drive all versioning and features.
 
 ## ✨ Key Features
 
@@ -45,7 +47,7 @@ sca-scanner /path/to/project --vulnerability-data vulns.json
 ### Example Output
 
 ```
-🤖 AI Agent First SCA Scanner v3.0
+🤖 AI Agent First SCA Scanner
    🎯 Model: gpt-4o-mini-with-search (OpenAI) - Live CVE data enabled
    
 📦 Scanned 847 dependencies in 18 minutes
@@ -856,4 +858,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**AI-Powered SCA Scanner v3.0** - Revolutionizing vulnerability scanning through AI agent automation 🤖
+**AI-Powered SCA Scanner** - Revolutionizing vulnerability scanning through AI agent automation 🤖

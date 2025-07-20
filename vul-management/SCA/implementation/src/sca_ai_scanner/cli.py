@@ -369,7 +369,7 @@ def print_banner(config: ScanConfig):
         data_source = "AI Training Knowledge (cutoff: varies by model)"
         data_freshness = "Training cutoff date - may miss recent CVEs"
     
-    banner_text = f"""[bold cyan]🤖 AI Agent First SCA Scanner v3.0[/bold cyan]
+    banner_text = f"""[bold cyan]🤖 AI Agent First SCA Scanner[/bold cyan]
    🎯 Model: {config.model}
    🔍 Data Source: {data_source}
    🔄 Agentic workflow: INPUT → SCAN → ANALYSIS → REMEDIATION
