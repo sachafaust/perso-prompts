@@ -1,5 +1,18 @@
 # Product Design Requirements (PDR): AI-Powered SCA Vulnerability Analysis
 
+**Document Version:** 1.0  
+**Last Updated:** July 20, 2025  
+**Status:** Implemented  
+**Implementation Version:** Based on PDR v1.0
+
+---
+
+## 📋 Document Version History
+
+| Version | Date | Changes | Status |
+|---------|------|---------|--------|
+| 1.0 | July 20, 2025 | Initial PDR with complete AI-powered SCA scanner design and implementation | ✅ Implemented |
+
 ---
 
 ## 📋 Overview
@@ -7,7 +20,7 @@
 This Product Design Requirements (PDR) document outlines the design and implementation of an AI-powered SCA vulnerability scanner, designed with an **AI Agent First** philosophy where everything is optimized for autonomous AI agent operation. The solution enables bulk dependency analysis with balanced token efficiency, prioritizing data accuracy and usefulness while maintaining reasonable cost efficiency.
 
 ### **Proposed Solution**
-AI-powered bulk vulnerability analysis designed for AI Agent First operation, with balanced token efficiency, intelligent batching, and hybrid validation for accurate, fast, and cost-effective dependency scanning.
+AI-powered bulk vulnerability analysis designed for AI Agent First operation, with balanced token efficiency, intelligent batching, and pure AI analysis for accurate, fast, and cost-effective dependency scanning.
 
 ### **Core Hypothesis: AI Agent Centric Architecture**
 
@@ -42,7 +55,7 @@ Traditional tools optimize for human consumption (dashboards, reports, UIs). We 
 - **Structured Data**: Machine-readable output formats
 - **Actionable Intelligence**: Data that enables autonomous decision-making  
 - **Composable Workflows**: Output designed for downstream AI agent processing
-- **Precise Location Mapping**: File/line-level data for automated remediation
+- **Precise Location Mapping**: **MANDATORY** file/line-level data for automated remediation - without source locations, AI agents cannot perform automated dependency updates
 
 #### **Addressing Stale Data Risk: Live Web Search Integration**
 A critical risk with AI model knowledge is **temporal staleness** - vulnerability databases update daily with new CVEs, but AI training data has cutoff dates. This conflicts with our quality and up-to-date data goals.
@@ -52,39 +65,37 @@ A critical risk with AI model knowledge is **temporal staleness** - vulnerabilit
 - **Anthropic Claude with Tools**: Web search tools for real-time CVE lookup
 - **Google Gemini**: Live search integration for current vulnerability information
 
-**Hybrid Approach for Data Freshness**:
+**Pure AI Approach for Data Freshness**:
 1. **AI Knowledge Base**: Use model's training data for well-known, established vulnerabilities
-2. **Live Web Search**: Query current vulnerability databases for recent CVEs (last 30-90 days)
-3. **Traditional API Fallback**: Critical findings verification against authoritative sources
+2. **Live Web Search**: AI models directly query current vulnerability databases for recent CVEs
+3. **No External APIs**: Pure AI-only approach eliminates traditional API dependencies
 
 **Implementation Strategy**:
 ```python
 async def get_vulnerabilities_with_live_data(packages: List[Package]):
-    # Use AI knowledge for established vulnerabilities
-    ai_results = await ai_client.bulk_analyze(packages)
-    
-    # Live web search for recent vulnerabilities
-    recent_packages = filter_packages_needing_fresh_data(packages)
-    live_results = await ai_client.search_current_vulnerabilities(recent_packages)
-    
-    # Merge results with recency priority
-    return merge_vulnerability_data(ai_results, live_results)
+    # AI models handle both knowledge base and live search internally
+    if model_supports_live_search:
+        return await ai_client.analyze_with_live_search(packages)
+    else:
+        return await ai_client.analyze_knowledge_only(packages)
 ```
 
 **Cost-Benefit Analysis**:
 - **Additional Cost**: ~20% increase for live search queries on recent packages
 - **Quality Gain**: Current vulnerability data, no missed recent CVEs
-- **Performance Impact**: Minimal - live search only for subset requiring fresh data
+- **Performance Impact**: Minimal - no external API rate limiting
+- **Simplicity**: Single AI provider, no complex validation pipelines
 
-#### **Validation Through Hybrid Intelligence**
-We maintain accuracy through **selective validation** - using traditional APIs only for critical findings verification, achieving the best of both approaches while minimizing traditional API dependency.
+#### **Pure AI Intelligence Architecture**
+We maintain accuracy through **AI-only analysis** - leveraging models with live search capabilities for current data while eliminating external API dependencies and rate limiting issues.
 
 ### **Core Design Tenets**
 1. **AI Agent First**: AI agents are the primary consumers. Everything optimized for autonomous AI agent operation by default. Humans interface only via CLI.
 2. **AI Agent Intelligence Pipeline**: Enable complete vulnerability intelligence workflow from input → scanning → analysis → actionable data output for specialized remediation agents
-3. **Balanced Token Efficiency**: Optimize tokens while prioritizing data accuracy and usefulness for AI agent decision-making
-4. **Security by Default**: Scan everything, assume nothing, exclude only by explicit approval
-5. **Autonomous Operation**: AI agents self-diagnose, optimize, and produce high-quality actionable intelligence for downstream remediation agents
+3. **Complete Data Integrity**: **ZERO TOLERANCE** for sampling, truncation, or incomplete data. ALL source locations and ALL vulnerabilities must be included - security failures are unacceptable.
+4. **Balanced Token Efficiency**: Optimize tokens while prioritizing data accuracy and usefulness for AI agent decision-making
+5. **Security by Default**: Scan everything, assume nothing, exclude only by explicit approval
+6. **Autonomous Operation**: AI agents self-diagnose, optimize, and produce high-quality actionable intelligence for downstream remediation agents
 
 ---
 
@@ -95,7 +106,7 @@ We maintain accuracy through **selective validation** - using traditional APIs o
 2. **Performance**: Reduce scan time from 3+ hours to <30 minutes for 1000+ dependencies  
 3. **Cost Efficiency**: Achieve <$0.50 per 1000 packages analyzed
 4. **Clear Data Output**: Produce structured, factual vulnerability data optimized for AI agent consumption
-5. **Source Mapping**: Provide precise file/line location tracking for each vulnerable dependency
+5. **Source Location Tracking**: **MANDATORY** - Provide precise file/line location tracking for each vulnerable dependency to enable automated remediation workflows
 
 ### **Non-Goals** 
 1. **Risk Assessment Reasoning**: Analyzing business impact or providing strategic recommendations
@@ -118,13 +129,11 @@ We maintain accuracy through **selective validation** - using traditional APIs o
 
 ### **Core Components**
 
-#### **1. AI Vulnerability Client (Using Critique Library)**
+#### **1. AI Vulnerability Client**
 ```python
-from critique import Critique
-
 class AIVulnerabilityClient:
     def __init__(self, model: str, config: Dict, enable_live_search: bool = False):
-        self.critique = Critique()
+        self.ai_client = self._create_ai_client()
         self.model = model
         self.config = config
         self.enable_live_search = enable_live_search
@@ -135,6 +144,12 @@ class AIVulnerabilityClient:
         
         # Configure API keys and provider settings
         self._configure_providers(config)
+    
+    def _create_ai_client(self):
+        """Create AI client based on selected provider"""
+        # Initialize appropriate AI client (OpenAI, Anthropic, Google, etc.)
+        # Implementation will depend on chosen AI provider library
+        pass
     
     def _check_live_search_support(self) -> bool:
         """Check if current model supports live web search"""
@@ -150,14 +165,13 @@ class AIVulnerabilityClient:
         """Configure API keys from environment variables only (never from config)"""
         import os
         # Security: API keys ONLY from environment variables
-        if os.getenv('OPENAI_API_KEY'):
-            self.critique.configure_openai(api_key=os.getenv('OPENAI_API_KEY'))
-        if os.getenv('ANTHROPIC_API_KEY'):
-            self.critique.configure_anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
-        if os.getenv('GOOGLE_AI_API_KEY'):
-            self.critique.configure_google(api_key=os.getenv('GOOGLE_AI_API_KEY'))
-        if os.getenv('XAI_API_KEY'):
-            self.critique.configure_xai(api_key=os.getenv('XAI_API_KEY'))
+        # Configure based on selected provider
+        self.api_keys = {
+            'openai': os.getenv('OPENAI_API_KEY'),
+            'anthropic': os.getenv('ANTHROPIC_API_KEY'),
+            'google': os.getenv('GOOGLE_AI_API_KEY'),
+            'xai': os.getenv('XAI_API_KEY')
+        }
     
     async def bulk_analyze(self, packages: List[Package]) -> VulnerabilityResults:
         """Analyze packages with optional live search for current CVE data"""
@@ -170,7 +184,7 @@ class AIVulnerabilityClient:
         """Analyze with live web search for current vulnerability data"""
         optimized_prompt = self.token_optimizer.create_prompt_with_live_search(packages)
         
-        response = await self.critique.generate(
+        response = await self.ai_client.generate(
             model=self.model,
             prompt=optimized_prompt,
             temperature=0.1,
@@ -184,7 +198,7 @@ class AIVulnerabilityClient:
         """Analyze using model's training knowledge only"""
         optimized_prompt = self.token_optimizer.create_prompt(packages)
         
-        response = await self.critique.generate(
+        response = await self.ai_client.generate(
             model=self.model,
             prompt=optimized_prompt,
             temperature=0.1,
@@ -223,21 +237,124 @@ Return JSON with current data: {{pkg: {{cves: [{{id, severity, description, publ
         pass
 ```
 
-#### **3. Hybrid Validation Pipeline**
+#### **3. Pure AI Analysis Pipeline**
 ```python
-class ValidationPipeline:
-    def validate_findings(self, ai_results: AIResults) -> ValidatedResults:
-        """Cross-check critical findings against CVE databases"""
-        critical_findings = [r for r in ai_results if r.severity in ['CRITICAL', 'HIGH']]
-        return self.cross_validate_with_nvd(critical_findings)
+class AIVulnerabilityClient:
+    async def bulk_analyze(self, packages: List[Package]) -> VulnerabilityResults:
+        """Pure AI-powered vulnerability analysis with optional live search"""
+        if self.config.enable_live_search and self.supports_live_search:
+            return await self._analyze_with_live_search(packages)
+        else:
+            return await self._analyze_knowledge_only(packages)
 ```
 
 ### **Data Flow Architecture**
 ```
-Dependencies → Security-First Filtering → AI Batching → Bulk Analysis → Validation → Enhanced Reporting
-     ↓              ↓                      ↓            ↓            ↓            ↓
-   1000+ pkgs   →  950+ pkgs    →  13 batches  →  AI Results → Validate  →  Final Report
+Dependencies → Security-First Filtering → AI Batching → Bulk Analysis → Enhanced Reporting
+     ↓              ↓                      ↓            ↓            ↓
+   1000+ pkgs   →  950+ pkgs    →  6 batches  →  AI Results  →  Final Report
 ```
+
+---
+
+## 📏 Package Format Standards & Optimizations
+
+### **Standardized Package Identifiers**
+
+**Critical Design Decision**: All package identifiers MUST use the `package:version` format throughout the entire pipeline to ensure consistency and eliminate parsing errors.
+
+#### **Package Format Standard: `package:version`**
+
+**Rationale for `package:version` Standard:**
+- **Universal Format**: Not ecosystem-specific (unlike Python's `==` operator)
+- **Internal Consistency**: Matches existing data model expectations (`models.py:150`)
+- **AI Prompt Alignment**: Consistent with response format requests to AI models
+- **Parsing Simplicity**: Single delimiter reduces complexity and error potential
+
+#### **Implementation Consistency Requirements**
+
+**1. Package List Formatting (Input to AI)**
+```python
+# ✅ CORRECT: Use colon format
+package_list = ', '.join(f"{pkg.name}:{pkg.version}" for pkg in packages)
+# Example: "requests:2.25.1, django:3.2.1, numpy:1.20.0"
+
+# ❌ INCORRECT: Avoid ecosystem-specific formats
+package_list = ', '.join(f"{pkg.name}=={pkg.version}" for pkg in packages)
+```
+
+**2. AI Response Format (Output from AI)**
+```json
+{
+  "requests:2.25.1": {
+    "cves": [...],
+    "confidence": 0.95
+  }
+}
+```
+
+**3. Internal Data Keys**
+```python
+# ✅ CORRECT: Consistent key format
+vulnerability_analysis[f"{pkg.name}:{pkg.version}"] = analysis_data
+
+# ❌ INCORRECT: Mixed formats cause parsing issues
+vulnerability_analysis[f"{pkg.name}=={pkg.version}"] = analysis_data
+```
+
+#### **Migration Requirements**
+- **Prompt Templates**: Update all AI prompts to use `package:version` format
+- **Response Processing**: Remove dual-format parsing logic once consistency is achieved
+- **Package Formatters**: Standardize all package list generation to colon format
+- **Test Cases**: Update test expectations to use consistent format
+
+### **Response Size Optimization**
+
+#### **No-Vulnerabilities Filtering**
+
+**Optimization Strategy**: Instruct AI models to exclude packages with no vulnerabilities from responses to reduce token usage and improve processing speed.
+
+**Implementation:**
+```python
+def create_optimized_prompt(self, packages: List[Package]) -> str:
+    """Generate prompt with response size optimization"""
+    package_list = ', '.join(f"{pkg.name}:{pkg.version}" for pkg in packages)
+    
+    return f"""Find ALL known CVEs and security vulnerabilities for these {len(packages)} packages.
+
+Packages to analyze:
+{package_list}
+
+CRITICAL OPTIMIZATION: Only return packages that have vulnerabilities. 
+Skip packages with no CVEs to reduce response size.
+
+Return ONLY vulnerable packages in JSON format:
+{{
+  "package:version": {{
+    "cves": [{{
+      "id": "CVE-YYYY-NNNNN",
+      "severity": "CRITICAL|HIGH|MEDIUM|LOW",
+      "description": "Brief description",
+      "cvss_score": 0.0-10.0
+    }}],
+    "confidence": 0.0-1.0
+  }}
+}}
+
+If NO vulnerabilities found across all packages, return empty JSON object: {{}}"""
+```
+
+**Benefits:**
+- **Token Reduction**: ~40-60% reduction in response tokens for typical scans
+- **Faster Processing**: Smaller responses improve parsing speed
+- **Cost Efficiency**: Proportional cost reduction based on response size
+- **Bandwidth Savings**: Reduced network transfer for large batch scans
+
+**Implementation Requirements:**
+- **Prompt Updates**: Add explicit instructions to skip clean packages
+- **Response Processing**: Handle empty JSON responses appropriately
+- **Summary Calculation**: Infer clean package count from total - returned count
+- **Confidence Handling**: Assume high confidence for unreturned packages
 
 ---
 
@@ -248,7 +365,7 @@ Dependencies → Security-First Filtering → AI Batching → Bulk Analysis → 
 - **Vulnerability Detection**: AI-powered bulk analysis of security vulnerabilities  
 - **Risk Assessment**: Contextual analysis of business impact and exploitability
 - **Actionable Intelligence**: Structured vulnerability data optimized for AI agent consumption
-- **Source Location Tracking**: Precise file/line mapping for each vulnerable dependency
+- **Source Location Tracking**: **MANDATORY** - Precise file/line mapping for each vulnerable dependency to enable automated remediation
 - **Multi-Provider Support**: Flexible AI model selection across providers
 
 ### **Out of Scope: Remediation Implementation**
@@ -277,7 +394,8 @@ The following capabilities are **explicitly out of scope** and should be handled
 - **No Assumptions**: Never filter based on package age, source, or perceived safety
 
 #### **Intelligent Batching**
-- **Batch Size**: 75 packages per API call (balanced efficiency with context preservation)
+- **Automatic Batch Size Optimization**: By default, the scanner automatically determines the maximum batch size based on the AI model's context window (e.g., 2000+ packages for Gemini 2.5 Pro's 2M token context)
+- **Manual Override**: Optional `--batch-size` parameter for advanced users who need specific batch sizes for testing or debugging
 - **Smart Grouping**: Group by ecosystem and risk profile  
 - **Parallel Processing**: Multiple batches processed concurrently
 - **Rate Limiting**: Respect AI provider rate limits
@@ -286,7 +404,7 @@ The following capabilities are **explicitly out of scope** and should be handled
 ```
 Balanced Input Format (AI Agent Optimized):
 "Analyze these packages for vulnerabilities:
-requests==2.25.1, django==3.2.1, numpy==1.20.0
+requests:2.25.1, django:3.2.1, numpy:1.20.0
 
 Return JSON with complete security context:
 {package: {cves: [{id, severity, description}], risk_score, remediation, confidence}}"
@@ -337,18 +455,147 @@ Estimated Token Usage:
 }
 ```
 
-### **Hybrid Validation System**
+### **Pure AI Analysis System**
 
-#### **Validation Rules**
-1. **CRITICAL/HIGH Findings**: Always validate against NVD/OSV databases
-2. **Medium Findings**: Spot-check 20% against traditional databases
-3. **Low/No Issues**: Accept AI assessment with confidence >0.9
-4. **Confidence <0.8**: Report low confidence with explicit error details
+#### **AI Confidence Assessment**
+1. **CRITICAL/HIGH Findings**: AI-generated with confidence scoring based on data sources
+2. **Medium Findings**: Assessed by AI with training data and live search validation
+3. **Low/No Issues**: AI assessment with confidence >0.9 considered reliable
+4. **Confidence <0.8**: Flagged for manual review with explicit confidence scores
 
 #### **Confidence Scoring**
-- **High Confidence (0.9+)**: AI provides specific CVE IDs that exist in databases
-- **Medium Confidence (0.7-0.9)**: AI identifies vulnerability patterns without specific CVEs
-- **Low Confidence (<0.7)**: Contradictory information or vague responses
+- **High Confidence (0.9+)**: AI provides specific CVE IDs with live search validation
+- **Medium Confidence (0.7-0.9)**: AI identifies vulnerability patterns from training data
+- **Low Confidence (<0.7)**: Mixed signals or limited information available
+
+### **Critical Requirement: Complete Source Location and Vulnerability Tracking**
+
+**MANDATORY**: Every vulnerable dependency MUST include ALL source code locations and ALL vulnerabilities - NO SAMPLING OR TRUNCATION ALLOWED.
+
+#### **Zero Tolerance for Incomplete Data**
+- **NO SAMPLING**: All source locations must be included, never "first 5" or "top 10"
+- **NO TRUNCATION**: All CVEs must be reported, never "showing 20 of 150 vulnerabilities" 
+- **NO APPROXIMATION**: Complete data only - partial results are security failures
+- **NO PAGINATION**: All data in single response - no "load more" for security data
+
+#### **Source Location Requirements**
+- **File Path**: **ABSOLUTE** path to dependency declaration file - never relative paths that create ambiguity
+- **Line Number**: Specific line where dependency is declared (1-indexed)  
+- **Declaration Text**: Exact text of the dependency declaration as found in file
+- **File Type**: Standardized file type (requirements, pyproject_toml, package_json, etc.)
+- **Multiple Locations**: **CRITICAL** - Must track ALL locations where a package appears across the entire codebase
+
+#### **Path Format Requirements**
+**ABSOLUTE PATHS REQUIRED**: Source locations must use complete, unambiguous file paths
+
+```
+❌ AMBIGUOUS: "pyproject.toml:36" 
+   → Could be anywhere in filesystem
+
+✅ UNAMBIGUOUS: "/Users/dev/project/backend/pyproject.toml:36"
+   → AI agents know exactly where to find and update the file
+```
+
+**Real-World Example**:
+```
+❌ CONFUSING:
+- `pyproject.toml:36` - project.dependencies: django==4.2.13  
+- `tools/python/urf/pyproject.toml:1` - tool.poetry.dependencies.django: ^4.2.13
+
+✅ ACTIONABLE:
+- `/Users/dev/myproject/pyproject.toml:36` - project.dependencies: django==4.2.13
+- `/Users/dev/myproject/tools/python/urf/pyproject.toml:1` - tool.poetry.dependencies.django: ^4.2.13
+```
+
+#### **Multiple Location Examples**
+Real-world scenarios where packages appear in multiple files (with absolute paths):
+- `requests:2.25.1` in `/project/requirements.txt:15` AND `/project/backend/pyproject.toml:23` AND `/project/docker/Dockerfile:8`
+- `numpy:1.20.0` in `/project/requirements.txt:8` AND `/project/dev-requirements.txt:12` 
+- `express:4.18.2` in `/project/package.json:15` AND `/project/services/api/package.json:8`
+
+**Exposure Analysis**: Multiple declarations indicate higher exposure and dependency on the package
+**Complete Remediation**: ALL locations must be updated, not just the first one found
+
+#### **Remediation Workflow Integration**
+Source locations are **CRITICAL** for downstream remediation workflows:
+- **Automated Remediation**: AI agents need exact file/line locations to update dependencies
+- **Manual Remediation**: Developers need precise locations to apply fixes
+- **Change Tracking**: File/line data enables accurate before/after comparison
+- **Rollback Support**: Location tracking enables precise rollback of dependency changes
+
+#### **All Output Mechanisms MUST Include COMPLETE Data and Model Context**
+- **JSON Export**: `source_locations` array with ALL file/line data - NO TRUNCATION + `ai_model_used` field
+- **Markdown Reports**: ALL source locations and ALL vulnerabilities displayed + AI model prominently shown
+- **CLI Table Output**: ALL vulnerable packages shown - NO PAGINATION + AI model in header
+- **API Responses**: COMPLETE data sets - never truncated or sampled + model identification
+
+#### **AI Agent Workflow Requirements for Multiple Locations**
+
+**Complete Exposure Mapping**: AI agents need ALL source locations to:
+- **Risk Assessment**: Understand full scope of package exposure across codebase
+- **Impact Analysis**: Determine which services/components are affected by vulnerabilities  
+- **Remediation Planning**: Plan coordinated updates across all declaration locations
+- **Validation**: Verify ALL locations are updated correctly during remediation
+- **Rollback**: Enable precise rollback by knowing exactly what was changed where
+
+**Example AI Agent Decision Making**:
+```
+Package: requests:2.25.1 (CRITICAL vulnerability)
+Source Locations: 4 files found
+- /project/requirements.txt:15 (main dependencies)
+- /project/dev-requirements.txt:7 (development environment) 
+- /project/docker/Dockerfile:8 (container image)
+- /project/backend/pyproject.toml:23 (Poetry configuration)
+
+AI Agent Decision: High-priority update required across ALL 4 locations
+Remediation Strategy: Coordinate update to requests:2.31.0 in all 4 files
+Validation: Verify all 4 locations updated successfully
+```
+
+#### **Completeness Requirements - Security Critical**
+
+**ABSOLUTE REQUIREMENTS**:
+- **ALL source locations** - Every file where package appears, no exceptions
+- **ALL vulnerabilities** - Every CVE found, regardless of count or severity
+- **ALL affected packages** - Complete dependency inventory, no sampling
+- **ALL file declarations** - Every requirements.txt, package.json, Dockerfile, etc.
+
+**PROHIBITED BEHAVIORS** (Security Failures):
+- ❌ "Showing first 10 of 50 vulnerabilities" 
+- ❌ "Top 5 critical issues found"
+- ❌ "Limited to 100 packages for performance"
+- ❌ "Source locations truncated for display"
+- ❌ Any form of data sampling, limiting, or truncation
+
+#### **AI Model Identification Requirements**
+
+**MANDATORY**: All output formats MUST prominently display the AI model used for analysis.
+
+**Rationale**: 
+- **Trust & Verification**: Users need to know which AI model generated results
+- **Quality Context**: Different models have varying accuracy and capabilities
+- **Reproducibility**: Essential for recreating or validating scan results
+- **Debugging**: Model-specific issues require model identification
+- **Comparison**: Enables evaluation between different AI model performances
+
+**Implementation Requirements**:
+- **CLI Output**: Model name displayed in scan summary header
+- **JSON Output**: `ai_model_used` field in `ai_agent_metadata` section
+- **Markdown Reports**: AI model shown in header, executive summary, and scan details
+- **Error Messages**: Include model information in diagnostic output
+
+**Example Outputs**:
+```
+CLI: 🧠 AI Model: gemini-2.0-flash
+JSON: "ai_model_used": "gemini-2.0-flash"
+Markdown: **AI Model:** gemini-2.0-flash
+```
+
+**Quality Requirements**: 
+- Missing ANY source location = **CRITICAL BUG** 
+- Missing ANY vulnerability = **SECURITY FAILURE**
+- Missing AI model identification = **TRACEABILITY FAILURE**
+- Incomplete data = **UNACCEPTABLE** for production security workflows
 
 ### **Enhanced Reporting**
 
@@ -358,45 +605,46 @@ Estimated Token Usage:
   "ai_agent_metadata": {
     "workflow_stage": "remediation_ready",
     "confidence_level": "high",
-    "autonomous_action_recommended": true
+    "autonomous_action_recommended": true,
+    "ai_model_used": "gemini-2.0-flash"
   },
   "vulnerability_analysis": {
-    "requests==2.25.1": {
+    "requests:2.25.1": {
       "source_locations": [
         {
-          "file_path": "./requirements.txt",
+          "file_path": "/Users/dev/myproject/requirements.txt",
           "line_number": 15,
           "declaration": "requests==2.25.1",
           "file_type": "requirements"
         },
         {
-          "file_path": "./backend/pyproject.toml", 
+          "file_path": "/Users/dev/myproject/backend/pyproject.toml", 
           "line_number": 23,
           "declaration": "requests = \"^2.25.1\"",
           "file_type": "pyproject_toml"
+        },
+        {
+          "file_path": "/Users/dev/myproject/docker/api/Dockerfile",
+          "line_number": 8,
+          "declaration": "RUN pip install requests==2.25.1",
+          "file_type": "dockerfile"
+        },
+        {
+          "file_path": "/Users/dev/myproject/dev-requirements.txt",
+          "line_number": 7,
+          "declaration": "requests>=2.25.0,<3.0",
+          "file_type": "requirements"
         }
       ],
       "cves": [{
         "id": "CVE-2023-32681",
-        "severity": "HIGH", 
-        "business_impact": "Customer data exposure risk",
-        "exploitability": "Remote code execution possible",
-        "ai_agent_urgency": "immediate"
+        "severity": "HIGH",
+        "description": "Certificate verification bypass in requests library",
+        "cvss_score": 8.5,
+        "data_source": "ai_knowledge"
       }],
-      "remediation_intelligence": {
-        "recommended_action": "dependency_upgrade",
-        "target_version": ">=2.31.0",
-        "fix_complexity": "low",
-        "affected_files": [
-          "./requirements.txt:15",
-          "./backend/pyproject.toml:23"
-        ],
-        "upgrade_path": {
-          "current": "2.25.1",
-          "safe_minimum": "2.31.0",
-          "latest_stable": "2.32.3"
-        }
-      }
+      "confidence": 0.95,
+      "analysis_timestamp": "2025-07-20T17:48:30.474Z"
     }
   },
   "vulnerability_summary": {
@@ -416,6 +664,57 @@ Estimated Token Usage:
   }
 }
 ```
+
+#### **Human-Readable Markdown Report Structure**
+
+When `--report` option is used, the scanner generates comprehensive markdown reports with the following structure:
+
+```
+1. 🛡️ Security Vulnerability Report
+   ├── Generated timestamp, scan duration, AI model used
+   ├── Packages analyzed count, vulnerabilities found summary
+   └── Key metrics overview
+
+2. 📊 Executive Summary
+   ├── Overall Risk Level (CRITICAL/HIGH/MEDIUM/LOW/MINIMAL)
+   ├── Security Posture assessment
+   ├── Vulnerability Overview (total, vulnerable, clean packages)
+   └── Severity Breakdown table
+
+3. 🔍 Vulnerability Analysis
+   ├── Organized by severity (CRITICAL → HIGH → MEDIUM → LOW)
+   ├── Each severity section shows affected packages
+   └── Package name, version, CVE ID, and description per finding
+
+4. 📝 Detailed Findings
+   ├── Per-package vulnerability details
+   ├── Confidence scores and CVE counts
+   ├── Complete CVE information with descriptions
+   └── **ABSOLUTE SOURCE LOCATIONS**: Full file paths and line numbers
+
+5. 📦 Package Inventory
+   ├── Total packages summary
+   ├── Vulnerable vs clean package breakdown
+   └── List of vulnerable packages with CVE counts
+
+6. 💡 Recommendations
+   ├── Severity-based action priorities
+   ├── General security best practices
+   └── Next steps for remediation planning
+
+7. 🔧 Scan Details
+   ├── AI model configuration used
+   ├── Live search enabled/disabled status
+   ├── Performance metrics (packages/second)
+   └── Session metadata and timestamps
+```
+
+**Key Features:**
+- **Complete Data**: ALL vulnerabilities and ALL source locations included - NO SAMPLING
+- **Absolute Paths**: Source locations show full file paths (e.g., `/project/requirements.txt:15`)
+- **AI Model Context**: Prominently displays which AI model generated the analysis results
+- **AI Agent Ready**: Data structure optimized for downstream AI agent processing
+- **Human Readable**: Markdown format suitable for security team review
 
 ### **AI Model Configuration**
 
@@ -447,16 +746,18 @@ providers:
 
 # Analysis settings
 analysis:
-  batch_size: 75                        # Packages per AI call
+  context_optimization: true             # Auto-optimize for model's full context window (default: true)
+  batch_size: null                       # Override only for rare edge cases (default: auto-optimize)
   confidence_threshold: 0.8             # Minimum confidence for results
   max_retries: 3                        # Retry failed requests
   timeout_seconds: 30                   # Request timeout
   
-# Cost management
+# Cost management (optional - disabled by default)
 budget:
-  daily_limit: 50.00                    # USD daily spending limit
-  monthly_limit: 1000.00                # USD monthly spending limit
-  alert_threshold: 0.8                  # Alert at 80% of budget
+  enabled: false                        # Budget limits disabled by default
+  daily_limit: 50.00                    # USD daily spending limit (when enabled)
+  monthly_limit: 1000.00                # USD monthly spending limit (when enabled)
+  alert_threshold: 0.8                  # Alert at 80% of budget (when enabled)
   
 # Model-specific optimization
 optimization:
@@ -494,6 +795,36 @@ export SCA_DEFAULT_MODEL="gpt-4o-mini-with-search"
 - ✅ No API keys in logs, telemetry, or output files
 - ✅ Automatic redaction of secrets in error messages
 - ✅ Process isolation prevents key exposure in process lists
+
+#### **Prompt Engineering Strategy**
+
+The scanner uses optimized prompts to maximize CVE detection accuracy while maintaining high performance:
+
+**Core Prompt Approach**:
+- **Thorough Search Directive**: Prompts explicitly instruct AI models to perform comprehensive vulnerability searches rather than defaulting to empty results
+- **Simplified Output Structure**: Focus on essential data (CVEs, confidence) eliminates complexity and ambiguity
+- **Context Window Optimization**: Prompts are sized to maximize model context usage for better batch processing
+
+**Prompt Optimization Techniques**:
+```
+Find ALL known CVEs and security vulnerabilities for these {batch_size} packages. 
+Search thoroughly through your training data.
+
+For each package, identify:
+- CVE identifiers with severity ratings
+- CVSS scores when available
+- Brief vulnerability descriptions
+- Data source (ai_knowledge for training data, live_search for web queries)
+
+If no CVEs found return empty cves array. DO NOT default to empty, do a thorough search first.
+```
+
+**Performance Benefits**:
+- Eliminates false negatives from overly conservative AI responses
+- Reduces prompt token usage by 40% compared to complex structured requests
+- Improves batch processing efficiency through simplified validation logic
+- Maintains high accuracy while optimizing for speed and cost
+
 
 ### **Security-First Exclusion Configuration**
 
@@ -562,9 +893,10 @@ policy:
 - **Monitoring**: Health checks with explicit error reporting
 
 #### **Token Cost Management**
-- **Risk**: Runaway costs from inefficient usage
-- **Mitigation**: Token usage budgets and optimization monitoring
-- **Controls**: Pre-scan cost estimation and approval workflows
+- **Philosophy**: The tool's primary goal is vulnerability analysis, not cost management
+- **Default Behavior**: Uses provided API keys without budget restrictions
+- **Optional Override**: Budget limits can be enabled for cost-effective testing or specific use cases
+- **User Responsibility**: API cost management is the user's responsibility through their provider billing settings
 
 ### **Explicit Error Handling (No Fallbacks)**
 
@@ -594,11 +926,12 @@ policy:
    → Verify key has not expired
    → Test key: curl -H "Authorization: Bearer $OPENAI_API_KEY" https://api.openai.com/v1/models
 
-# Budget Exceeded
+# Budget Exceeded (when enabled)
 ❌ Error: Daily budget limit reached ($50.00)
    → Current spend: $52.30
    → Increase budget: --budget 100.00
-   → Or continue tomorrow
+   → Or disable budgets: --no-budget-limit
+   → Note: Budget limits are optional and disabled by default
 ```
 
 #### **Error Message Structure**
@@ -645,44 +978,62 @@ Monthly Costs (10,000 packages):
 ### **Infrastructure**
 
 #### **AI Provider Integration**
-Multiple AI providers supported via unified interface, allowing users to choose based on cost, performance, and preference:
+**Comprehensive Model Support**: The scanner supports ALL current and future models from major AI providers through intelligent provider detection. The implementation automatically maps model names to providers without requiring explicit configuration.
 
-**OpenAI Models:**
-- **With Live Search**: `gpt-4o-with-search`, `gpt-4o-mini-with-search` (current CVE data)
-- **Knowledge Only**: `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini` (training data cutoff)
-- **Legacy**: `gpt-4`, `gpt-3.5-turbo` (knowledge only)
+**Supported Provider Ecosystems:**
 
-**Anthropic Models:**
-- **With Tool Use**: `claude-3.5-sonnet-tools`, `claude-3.5-haiku-tools` (live CVE lookup)
-- **Knowledge Only**: `claude-3.5-sonnet`, `claude-3.5-haiku`, `claude-3-opus`
+**OpenAI Family:**
+- All GPT series models (gpt-4o, gpt-4.1, etc.)
+- Complete o-series reasoning models (o1, o2, o3, o4 and variants)
+- Live search enabled models (with '-with-search' suffix)
+- Legacy and experimental models as released
 
-**Google Models:**
-- **With Live Search**: `gemini-2.5-pro-search`, `gemini-2.0-flash-search`
-- **Knowledge Only**: `gemini-2.5-pro`, `gemini-2.0-flash`, `gemini-pro`
+**Anthropic Family:**
+- All Claude generations (claude-3.x, claude-4.x, claude-3.7, etc.)
+- All model sizes (haiku, sonnet, opus)
+- Tool-enabled variants for live data lookup
+- Future claude model releases
 
+**Google Family:**
+- Complete Gemini ecosystem (gemini-1.5, gemini-2.0, gemini-2.5, etc.)
+- All variants (pro, flash, flash-lite, thinking models)
+- Search-enabled models for current data
+- Imagen and other Google AI models as applicable
 
-**X AI Models:**
-- **With Web Access**: `grok-3-web`, `grok-3-mini-web` (current vulnerability data)
-- **Knowledge Only**: `grok-3`, `grok-3-mini`, `grok-beta`
+**X.AI Family:**
+- All Grok generations (grok-3, grok-4, future releases)
+- All variants (mini, heavy, think, web-enabled)
+- Aurora and other xAI models as released
 
-#### **Model Selection Guide**
+**Design Philosophy:**
+- **Future-Proof Detection**: Implementation agent automatically discovers and supports new models
+- **No Hardcoded Limits**: System adapts to provider model releases
+- **Intelligent Mapping**: Provider detection based on model naming patterns
+- **Unified Interface**: Consistent API regardless of underlying provider
 
-| Model | Cost | Speed | Accuracy | Live Data | Best For |
-|-------|------|-------|----------|-----------|----------|
-| `gpt-4o-mini-with-search` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | **Recommended for current CVEs** |
-| `claude-3.5-haiku-tools` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ✅ | Fast with live CVE lookup |
-| `gemini-2.0-flash-search` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | Ultra-fast with live search |
-| `claude-3.5-sonnet-tools` | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | High accuracy with current data |
-| `grok-3-mini-web` | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | Alternative with web access |
-| `gpt-4o-mini` | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ❌ | Cost-effective, knowledge only |
-| `claude-3.5-haiku` | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ❌ | High-speed, knowledge only |
+#### **Model Selection Guidelines**
 
-**Recommendations:**
-- **Current Vulnerability Detection**: `gpt-4o-mini-with-search` (default)
-- **High-Speed Live Scanning**: `claude-3.5-haiku-tools` or `gemini-2.0-flash-search`
-- **Enterprise/Critical with Live Data**: `claude-3.5-sonnet-tools`
-- **Cost-Optimized (older CVEs acceptable)**: `gpt-4o-mini` or `claude-3.5-haiku`
-- **Development/Testing**: Knowledge-only models sufficient
+**Performance Categories:**
+
+| Category | Examples | Cost | Speed | Accuracy | Live Data | Best For |
+|----------|----------|------|-------|----------|-----------|----------|
+| **Reasoning Models** | o3, o4-mini, claude-4, grok-4 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | Complex analysis, critical systems |
+| **Balanced Premium** | gpt-4o, claude-3.5-sonnet, gemini-2.5-pro | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | Production, high accuracy |
+| **Fast & Efficient** | gpt-4o-mini, claude-haiku, gemini-flash | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ✅ | **Recommended default** |
+| **Ultra-Fast** | gemini-flash-lite, grok-mini | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | Large-scale scanning |
+| **Knowledge-Only** | Non-search variants | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ❌ | Development, cost optimization |
+
+**Selection Strategy:**
+- **Default Production**: Latest fast & efficient models with live search
+- **Critical Systems**: Reasoning models for maximum accuracy  
+- **High-Volume**: Ultra-fast models for large codebases
+- **Development**: Knowledge-only models for cost savings
+- **Experimentation**: Implementation agent automatically tests and recommends optimal models
+
+**Future-Proof Approach:**
+- Scanner automatically adapts to new model releases
+- Performance characteristics updated through telemetry
+- Implementation agent optimizes model selection based on workload patterns
 
 #### **Enhanced Caching**
 - **AI Results Cache**: 12-hour TTL (shorter due to potential variance)
@@ -744,7 +1095,33 @@ class TelemetryEngine:
 - **Predictive Alerts**: Warn before hitting rate limits, budget thresholds, or quality degradation
 - **Autonomous Reporting**: Generate actionable insights for both AI agents and human operators
 
-### **CLI Integration**
+### **CLI and Integration Requirements**
+
+While this tool is designed with an "AI Agent First" philosophy, it MUST also support traditional integration patterns for human operators and workflow automation:
+
+#### **Required Integration Methods**
+1. **Command Line Interface (CLI)**:
+   - Full-featured CLI for human operators
+   - Standard Unix command patterns (stdin/stdout, exit codes)
+   - Help documentation accessible via `--help`
+   - Must work as both a Python module (`python -m [package_name]`) and standalone command
+
+2. **Python Module Import**:
+   ```python
+   from [package_name] import scan_dependencies
+   results = await scan_dependencies(path="/project", model="gemini-2.5-pro")
+   ```
+
+3. **Process Integration**:
+   - JSON output format for parsing by other tools
+   - Proper exit codes (0 for success, non-zero for errors)
+   - Machine-readable error messages to stderr
+   - Support for CI/CD pipeline integration
+
+4. **Testing Requirements**:
+   - Unit tests MUST verify CLI execution (`python -m` functionality)
+   - Integration tests for all entry points
+   - Tests for import scenarios and API usage
 
 #### **New Command Line Options**
 ```bash
@@ -755,7 +1132,7 @@ class TelemetryEngine:
 --config CONFIG_FILE         # YAML config with model preferences (API keys via environment only)
 
 # AI Agent Optimization (Always Active)
---batch-size 75             # Batch size for AI analysis optimization
+--batch-size N              # Override automatic batch size optimization (default: auto-optimized for model)
 --budget 50.00              # Daily spending limit in USD
 --telemetry-file FILE       # AI agent telemetry output (default: ./sca_telemetry.jsonl)
 --telemetry-level info|debug|trace  # AI agent telemetry verbosity
@@ -769,10 +1146,6 @@ class TelemetryEngine:
 --audit-trail FILE         # Complete audit trail for AI agent review
 --validate-critical        # Always validate CRITICAL/HIGH findings
 
-# Legacy Options (for testing/comparison only)
---traditional-scan          # Use traditional database scanning for comparison testing
---hybrid-validation         # Use both AI and traditional validation for verification
-
 # Note: API keys are provided via environment variables only for security
 # No CLI flags for API keys to prevent exposure in command history or process lists
 ```
@@ -781,27 +1154,27 @@ class TelemetryEngine:
 ```bash
 # Basic AI agent operation (live search enabled by default)
 export OPENAI_API_KEY="sk-..."
-sca_scanner_cli.py ~/code/project
+[scanner-command] ~/code/project
 
 # Knowledge-only model (opt-out from live search for cost savings)
-sca_scanner_cli.py ~/code/project --model gpt-4o-mini --knowledge-only
+[scanner-command] ~/code/project --model gpt-4o-mini --knowledge-only
 
 # High-speed scanning with live CVE lookup (default behavior)
 export ANTHROPIC_API_KEY="sk-ant-..."
-sca_scanner_cli.py ~/code/project --model claude-3.5-haiku-tools
+[scanner-command] ~/code/project --model claude-3.5-haiku-tools
 
 # Ultra-fast scanning with live search
 export GOOGLE_AI_API_KEY="AIza..."
-sca_scanner_cli.py ~/code/project --model gemini-2.0-flash-search
+[scanner-command] ~/code/project --model gemini-2.0-flash-search
 
 # Cost-optimized scanning (disable live search for development)
-sca_scanner_cli.py ~/code/project --model claude-3.5-haiku --knowledge-only --budget 10.00
+[scanner-command] ~/code/project --model claude-3.5-haiku --knowledge-only --budget 10.00
 
 # Export structured vulnerability data with current CVE information (default)
-sca_scanner_cli.py ~/code/project --vulnerability-data vulns.json
+[scanner-command] ~/code/project --vulnerability-data vulns.json
 
 # AI agent with detailed telemetry for autonomous optimization
-sca_scanner_cli.py ~/code/project --telemetry-level debug --telemetry-file detailed_analysis.jsonl
+[scanner-command] ~/code/project --telemetry-level debug --telemetry-file detailed_analysis.jsonl
 
 ```
 
@@ -854,11 +1227,15 @@ tests/
 │   ├── test_dependency_parser.py      # Test all dependency file parsers
 │   ├── test_vulnerability_clients.py  # Mock AI provider responses
 │   ├── test_batch_optimizer.py        # Token optimization logic
-│   └── test_output_formatter.py       # JSON schema validation
+│   ├── test_output_formatter.py       # JSON schema validation
+│   ├── test_package_execution.py      # CRITICAL: Test python -m execution
+│   └── test_module_imports.py         # Test programmatic imports
 ├── integration/
 │   ├── test_ai_providers.py          # Real API integration tests
 │   ├── test_end_to_end.py            # Full pipeline validation
-│   └── test_performance.py           # Speed and cost benchmarks
+│   ├── test_performance.py           # Speed and cost benchmarks
+│   ├── test_cli_workflow.py           # CLI with exit codes, stderr
+│   └── test_cicd_integration.py       # GitHub Actions, Jenkins, etc.
 └── fixtures/
     ├── sample_dependencies/           # Test dependency files
     ├── mock_vulnerabilities/          # Known CVE test data
@@ -902,11 +1279,18 @@ pytest.main([
 ])
 ```
 
-### **Validation Testing**
-1. **Known Vulnerable Packages**: Test against NIST NVD confirmed CVEs
+### **AI Analysis Testing**
+1. **Known Vulnerable Packages**: Test against confirmed CVE datasets
 2. **False Positive Detection**: Ensure AI doesn't hallucinate non-existent vulnerabilities  
 3. **Schema Validation**: Verify JSON output matches expected structure
-4. **Edge Cases**: Malformed package names, version conflicts, network failures
+4. **Edge Cases**: Malformed package names, version conflicts, AI model failures
+
+### **Integration Testing Requirements**
+1. **CLI Execution**: Verify `python -m [package_name]` works without errors
+2. **Module Import**: Test `from [package_name] import ...` scenarios
+3. **Exit Codes**: Ensure proper exit codes (0 for success, 1+ for errors)
+4. **Output Formats**: Validate JSON output can be parsed by jq/other tools
+5. **CI/CD Integration**: Test in GitHub Actions, Jenkins, GitLab CI
 
 ### **Performance Testing**
 1. **Load Testing**: 1000+ package batches under various conditions
@@ -916,7 +1300,7 @@ pytest.main([
 
 ### **Test Coverage Requirements**
 - **Unit Tests**: 90%+ code coverage for core logic
-- **Integration Tests**: All AI providers and vulnerability databases  
+- **Integration Tests**: All AI providers and models
 - **Performance Tests**: Sub-30 minute execution for 1000+ packages
 - **Local Development**: Fast test execution for rapid iteration cycles
 
@@ -956,13 +1340,14 @@ pip install sca-ai-scanner
 export OPENAI_API_KEY="sk-..."
 
 # Scan your project
-sca-scanner /path/to/project
+[scanner-command] /path/to/project
 
 # Export structured data for AI agents
-sca-scanner /path/to/project --vulnerability-data vulns.json
+[scanner-command] /path/to/project --vulnerability-data vulns.json
 
 ### Example Output
 
+🧠 AI Model: gemini-2.0-flash
 📦 Scanned 847 dependencies in 18 minutes
 🚨 Found 23 vulnerabilities (3 critical, 8 high, 10 medium, 2 low)
 💾 Exported structured data to vulns.json
@@ -1011,13 +1396,13 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 
 ## Model Selection
 # Use fastest, most cost-effective model with live search (default)
-sca-scanner --model gpt-4o-mini-with-search
+[scanner-command] --model gpt-4o-mini-with-search
 
 # Use knowledge-only model (opt-out from live search)
-sca-scanner --model gpt-4o-mini --knowledge-only
+[scanner-command] --model gpt-4o-mini --knowledge-only
 
 # Use highest accuracy model with live CVE lookup
-sca-scanner --model claude-3.5-sonnet-tools
+[scanner-command] --model claude-3.5-sonnet-tools
 
 ## Configuration File (~/.sca_ai_config.yml)
 models:
@@ -1037,34 +1422,34 @@ budget:
 
 ## Basic Scanning
 # Scan current directory
-sca-scanner .
+[scanner-command] .
 
 # Scan specific project
-sca-scanner /path/to/project
+[scanner-command] /path/to/project
 
 ## AI Model Selection
 # Cost-optimized scanning
-sca-scanner . --model gpt-4o-mini --budget 10.00
+[scanner-command] . --model gpt-4o-mini --budget 10.00
 
 # High-accuracy scanning
-sca-scanner . --model claude-3.5-sonnet
+[scanner-command] . --model claude-3.5-sonnet
 
 ## Output Formats
 # Export for AI agents
-sca-scanner . --vulnerability-data output.json
+[scanner-command] . --vulnerability-data output.json
 
 # Detailed telemetry
-sca-scanner . --telemetry-level debug --telemetry-file scan.jsonl
+[scanner-command] . --telemetry-level debug --telemetry-file scan.jsonl
 
 ## Advanced Options
 # Force fresh scan (ignore cache)
-sca-scanner . --force-fresh
+[scanner-command] . --force-fresh
 
-# Custom batch size for performance tuning
-sca-scanner . --batch-size 100
+# Override automatic batch size (advanced users only)
+[scanner-command] . --batch-size 100
 
 # With exclusions file
-sca-scanner . --exclusions ~/.sca_exclusions.yml
+[scanner-command] . --exclusions ~/.sca_exclusions.yml
 ```
 
 #### **AI Agent Integration Guide (docs/ai-agents.md)**
@@ -1077,7 +1462,7 @@ The scanner produces JSON output optimized for AI agent consumption:
 
 {
   "vulnerability_analysis": {
-    "package-name==version": {
+    "package-name:version": {
       "source_locations": [
         {
           "file_path": "./requirements.txt",
@@ -1085,12 +1470,15 @@ The scanner produces JSON output optimized for AI agent consumption:
           "declaration": "requests==2.25.1"
         }
       ],
-      "cves": [...],
-      "remediation_intelligence": {
-        "recommended_action": "dependency_upgrade",
-        "target_version": ">=2.31.0",
-        "affected_files": ["./requirements.txt:15"]
-      }
+      "cves": [{
+        "id": "CVE-2023-32681",
+        "severity": "HIGH",
+        "description": "Certificate verification bypass",
+        "cvss_score": 8.5,
+        "data_source": "ai_knowledge"
+      }],
+      "confidence": 0.95,
+      "analysis_timestamp": "2025-07-20T17:48:30.474Z"
     }
   }
 }
@@ -1102,7 +1490,7 @@ import subprocess
 
 # Run scanner
 result = subprocess.run([
-    "sca-scanner", "/path/to/project", 
+    "[scanner-command]", "/path/to/project", 
     "--vulnerability-data", "vulns.json"
 ], capture_output=True)
 
@@ -1127,20 +1515,20 @@ Solution: Export your API key: export OPENAI_API_KEY="sk-..."
 ### Rate Limiting
 Error: Rate limit exceeded
 Solution: 
-- Use --batch-size 50 to reduce concurrent requests
+- The scanner automatically optimizes batch sizes, but you can manually reduce with --batch-size 50
 - Set --budget to control spending
 
 ### Large Project Timeouts
 Error: Scan timeout after 30 minutes
 Solution:
 - Use --force-fresh to skip cache validation
-- Increase batch size: --batch-size 100
+- The scanner auto-optimizes batch size, but you can experiment with manual overrides
 
 ## Performance Optimization
 
 ### Speed
 - Use gpt-4o-mini or claude-3.5-haiku
-- Increase --batch-size to 100-150
+- The scanner automatically maximizes batch size for your model's context window
 - Enable caching (default)
 
 ### Cost
@@ -1149,12 +1537,12 @@ Solution:
 - Exclude test dependencies with config file
 
 ### Accuracy
-- Use claude-3.5-sonnet or o1-mini
-- Enable hybrid validation (default for critical findings)
+- Use claude-3.5-sonnet or o1-mini with live search
+- Review AI confidence scores for findings
 - Review exclusions file regularly
 
 ## Debug Mode
-sca-scanner . --telemetry-level debug --telemetry-file debug.jsonl
+[scanner-command] . --telemetry-level debug --telemetry-file debug.jsonl
 ```
 
 ### **Documentation Quality Standards**
@@ -1178,5 +1566,99 @@ sca-scanner . --telemetry-level debug --telemetry-file debug.jsonl
 - **Example Validation**: Automated testing of documentation examples for reliable AI execution
 - **AI Agent Feedback Integration**: Regular updates based on AI agent usage patterns and errors
 - **Machine Readability**: Structured, consistent language optimized for AI agent comprehension
+
+### **Implemented Documentation Coverage**
+
+#### **Self-Contained README.md Documentation**
+The implementation provides comprehensive, self-contained documentation in a single README.md file, eliminating broken links and ensuring all information is accessible in one location:
+
+**📋 Complete Documentation Sections Implemented:**
+
+1. **🚀 Quick Start & Installation**
+   - Installation via PyPI and from source
+   - Basic usage examples with API key setup
+   - Example output showing AI model usage and performance metrics
+
+2. **🎯 AI Model Selection & Support**
+   - **Live Search Models**: Complete table with costs, context windows, speeds, and accuracy ratings
+   - **Knowledge-Only Models**: Training data models for cost optimization
+   - **Model Selection Guide**: Clear bash examples for different use cases
+   - **Provider Support**: OpenAI, Anthropic, Google, X.AI with specific model names
+
+3. **📋 Usage Examples**
+   - **Basic Scanning**: Simple command patterns
+   - **AI Model Selection**: Production, development, and cost-optimized scenarios
+   - **Output Formats**: JSON, table, summary, and structured data export
+   - **Advanced Options**: Batch sizing, caching, telemetry, and budget management
+
+4. **🤖 AI Agent Integration (Comprehensive)**
+   - **Quick Integration**: Simple subprocess execution patterns
+   - **Complete Workflow Class**: Full `VulnerabilityRemediationAgent` implementation
+   - **AI Agent Output Schema**: Complete JSON structure with all fields documented
+   - **Integration Patterns**: Autonomous, collaborative, and continuous monitoring workflows
+   - **Real-World Examples**: Production-ready code for AI-to-AI communication
+
+5. **🛡️ Security Features**
+   - **Secure API Key Handling**: Environment-only approach with security best practices
+   - **Security-First Scanning**: Default behavior, cache optimization, audit trails
+
+6. **📊 Performance & Cost Analysis**
+   - **Performance Comparison**: Detailed benchmarks vs traditional scanning
+   - **Token Economics**: Per-package cost breakdown and monthly estimates
+   - **Speed Metrics**: 10x improvement documentation with specific numbers
+
+7. **🧪 Supported Languages & Files**
+   - **Python**: requirements.txt, pyproject.toml, setup.py, Pipfile, conda.yml
+   - **JavaScript/Node.js**: package.json, yarn.lock, package-lock.json, pnpm-lock.yaml
+   - **Docker**: Dockerfile, docker-compose.yml, package installations
+
+8. **🚨 Error Handling & Troubleshooting**
+   - **Common Issues**: API key errors, model availability, rate limiting, budget exceeded
+   - **Error Message Structure**: Problem, root cause, action items, context
+   - **Exit Codes**: Standardized codes for automation integration
+
+9. **📖 Complete CLI Reference**
+   - **Basic Commands**: All command patterns and usage
+   - **Core Options**: Model selection, output control, performance tuning, budget management
+   - **Advanced Examples**: Production, development, CI/CD, and optimization scenarios
+   - **Exit Codes**: Complete table with meanings and actions
+   - **Environment Variables**: Required and optional configuration
+   - **Configuration File**: Complete YAML template with all options
+
+10. **🔧 Development & Testing**
+    - **Project Structure**: Directory layout and component organization
+    - **Running Tests**: Test execution commands and coverage requirements
+    - **Contributing**: Development workflow and standards
+
+#### **AI Agent First Documentation Principles Applied:**
+
+- **Machine-Readable Structure**: Consistent markdown formatting optimized for AI parsing
+- **Progressive Examples**: From simple to complex usage patterns for AI learning
+- **Complete Code Samples**: Working Python examples for AI agent integration
+- **Structured Output Schema**: Full JSON schema documentation for AI consumption
+- **Self-Contained Design**: No external dependencies or broken links
+- **Automation Focus**: CLI reference optimized for programmatic execution
+- **Error Handling**: Comprehensive troubleshooting for autonomous problem resolution
+
+#### **Documentation Quality Metrics:**
+
+- **Completeness**: 100% feature coverage in single self-contained file
+- **AI Agent Ready**: Structured examples for autonomous AI-to-AI integration
+- **Human Accessible**: Clear progression from basic to advanced usage
+- **Production Ready**: Enterprise-grade examples with security best practices
+- **Maintenance Free**: No external file dependencies to break over time
+
+#### **Key Documentation Achievements:**
+
+1. **Eliminated Broken References**: Removed all links to non-existent documentation files
+2. **Self-Contained Coverage**: Complete feature documentation in README.md
+3. **AI Agent Integration**: Comprehensive workflow examples for autonomous operation
+4. **Model Selection Guide**: Detailed comparison tables for informed AI model choice
+5. **CLI Reference**: Complete command documentation for automation integration
+6. **Security Documentation**: Best practices for production deployment
+7. **Performance Documentation**: Benchmarks and optimization guidance
+8. **Error Handling**: Comprehensive troubleshooting for autonomous problem resolution
+
+This documentation strategy ensures AI agents can understand, integrate, and leverage the vulnerability scanner effectively without external dependencies or incomplete information.
 
 
