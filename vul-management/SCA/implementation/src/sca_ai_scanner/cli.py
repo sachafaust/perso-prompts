@@ -49,17 +49,12 @@ console = Console()
 @click.option(
     '--model', 
     default='gpt-4o-mini-with-search',
-    help='AI model for analysis (default: gpt-4o-mini-with-search)'
+    help='AI model for analysis - supports ALL OpenAI, Anthropic, Google, X.AI models (default: gpt-4o-mini-with-search)'
 )
 @click.option(
     '--knowledge-only',
     is_flag=True,
     help='Disable live search, use training data only'
-)
-@click.option(
-    '--provider',
-    type=click.Choice(['openai', 'anthropic', 'google', 'xai'], case_sensitive=False),
-    help='AI provider (auto-detected from model if not specified)'
 )
 @click.option(
     '--config',
@@ -141,7 +136,6 @@ def main(
     target_path: Path,
     model: str,
     knowledge_only: bool,
-    provider: Optional[str],
     config: Optional[Path],
     batch_size: int,
     budget: float,
@@ -177,7 +171,6 @@ def main(
             target_path=target_path,
             model=model,
             knowledge_only=knowledge_only,
-            provider=provider,
             config=config,
             batch_size=batch_size,
             budget=budget,
@@ -333,8 +326,13 @@ def create_scan_config(cli_args: Dict[str, Any], config_manager: ConfigManager) 
 def validate_environment(config: ScanConfig):
     """Validate environment and API keys."""
     
-    # Detect provider from model
-    if config.model.startswith('gpt-') or config.model.startswith('o1-'):
+    # Detect provider from model (comprehensive 2025 coverage)
+    if (config.model.startswith('gpt-') or 
+        config.model.startswith('o1') or config.model == 'o1' or
+        config.model.startswith('o2') or config.model == 'o2' or
+        config.model.startswith('o3') or config.model == 'o3' or
+        config.model.startswith('o4') or config.model == 'o4' or
+        config.model.startswith('chat-') or config.model.startswith('text-')):
         provider = 'openai'
         required_env = 'OPENAI_API_KEY'
     elif config.model.startswith('claude-'):
@@ -343,7 +341,7 @@ def validate_environment(config: ScanConfig):
     elif config.model.startswith('gemini-'):
         provider = 'google'
         required_env = 'GOOGLE_AI_API_KEY'
-    elif config.model.startswith('grok-'):
+    elif config.model.startswith('grok-') or config.model == 'grok':
         provider = 'xai'
         required_env = 'XAI_API_KEY'
     else:
@@ -612,7 +610,12 @@ def print_table_results(results: VulnerabilityResults, duration: float):
 def _get_auth_help_message(model: str) -> str:
     """Get authentication help message for the model."""
     
-    if model.startswith('gpt-') or model.startswith('o1-'):
+    if (model.startswith('gpt-') or 
+        model.startswith('o1') or model == 'o1' or
+        model.startswith('o2') or model == 'o2' or
+        model.startswith('o3') or model == 'o3' or
+        model.startswith('o4') or model == 'o4' or
+        model.startswith('chat-') or model.startswith('text-')):
         return """
 💡 To fix this:
    export OPENAI_API_KEY="sk-..."
@@ -648,23 +651,30 @@ def _get_model_help_message() -> str:
     """Get help message for model selection."""
     
     return """
-💡 Supported models:
+💡 Universal Model Support - ALL current AI models supported:
 
-OpenAI (with live search):
-   --model gpt-4o-mini-with-search    (recommended, fast + current data)
-   --model gpt-4o-with-search         (higher accuracy + current data)
-   
-Anthropic (with tools):
-   --model claude-3.5-haiku-tools     (fast + live CVE lookup)
-   --model claude-3.5-sonnet-tools    (high accuracy + live data)
+🎯 Reasoning Models (2025 latest):
+   --model o3                         (OpenAI's most advanced reasoning)
+   --model o4-mini                    (efficient reasoning model)
+   --model claude-4                   (Anthropic's latest)
+   --model grok-4                     (X.AI's most capable)
 
-Google (with search):
-   --model gemini-2.0-flash-search    (ultra-fast + live search)
-   --model gemini-2.5-pro-search      (balanced + current data)
+⚡ Fast & Efficient (recommended):
+   --model gpt-4o-mini               (balanced performance, cost-effective)
+   --model gemini-2.5-flash          (ultra-fast with thinking)
+   --model claude-haiku              (high-speed processing)
 
-Knowledge-only models (add --knowledge-only):
-   --model gpt-4o-mini                (cost-effective)
-   --model claude-3.5-haiku           (high-speed)"""
+🚀 Ultra-Fast (large-scale):
+   --model gemini-2.5-flash-lite     (lowest latency)
+   --model grok-3-mini               (efficient alternative)
+
+🎯 Premium (maximum accuracy):
+   --model gpt-4.1                   (latest GPT model)
+   --model claude-3.7-sonnet         (hybrid reasoning)
+   --model gemini-2.5-pro            (thinking model)
+
+🔍 Auto-Detection: Simply specify any model name - provider detected automatically
+📋 Full Support: ALL OpenAI, Anthropic, Google, and X.AI models work out-of-the-box"""
 
 
 if __name__ == '__main__':

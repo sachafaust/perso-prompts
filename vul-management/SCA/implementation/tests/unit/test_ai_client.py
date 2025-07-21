@@ -51,15 +51,26 @@ class TestAIVulnerabilityClient:
     def test_provider_detection(self, mock_env_vars):
         """Test automatic provider detection from model name."""
         test_cases = [
+            # OpenAI Models (comprehensive coverage)
             ("gpt-4o-mini", "openai"),
-            ("gpt-4o-with-search", "openai"),
+            ("gpt-4.1", "openai"),
+            ("o1", "openai"),
             ("o1-mini", "openai"),
+            ("o3", "openai"),
+            ("o3-pro", "openai"),
+            ("o4-mini", "openai"),
+            # Anthropic Models  
             ("claude-3.5-sonnet", "anthropic"),
-            ("claude-3.5-haiku-tools", "anthropic"),
+            ("claude-4", "anthropic"),
+            ("claude-3.7-sonnet", "anthropic"),
+            # Google Models
             ("gemini-2.0-flash", "google"),
-            ("gemini-2.5-pro-search", "google"),
-            ("grok-3-mini", "xai"),
-            ("grok-3-web", "xai")
+            ("gemini-2.5-pro", "google"),
+            ("gemini-2.5-flash-lite", "google"),
+            # X.AI Models
+            ("grok-3", "xai"),
+            ("grok-4", "xai"),
+            ("grok", "xai")
         ]
         
         for model, expected_provider in test_cases:

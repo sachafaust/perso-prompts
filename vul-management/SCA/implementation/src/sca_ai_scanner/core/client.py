@@ -41,12 +41,32 @@ class AIVulnerabilityClient:
         "grok-3-web", "grok-3-mini-web"
     }
     
+    # Comprehensive provider mapping for all current AI models (2025)
     PROVIDER_MAPPING = {
-        "gpt-": "openai",
-        "o1-": "openai", 
-        "claude-": "anthropic",
-        "gemini-": "google",
-        "grok-": "xai"
+        # OpenAI Models
+        "gpt-": "openai",          # GPT series (gpt-4o, gpt-4.1, etc.)
+        "o1": "openai",            # o1 (exact match)
+        "o1-": "openai",           # o1 series (o1-mini, o1-preview)
+        "o2": "openai",            # o2 (exact match)
+        "o2-": "openai",           # o2 series
+        "o3": "openai",            # o3 (exact match)  
+        "o3-": "openai",           # o3 series (o3-pro)
+        "o4": "openai",            # o4 (exact match)
+        "o4-": "openai",           # o4 series (o4-mini)
+        
+        # Anthropic Claude Models
+        "claude-": "anthropic",    # All Claude series (claude-3.5, claude-4, etc.)
+        
+        # Google Gemini Models  
+        "gemini-": "google",       # All Gemini series (gemini-2.0, gemini-2.5, etc.)
+        
+        # X.AI Grok Models
+        "grok-": "xai",           # All Grok series (grok-3, grok-4, etc.)
+        "grok": "xai",            # grok (exact match)
+        
+        # Additional model patterns that may emerge
+        "chat-": "openai",         # Potential future OpenAI naming
+        "text-": "openai",         # Legacy/future OpenAI text models
     }
     
     def __init__(self, config: ScanConfig):
@@ -59,6 +79,7 @@ class AIVulnerabilityClient:
         # Determine provider and capabilities
         self.provider = self._detect_provider(config.model)
         self.supports_live_search = self._check_live_search_support(config.model)
+        self.is_reasoning_model = self._is_reasoning_model(config.model)
         
         # Configure API authentication
         self.api_keys = self._load_api_keys()
@@ -73,11 +94,16 @@ class AIVulnerabilityClient:
         
         logger.info(
             f"Initialized AI client: model={config.model}, provider={self.provider}, "
-            f"live_search={self.supports_live_search}"
+            f"live_search={self.supports_live_search}, reasoning={self.is_reasoning_model}"
         )
     
     def _detect_provider(self, model: str) -> str:
         """Auto-detect AI provider from model name."""
+        # Check for exact matches first (like 'o1')
+        if model in self.PROVIDER_MAPPING:
+            return self.PROVIDER_MAPPING[model]
+        
+        # Then check prefix matches
         for prefix, provider in self.PROVIDER_MAPPING.items():
             if model.startswith(prefix):
                 return provider
@@ -86,6 +112,12 @@ class AIVulnerabilityClient:
     def _check_live_search_support(self, model: str) -> bool:
         """Check if model supports live web search capabilities."""
         return any(live_model in model for live_model in self.LIVE_SEARCH_MODELS)
+    
+    def _is_reasoning_model(self, model: str) -> bool:
+        """Check if model is a reasoning model that uses max_completion_tokens."""
+        # OpenAI reasoning models (o-series) require max_completion_tokens instead of max_tokens
+        reasoning_models = ['o1', 'o2', 'o3', 'o4']
+        return any(model.startswith(prefix) or model == prefix for prefix in reasoning_models)
     
     def _load_api_keys(self) -> Dict[str, Optional[str]]:
         """Load API keys from environment variables only (security requirement)."""
@@ -351,12 +383,22 @@ class AIVulnerabilityClient:
     
     async def _call_openai_with_search(self, prompt: str) -> Dict[str, Any]:
         """Call OpenAI API with web search capabilities."""
+        # Use max_completion_tokens for reasoning models (o1, o2, o3, o4), max_tokens for others
+        token_param = "max_completion_tokens" if self.is_reasoning_model else "max_tokens"
+        
         payload = {
             "model": self.config.model,
             "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.1,
-            "max_tokens": 2048,
-            "tools": [
+            token_param: 2048,
+        }
+        
+        # Only add temperature for non-reasoning models
+        if not self.is_reasoning_model:
+            payload["temperature"] = 0.1
+        
+        # Add tools for search-enabled models
+        if "with-search" in self.config.model:
+            payload["tools"] = [
                 {
                     "type": "function",
                     "function": {
@@ -371,19 +413,24 @@ class AIVulnerabilityClient:
                         }
                     }
                 }
-            ] if "with-search" in self.config.model else None
-        }
+            ]
         
         return await self._make_api_request(f"{self.base_url}/chat/completions", payload)
     
     async def _call_openai_standard(self, prompt: str) -> Dict[str, Any]:
         """Call OpenAI API without web search."""
+        # Use max_completion_tokens for reasoning models (o1, o2, o3, o4), max_tokens for others
+        token_param = "max_completion_tokens" if self.is_reasoning_model else "max_tokens"
+        
         payload = {
             "model": self.config.model,
             "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.1,
-            "max_tokens": 2048
+            token_param: 2048
         }
+        
+        # Only add temperature for non-reasoning models
+        if not self.is_reasoning_model:
+            payload["temperature"] = 0.1
         
         return await self._make_api_request(f"{self.base_url}/chat/completions", payload)
     

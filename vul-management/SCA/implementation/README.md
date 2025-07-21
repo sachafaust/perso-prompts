@@ -97,39 +97,70 @@ providers:
 
 ## 🎯 AI Model Selection & Support
 
-### Live Search Models (Real-time CVE Data)
+### Comprehensive Provider Support
 
-| Model | Provider | Context | Cost/1M | Speed | Accuracy | Best For |
-|-------|----------|---------|---------|-------|----------|----------|
-| `gpt-4o-mini` | OpenAI | 128K | $0.15 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | **Recommended for production** |
-| `gemini-2.0-flash` | Google | 1M | $0.075 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | **Ultra-fast + lowest cost** |
-| `claude-3.5-haiku` | Anthropic | 200K | $0.25 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Balanced performance |
-| `claude-3.5-sonnet` | Anthropic | 200K | $3.00 | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Maximum accuracy |
-| `grok-2-mini` | X.AI | 128K | $0.20 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Alternative option |
+**Universal Model Support**: The scanner automatically detects and supports ALL current and future models from major AI providers without configuration. Simply specify any model name - the system intelligently maps it to the correct provider.
 
-### Knowledge-Only Models (Training Data Only)
+### Supported AI Ecosystems
 
-| Model | Provider | Context | Cost/1M | Speed | Accuracy | Use Case |
-|-------|----------|---------|---------|-------|----------|----------|
-| `gpt-4o-mini` | OpenAI | 128K | $0.15 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Cost-effective scanning |
-| `claude-3.5-haiku` | Anthropic | 200K | $0.25 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Development/testing |
-| `gemini-1.5-flash` | Google | 1M | $0.075 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Largest context window |
+#### OpenAI Family ✅
+- **Latest Models**: o3, o4-mini, gpt-4.1 (2025 releases)
+- **Reasoning Series**: o1, o2, o3, o4 and all variants (mini, pro, etc.)
+- **GPT Series**: gpt-4o, gpt-4o-mini, all search-enabled variants
+- **Auto-Detection**: All current and future OpenAI models supported
 
-### Model Selection Guide
+#### Anthropic Family ✅  
+- **Latest Models**: claude-4, claude-3.7-sonnet (2025 releases)
+- **All Generations**: claude-3.x, claude-4.x series
+- **All Sizes**: haiku, sonnet, opus variants
+- **Tool Support**: Models with web search and tool use capabilities
+
+#### Google Family ✅
+- **Latest Models**: gemini-2.5-pro, gemini-2.5-flash (thinking models)
+- **Complete Ecosystem**: gemini-1.5, gemini-2.0, gemini-2.5 series
+- **All Variants**: pro, flash, flash-lite, thinking-enabled models
+- **Search Integration**: Live search capabilities for current data
+
+#### X.AI Family ✅
+- **Latest Models**: grok-4, grok-3 (2025 releases)  
+- **All Variants**: mini, heavy, web-enabled, thinking models
+- **Aurora Support**: Image generation and multimodal capabilities
+- **Auto-Mapping**: Comprehensive grok model detection
+
+### Performance Categories
+
+| Category | Examples | Use Case | Performance Profile |
+|----------|----------|----------|-------------------|
+| **🧠 Reasoning Models** | `o3`, `o4-mini`, `claude-4`, `grok-4` | Critical analysis, complex reasoning | ⭐⭐⭐⭐⭐ Accuracy, ⭐⭐⭐ Speed |
+| **⚡ Fast & Efficient** | `gpt-4o-mini`, `claude-haiku`, `gemini-flash` | **Default choice** | ⭐⭐⭐⭐ Accuracy, ⭐⭐⭐⭐⭐ Speed |
+| **🚀 Ultra-Fast** | `gemini-flash-lite`, `grok-mini` | Large-scale scanning | ⭐⭐⭐ Accuracy, ⭐⭐⭐⭐⭐ Speed |
+| **🎯 Premium** | `gpt-4o`, `claude-sonnet`, `gemini-pro` | Production systems | ⭐⭐⭐⭐⭐ Accuracy, ⭐⭐⭐⭐ Speed |
+
+### Quick Start Examples
 
 ```bash
-# Production: Balanced cost/accuracy/speed
+# Latest reasoning model (highest accuracy)
+sca-scanner . --model o3
+
+# Fast & efficient (recommended default)  
 sca-scanner . --model gpt-4o-mini
 
-# Ultra-fast: Largest batches, lowest cost  
-sca-scanner . --model gemini-2.0-flash
+# Ultra-fast large-scale scanning
+sca-scanner . --model gemini-2.5-flash-lite
 
-# Maximum accuracy: Critical systems
-sca-scanner . --model claude-3.5-sonnet
+# Maximum accuracy for critical systems
+sca-scanner . --model claude-4
 
-# Development: Fast iteration
-sca-scanner . --model claude-3.5-haiku --knowledge-only
+# Cost-optimized development
+sca-scanner . --model grok-3-mini --knowledge-only
 ```
+
+### Auto-Detection Features
+
+- **🔍 Intelligent Provider Mapping**: Automatically detects provider from model name
+- **🚀 Future-Proof**: Supports new models as they're released
+- **⚙️ Zero Configuration**: No provider parameters needed
+- **🔄 Unified Interface**: Consistent experience across all providers
 
 ## 📋 Usage Examples
 
