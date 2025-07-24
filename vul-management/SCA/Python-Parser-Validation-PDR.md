@@ -19,7 +19,7 @@
 
 ## Overview
 
-This PDR defines the Python-specific implementation for our parser validation system, focusing on validating our Python dependency parsers against established open source test suites. This document extends the main [WIP-Parser-Validation-PDR.md](./WIP-Parser-Validation-PDR.md) with Python-specific requirements and implementation details.
+This PDR defines the Python-specific implementation for our parser validation system, focusing on validating our Python dependency parsers against established open source test suites. This document extends the main [Parser-Validation-PDR.md](./Parser-Validation-PDR.md) with Python-specific requirements and implementation details.
 
 ## Background
 

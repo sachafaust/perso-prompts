@@ -534,7 +534,7 @@ The 2 "failing" tests are invalid artifacts (test documentation text and embedde
 
 This main PDR provides the overall framework and approach. Language-specific implementation details are documented in separate sub-PDRs:
 
-- **Python**: [WIP-Python-Parser-Validation-PDR.md](./WIP-Python-Parser-Validation-PDR.md) - pip-tools, poetry, setuptools integration
+- **Python**: [Python-Parser-Validation-PDR.md](./Python-Parser-Validation-PDR.md) - pip-tools, poetry, setuptools integration
 - **JavaScript**: *Coming next* - npm, yarn, pnpm integration  
 - **Other Languages**: *Future expansion* - cargo, bundler, composer, etc.
 
