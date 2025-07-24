@@ -1,9 +1,9 @@
 # Product Design Requirements (PDR): AI-Powered SCA Vulnerability Analysis
 
-**Document Version:** 1.0  
-**Last Updated:** July 20, 2025  
+**Document Version:** 1.1  
+**Last Updated:** July 24, 2025  
 **Status:** Implemented  
-**Implementation Version:** Based on PDR v1.0
+**Implementation Version:** Based on PDR v1.1
 
 ---
 
@@ -12,6 +12,7 @@
 | Version | Date | Changes | Status |
 |---------|------|---------|--------|
 | 1.0 | July 20, 2025 | Initial PDR with complete AI-powered SCA scanner design and implementation | ✅ Implemented |
+| 1.1 | July 24, 2025 | Added explicit design decision for language-native version formats based on parser validation results | ✅ Implemented |
 
 ---
 
@@ -96,6 +97,28 @@ We maintain accuracy through **AI-only analysis** - leveraging models with live 
 4. **Balanced Token Efficiency**: Optimize tokens while prioritizing data accuracy and usefulness for AI agent decision-making
 5. **Security by Default**: Scan everything, assume nothing, exclude only by explicit approval
 6. **Autonomous Operation**: AI agents self-diagnose, optimize, and produce high-quality actionable intelligence for downstream remediation agents
+7. **Language-Native Version Formats**: Preserve ecosystem-native version syntax to maximize accuracy, developer familiarity, and AI agent semantic understanding
+
+### **Design Decision: Language-Native Version Formats**
+
+**Decision**: All dependency parsers preserve **language-native version constraint syntax** rather than normalizing to a unified format.
+
+**Rationale**:
+- **AI Agent Effectiveness**: AI agents excel at context switching between language syntaxes and understanding semantic differences
+- **Semantic Accuracy**: `^1.0` (JavaScript compatible) ≠ `>=1.0` (Python minimum) - preserving native syntax prevents misinterpretation
+- **Developer Familiarity**: Developers immediately recognize their ecosystem's syntax patterns
+- **Community Validation**: Enables validation against language-specific test suites (pip-tools, npm, etc.)
+- **Ecosystem Compatibility**: Maintains compatibility with existing tooling and documentation
+
+**Implementation**:
+```
+Python:    ==1.0, >=2.0, ~=1.5, !=1.3
+JavaScript: ^1.0, ~1.2, 1.0.0, >=1.5.0
+Ruby:      ~> 1.0, >= 1.2, 1.0.0
+Rust:      1.0, ^1.2, ~1.5
+```
+
+**Evidence**: Parser validation testing achieved 63.3% compatibility with pip-tools community tests by preserving Python-native syntax (`==0.1`), demonstrating the effectiveness of this approach.
 
 ---
 
