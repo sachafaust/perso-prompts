@@ -1,5 +1,22 @@
 # Python Parser Validation - Product Design Requirements (PDR)
 
+## 📖 Table of Contents
+
+- [Overview](#overview)
+- [Background](#background)
+  - [Python Ecosystem Complexity](#python-ecosystem-complexity)
+  - [Validation Targets](#validation-targets)
+- [Python-Specific Requirements](#python-specific-requirements)
+  - [Functional Requirements](#functional-requirements)
+  - [Python-Specific Test Sources](#python-specific-test-sources)
+  - [Implementation Plan](#implementation-plan)
+  - [Success Criteria](#success-criteria)
+  - [Python-Specific Code Structure](#python-specific-code-structure)
+  - [Risk Assessment](#risk-assessment)
+  - [Dependencies](#dependencies)
+- [Implementation Status](#implementation-status)
+- [Version History](#version-history)
+
 ## Overview
 
 This PDR defines the Python-specific implementation for our parser validation system, focusing on validating our Python dependency parsers against established open source test suites. This document extends the main [WIP-Parser-Validation-PDR.md](./WIP-Parser-Validation-PDR.md) with Python-specific requirements and implementation details.

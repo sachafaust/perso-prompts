@@ -1382,6 +1382,33 @@ pytest.main([
 ### **Documentation Standards**
 Provide comprehensive, AI agent-optimized documentation with clear examples and getting started guides that enable AI agents to understand and leverage the tool effectively within minutes. Human accessibility is secondary to AI agent comprehension.
 
+#### **PDR Documentation Standards**
+All Product Design Requirements (PDR) documents must follow these standards:
+
+**📖 Table of Contents Requirement:**
+- **Mandatory for PDRs >200 lines**: All substantial PDRs must include a comprehensive TOC
+- **Format**: Use `## 📖 Table of Contents` with clickable GitHub anchor links
+- **Structure**: Hierarchical with main sections and important subsections
+- **Placement**: After document header, before first major section
+- **Maintenance**: Keep TOC synchronized with document structure changes
+
+**Example TOC Format:**
+```markdown
+## 📖 Table of Contents
+
+- [Overview](#overview)
+- [Technical Requirements](#technical-requirements)
+  - [Functional Requirements](#functional-requirements)
+  - [Implementation Details](#implementation-details)
+- [Implementation Status](#implementation-status)
+```
+
+**📝 Content Standards:**
+- **AI Agent First**: Optimize for AI agent understanding and implementation
+- **Implementation Focus**: Include concrete examples and code snippets
+- **Status Tracking**: Maintain clear implementation status sections
+- **Version History**: Document all significant changes with dates
+
 ### **Core Documentation Structure**
 
 #### **README.md (Primary Entry Point)**

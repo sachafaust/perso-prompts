@@ -1,5 +1,36 @@
 # Parser Validation via Open Source Test Suites - Product Design Requirements (PDR)
 
+## 📖 Table of Contents
+
+- [Overview](#overview)
+- [Background](#background)
+  - [Current Challenge](#current-challenge)
+  - [Conversation Summary](#conversation-summary)
+- [Goals](#goals)
+  - [Primary Goals](#primary-goals)
+  - [Success Metrics](#success-metrics)
+- [Technical Requirements](#technical-requirements)
+  - [Functional Requirements](#functional-requirements)
+  - [Target Projects for Validation](#target-projects-for-validation)
+  - [Implementation Approach](#implementation-approach)
+  - [AI Agent Considerations](#ai-agent-considerations)
+- [Non-Functional Requirements](#non-functional-requirements)
+  - [Performance](#performance)
+  - [Maintainability](#maintainability)
+  - [Documentation](#documentation)
+- [Out of Scope](#out-of-scope)
+- [Risks and Mitigations](#risks-and-mitigations)
+- [Implementation Details](#implementation-details)
+  - [Language-Isolated Code Structure](#language-isolated-code-structure)
+  - [pip-tools Test Suite Analysis](#pip-tools-test-suite-analysis)
+  - [Test Extraction Strategy](#test-extraction-strategy)
+  - [Standardized Test Format](#standardized-test-format)
+  - [Compatibility Reporting Format](#compatibility-reporting-format)
+- [Proof of Concept Implementation](#proof-of-concept-implementation)
+- [Implementation Status](#implementation-status)
+- [Language-Specific PDRs](#language-specific-pdrs)
+- [Version History](#version-history)
+
 ## Overview
 
 This PDR defines a systematic approach to validate and improve our dependency parsers by leveraging test suites from established open source projects. By using battle-tested test cases from projects like pip-tools, poetry, and setuptools, we can ensure our parsers handle real-world edge cases correctly while enabling AI coding agents to apply test-driven development principles effectively.
