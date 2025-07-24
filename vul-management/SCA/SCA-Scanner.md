@@ -112,10 +112,9 @@ We maintain accuracy through **AI-only analysis** - leveraging models with live 
 
 **Implementation**:
 ```
-Python:    ==1.0, >=2.0, ~=1.5, !=1.3
+Python:     ==1.0, >=2.0, ~=1.5, !=1.3
 JavaScript: ^1.0, ~1.2, 1.0.0, >=1.5.0
-Ruby:      ~> 1.0, >= 1.2, 1.0.0
-Rust:      1.0, ^1.2, ~1.5
+Docker:     latest, 1.0, 1.0-alpine, sha256:abc123
 ```
 
 **Evidence**: Parser validation testing achieved 63.3% compatibility with pip-tools community tests by preserving Python-native syntax (`==0.1`), demonstrating the effectiveness of this approach.
