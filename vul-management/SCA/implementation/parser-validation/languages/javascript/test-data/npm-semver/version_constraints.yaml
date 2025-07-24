@@ -1,0 +1,85 @@
+test_cases:
+  - id: "npm-semver-001"
+    source: "npm/node-semver/test/ranges.js"
+    category: "version_constraints"
+    input:
+      content: '"test-package": "^1.0.0"'
+      file_type: "package.json"
+    expected:
+      packages:
+        - name: "test-package"
+          version: "1.0.0"
+          version_constraint: "^1.0.0"
+          satisfies_constraint: true
+    metadata:
+      difficulty: "medium"
+      edge_case: false
+      notes: "Basic caret range test"
+
+  - id: "npm-semver-002"
+    source: "npm/node-semver/test/ranges.js"
+    category: "version_constraints"
+    input:
+      content: '"lodash": "~4.17.0"'
+      file_type: "package.json"
+    expected:
+      packages:
+        - name: "lodash"
+          version: "4.17.0"
+          version_constraint: "~4.17.0"
+          satisfies_constraint: true
+    metadata:
+      difficulty: "medium"
+      edge_case: false
+      notes: "Tilde range constraint"
+
+  - id: "npm-semver-003"
+    source: "npm/node-semver/test/ranges.js"
+    category: "version_constraints"  
+    input:
+      content: '"express": ">=4.0.0 <5.0.0"'
+      file_type: "package.json"
+    expected:
+      packages:
+        - name: "express"
+          version: "4.0.0"
+          version_constraint: ">=4.0.0 <5.0.0"
+          satisfies_constraint: true
+    metadata:
+      difficulty: "hard"
+      edge_case: true
+      notes: "Complex range constraint"
+
+  - id: "npm-semver-004"
+    source: "npm/node-semver/test/ranges.js"
+    category: "version_constraints"
+    input:
+      content: '"prerelease-pkg": "1.0.0-alpha.1"'
+      file_type: "package.json"
+    expected:
+      packages:
+        - name: "prerelease-pkg"
+          version: "1.0.0-alpha.1"
+          version_constraint: "1.0.0-alpha.1"
+          satisfies_constraint: true
+    metadata:
+      difficulty: "hard"
+      edge_case: true
+      notes: "Prerelease version handling"
+
+  - id: "npm-semver-005"
+    source: "npm/node-semver/test/ranges.js"
+    category: "version_constraints"
+    input:
+      content: '"zero-major": "^0.1.0"'
+      file_type: "package.json"
+    expected:
+      packages:
+        - name: "zero-major"
+          version: "0.1.0"
+          version_constraint: "^0.1.0"
+          satisfies_constraint: true
+    metadata:
+      difficulty: "hard"
+      edge_case: true
+      notes: "Zero major version edge case"
