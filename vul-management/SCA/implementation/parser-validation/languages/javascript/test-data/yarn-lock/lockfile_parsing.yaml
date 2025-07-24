@@ -1,0 +1,79 @@
+test_cases:
+  - id: "yarn-lock-001"
+    source: "yarnpkg/berry/packages/yarnpkg-parsers"
+    category: "lockfile_parsing"
+    input:
+      content: |
+        lodash@^4.17.20:
+          version "4.17.21"
+          resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz"
+          integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+      file_type: "yarn.lock"
+    expected:
+      packages:
+        - name: "lodash"
+          version: "4.17.21"
+          version_constraint: "^4.17.20"
+    metadata:
+      difficulty: "medium"
+      edge_case: false
+      notes: "Basic yarn.lock package parsing"
+
+  - id: "yarn-lock-002"
+    source: "yarnpkg/berry/packages/yarnpkg-parsers"
+    category: "lockfile_parsing"
+    input:
+      content: |
+        "@babel/core@^7.12.0":
+          version "7.12.9"
+          resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.12.9.tgz"
+          integrity sha512-gTXYh3M5wb7FRXQy+FErKFAv90BnlOuNn1QkCK2lREoPAjrQCO49+HVSrFoe5uakFAF5eenS75KbO2vQiLrTMQ==
+      file_type: "yarn.lock"
+    expected:
+      packages:
+        - name: "@babel/core"
+          version: "7.12.9"
+          version_constraint: "^7.12.0"
+    metadata:
+      difficulty: "medium"
+      edge_case: false
+      notes: "Scoped package in yarn.lock"
+
+  - id: "yarn-lock-003"
+    source: "yarnpkg/berry/packages/yarnpkg-parsers"
+    category: "lockfile_parsing"
+    input:
+      content: |
+        react@^17.0.0, react@^17.0.1, react@^17.0.2:
+          version "17.0.2"
+          resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz"
+          integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
+      file_type: "yarn.lock"
+    expected:
+      packages:
+        - name: "react"
+          version: "17.0.2"
+          version_constraint: "^17.0.0, ^17.0.1, ^17.0.2"
+    metadata:
+      difficulty: "hard"
+      edge_case: true
+      notes: "Multiple version constraints for same package"
+
+  - id: "yarn-lock-004"
+    source: "yarnpkg/berry/packages/yarnpkg-parsers"
+    category: "lockfile_parsing"
+    input:
+      content: |
+        git-package@git+https://github.com/user/repo.git#commit123:
+          version "1.0.0"
+          resolved "git+https://github.com/user/repo.git#commit123"
+      file_type: "yarn.lock"
+    expected:
+      packages:
+        - name: "git-package"
+          version: "1.0.0"
+          version_constraint: "git+https://github.com/user/repo.git#commit123"
+    metadata:
+      difficulty: "hard"
+      edge_case: true
+      notes: "Git dependency parsing"

@@ -153,24 +153,33 @@ class JavaScriptParser(DependencyParser):
         
         for line_num, line in enumerate(lines, 1):
             original_line = line
-            line = line.strip()
+            line_stripped = line.strip()
             
             # Skip empty lines and comments
-            if not line or line.startswith('#'):
+            if not line_stripped or line_stripped.startswith('#'):
                 continue
             
-            # Parse package entry (starts without indentation)
-            if not line.startswith(' ') and '@' in line and ':' in line:
+            # Debug line processing
+            logger.debug(f"Processing line {line_num}: '{repr(line)}'")
+            logger.debug(f"  stripped: '{line_stripped}'")
+            
+            # Parse package entry (starts without indentation and ends with colon)
+            if (not line.startswith(' ') and '@' in line_stripped and line_stripped.endswith(':') and 
+                not line_stripped.startswith('resolved') and not line_stripped.startswith('integrity')):
                 # Parse package name and version specification
-                package_spec = line.split(':')[0].strip()
+                package_spec = line_stripped.split(':')[0].strip()
+                # Remove quotes from package spec (yarn adds quotes around some entries)
+                package_spec = package_spec.strip('"')
                 current_package, current_version = self._parse_yarn_package_spec(package_spec)
+                logger.debug(f"Found yarn package spec: {current_package}")
                 continue
             
             # Parse resolved version (indented line with "version")
-            if line.startswith('  version ') and current_package:
+            if line.startswith('  version '):
                 version_line = line.replace('  version ', '').strip(' "')
+                logger.debug(f"Found version line: {version_line}, current_package: {current_package}")
                 
-                if self.should_include_package(current_package, version_line):
+                if current_package and self.should_include_package(current_package, version_line):
                     source_location = self.create_source_location(
                         file_path, line_num, original_line.strip(), FileType.YARN_LOCK
                     )
@@ -183,6 +192,9 @@ class JavaScriptParser(DependencyParser):
                     )
                     
                     packages.append(package)
+                    logger.debug(f"Added package: {current_package} -> {version_line}")
+                else:
+                    logger.debug(f"Excluded package: {current_package}")
                 
                 current_package = None
                 current_version = None
@@ -190,7 +202,14 @@ class JavaScriptParser(DependencyParser):
         return packages
     
     def _parse_yarn_package_spec(self, package_spec: str) -> tuple[Optional[str], Optional[str]]:
-        """Parse yarn package specification."""
+        """Parse yarn package specification, handling multiple constraints."""
+        
+        # Handle multiple constraints: "react@^17.0.0, react@^17.0.1" -> extract "react"
+        if ',' in package_spec:
+            # Take the first constraint to extract the package name
+            first_constraint = package_spec.split(',')[0].strip()
+            package_spec = first_constraint
+        
         # Handle scoped packages: @scope/package@version
         if package_spec.startswith('@'):
             # Find the second @ which indicates version
@@ -428,10 +447,19 @@ class JavaScriptParser(DependencyParser):
             logger.debug(f"Excluding TypeScript types package: {name}")
             return False
         
-        # Check for common dev package patterns
-        dev_patterns = ['webpack-', 'babel-', 'eslint-', '@babel/', '@webpack/']
+        # Check for common dev package patterns - but be more specific with @babel
+        dev_patterns = ['webpack-', 'babel-', 'eslint-', '@webpack/']  # Removed @babel/ - too broad
         if any(pattern in name_lower for pattern in dev_patterns):
             logger.debug(f"Excluding development package: {name}")
+            return False
+        
+        # More specific @babel exclusions (only dev-specific babel packages)
+        babel_dev_packages = {
+            '@babel/cli', '@babel/node', '@babel/preset-env', '@babel/preset-react',
+            '@babel/preset-typescript', '@babel/plugin-transform-runtime'
+        }
+        if name_lower in babel_dev_packages:
+            logger.debug(f"Excluding Babel development package: {name}")
             return False
         
         return True
