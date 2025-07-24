@@ -146,6 +146,88 @@ Using these test suites as benchmarks would provide a systematic way to validate
 
 ## Implementation Details
 
+### Language-Isolated Code Structure
+
+To support multi-language parser validation while maintaining clean separation of concerns, the implementation will use a language-isolated architecture:
+
+```
+parser-validation/
+├── common/                           # Shared infrastructure
+│   ├── __init__.py
+│   ├── test_format.py               # Standardized test format definitions
+│   ├── compatibility_report.py     # JSON reporting utilities
+│   ├── extractor_base.py           # Base classes for test extraction
+│   └── validator_base.py           # Base classes for validation
+├── languages/
+│   ├── python/
+│   │   ├── __init__.py
+│   │   ├── sources/                 # Source project integrations
+│   │   │   ├── pip_tools.py        # pip-tools test extraction
+│   │   │   ├── poetry.py           # poetry test extraction
+│   │   │   ├── setuptools.py       # setuptools test extraction
+│   │   │   └── pip_requirements_parser.py
+│   │   ├── extractors/             # Test case extractors
+│   │   │   ├── requirements_extractor.py
+│   │   │   ├── pyproject_extractor.py
+│   │   │   └── setup_py_extractor.py
+│   │   ├── test-data/              # Extracted test fixtures
+│   │   │   ├── pip-tools/
+│   │   │   ├── poetry/
+│   │   │   └── setuptools/
+│   │   └── validators/             # Python-specific validation
+│   │       ├── python_parser_validator.py
+│   │       └── test_runner.py
+│   └── javascript/
+│       ├── __init__.py
+│       ├── sources/                # JavaScript source integrations
+│       │   ├── npm.py             # npm test extraction
+│       │   ├── yarn.py            # yarn test extraction
+│       │   └── pnpm.py            # pnpm test extraction
+│       ├── extractors/            # JavaScript extractors
+│       │   ├── package_json_extractor.py
+│       │   ├── package_lock_extractor.py
+│       │   └── yarn_lock_extractor.py
+│       ├── test-data/             # JavaScript test fixtures
+│       │   ├── npm/
+│       │   ├── yarn/
+│       │   └── pnpm/
+│       └── validators/            # JavaScript validation
+│           ├── js_parser_validator.py
+│           └── test_runner.py
+├── tests/                         # Integration tests
+│   ├── test_python_validation.py
+│   ├── test_javascript_validation.py
+│   └── test_cross_language.py
+└── scripts/                       # Utility scripts
+    ├── extract_all_tests.py
+    ├── run_validation.py
+    └── generate_reports.py
+```
+
+#### Key Design Principles
+
+1. **Language Isolation**: Each language has its own directory structure with dedicated extractors, validators, and test data
+2. **Shared Infrastructure**: Common functionality (test formats, reporting, base classes) is centralized
+3. **Extensibility**: New languages can be added by implementing the language-specific directory structure
+4. **Maintainability**: Clear separation makes it easy to update language-specific logic without affecting others
+
+#### Implementation Workflow
+
+1. **Common Infrastructure Setup**
+   - Define standardized test format in `common/test_format.py`
+   - Create base extractor and validator classes
+   - Implement compatibility reporting utilities
+
+2. **Language-Specific Implementation**
+   - Start with Python (pip-tools integration)
+   - Implement JavaScript support using same patterns
+   - Add additional languages as needed
+
+3. **Cross-Language Validation**
+   - Compare parser behavior across similar dependency formats
+   - Identify common edge cases and patterns
+   - Share learnings between language implementations
+
 ### pip-tools Test Suite Analysis
 
 Based on research, pip-tools contains comprehensive test coverage in the following areas:
@@ -186,34 +268,74 @@ Research revealed pip-requirements-parser as a comprehensive alternative:
 
 ### Test Extraction Strategy
 
-1. **Direct Test Import**
-   ```python
-   # Clone pip-tools repository
-   # Extract test fixtures from tests/test_data/
-   # Convert test assertions to our format
-   ```
+After evaluating multiple approaches, we have decided on **Option 3: Hand-picked Test Extraction**.
 
-2. **Test Case Categories**
-   - Basic parsing (package names, versions)
-   - Complex constraints (multiple conditions)
-   - Special directives (-e, -r, -f)
-   - Environment markers and conditionals
-   - URL and VCS references
-   - Comments and line continuations
+#### Approach Decision Matrix
 
-3. **Conversion Process**
+| Approach | Pros | Cons | Decision |
+|----------|------|------|----------|
+| **Option 1: Re-implement Tests** | Full control, custom format | High development effort, miss edge cases | ❌ Rejected |
+| **Option 2: Git Submodules** | Always up-to-date, community maintained | Complex integration, external dependency | ❌ Rejected |
+| **Option 3: Hand-picked Extraction** | Curated quality, stable test suite, community wisdom | Periodic manual updates needed | ✅ **CHOSEN** |
+
+#### Implementation Strategy
+
+1. **Selective Test Extraction**
+   - Clone target repositories (pip-tools, poetry, npm, etc.) at specific versions
+   - **Hand-pick only tests relevant to dependency discovery and versioning**
+   - Focus on edge cases we might miss in our own test development
+   - Exclude tests for features outside our scope (installation, resolution, etc.)
+
+2. **One-time Extraction Process**
+   - Extract tests during specific development cycles, not continuously
+   - Version-lock source repositories for stability
+   - Review and curate extracted tests before integration
+   - Document rationale for included/excluded tests
+
+3. **Test Case Categories** (focused scope)
+   - **Basic parsing**: Package names, versions, simple constraints
+   - **Complex constraints**: Multiple conditions, exclusions (!=, ~=)
+   - **Environment markers**: Platform and Python version conditionals
+   - **Special formats**: URL dependencies, VCS references, editable installs
+   - **File formats**: requirements.txt, pyproject.toml, package.json, etc.
+
+4. **Conversion to Standardized Format**
    ```python
-   # Example conversion
-   pip_tools_test = "django>=2.0,<3.0; python_version >= '3.6'"
-   our_test = {
-       "input": "django>=2.0,<3.0; python_version >= '3.6'",
+   # Example: pip-tools test -> our format
+   source_test = "django>=2.0,<3.0; python_version >= '3.6'"
+   
+   converted_test = {
+       "id": "pip-tools-env-marker-001",
+       "source": "pip-tools/tests/test_cli_compile.py::test_environment_markers",
+       "category": "environment_markers",
+       "input": {
+           "content": "django>=2.0,<3.0; python_version >= '3.6'",
+           "file_type": "requirements.txt"
+       },
        "expected": {
-           "name": "django",
-           "version_spec": ">=2.0,<3.0",
-           "environment_marker": "python_version >= '3.6'"
+           "packages": [{
+               "name": "django",
+               "version_constraint": ">=2.0,<3.0",
+               "environment_marker": "python_version >= '3.6'",
+               "extras": []
+           }]
+       },
+       "metadata": {
+           "difficulty": "medium",
+           "edge_case": true,
+           "extraction_date": "2025-07-24",
+           "source_version": "pip-tools@7.4.1"
        }
    }
    ```
+
+#### Benefits of This Approach
+
+- **Quality Assurance**: Leverage battle-tested edge cases from established projects
+- **Focused Scope**: Only extract tests relevant to our parser validation needs  
+- **Stability**: Version-locked extractions prevent unexpected test changes
+- **Maintainability**: Curated test suite under our full control
+- **Community Wisdom**: Benefit from collective experience without operational overhead
 
 ### Standardized Test Format
 
@@ -360,11 +482,19 @@ class ParserValidator:
 5. ✅ Created compatibility reporting structure
 
 **Next Steps**:
-1. Implement proof-of-concept test extractor
-2. Create validation runner framework
-3. Test with our existing PythonParser
-4. Document intentional parsing differences
-5. Expand to other package managers
+1. Complete Python-specific implementation (see [WIP-Python-Parser-Validation-PDR.md](./WIP-Python-Parser-Validation-PDR.md))
+2. Create JavaScript-specific PDR and implementation
+3. Implement cross-language validation framework
+4. Set up CI/CD integration for continuous validation
+5. Expand to additional languages (Rust, Ruby, PHP, etc.)
+
+## Language-Specific PDRs
+
+This main PDR provides the overall framework and approach. Language-specific implementation details are documented in separate sub-PDRs:
+
+- **Python**: [WIP-Python-Parser-Validation-PDR.md](./WIP-Python-Parser-Validation-PDR.md) - pip-tools, poetry, setuptools integration
+- **JavaScript**: *Coming next* - npm, yarn, pnpm integration  
+- **Other Languages**: *Future expansion* - cargo, bundler, composer, etc.
 
 ## Version History
 
@@ -372,6 +502,8 @@ class ParserValidator:
 |---------|------|---------|---------|
 | 1.0 | 2025-01-22 | Initial PDR creation based on development discussion | AI Agent |
 | 1.1 | 2025-01-22 | Added implementation details, test formats, and proof of concept | AI Agent |
+| 1.2 | 2025-07-24 | Added language-isolated code structure and multi-language support directive | AI Agent |
+| 1.3 | 2025-07-24 | Clarified hand-picked extraction approach and created Python-specific sub-PDR | AI Agent |
 
 ---
 
