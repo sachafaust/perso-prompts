@@ -8,9 +8,7 @@ from typing import List, Dict, Any, Optional
 
 # Add SCA scanner to path to access our existing parser
 sca_path = Path(__file__).parent.parent.parent.parent.parent / "src"
-if str(sca_path) in sys.path:
-    pass  # Already added
-else:
+if str(sca_path) not in sys.path:
     sys.path.insert(0, str(sca_path))
 
 try:
@@ -24,10 +22,12 @@ except ImportError:
 
 try:
     # Import our existing SCA scanner Python parser
-    from sca_ai_scanner.parsers.python_parser import PythonDependencyParser
+    from sca_ai_scanner.parsers.python import PythonParser
+    from sca_ai_scanner.core.models import Package, SourceLocation, FileType as SCAFileType
     HAS_SCA_PARSER = True
-except ImportError:
-    print("Warning: SCA scanner not available. Using mock parser for testing.")
+    print("✅ SCA Python parser loaded successfully")
+except ImportError as e:
+    print(f"⚠️  Warning: SCA scanner not available ({e}). Using mock parser for testing.")
     HAS_SCA_PARSER = False
 
 
@@ -81,7 +81,10 @@ class PythonParserValidator(BaseParserValidator):
         super().__init__(parser_name)
         
         if HAS_SCA_PARSER:
-            self.parser = PythonDependencyParser()
+            # Use a temporary directory as root_path for the parser
+            import tempfile
+            self.temp_root = tempfile.mkdtemp()
+            self.parser = PythonParser(self.temp_root)
         else:
             self.parser = MockPythonParser()
             print("Using mock parser - results will be limited")
@@ -98,28 +101,76 @@ class PythonParserValidator(BaseParserValidator):
             Parsed dependency information in standardized format
         """
         try:
-            # Route to appropriate parser method based on file type
-            if file_type == FileType.REQUIREMENTS_TXT.value:
-                raw_deps = self.parser.parse_requirements_txt(content)
-            elif file_type == FileType.PYPROJECT_TOML.value:
-                raw_deps = self.parser.parse_pyproject_toml(content)
-            elif file_type == FileType.SETUP_PY.value:
-                raw_deps = self.parser.parse_setup_py(content)
+            if HAS_SCA_PARSER:
+                # Create a temporary file to parse (SCA parser expects file paths)
+                import tempfile
+                import os
+                
+                # Determine file extension based on type
+                if file_type == FileType.REQUIREMENTS_TXT.value:
+                    suffix = '.txt'
+                    filename = 'requirements.txt'
+                elif file_type == FileType.PYPROJECT_TOML.value:
+                    suffix = '.toml'
+                    filename = 'pyproject.toml'
+                elif file_type == FileType.SETUP_PY.value:
+                    suffix = '.py'
+                    filename = 'setup.py'
+                else:
+                    raise ValueError(f"Unsupported file type: {file_type}")
+                
+                # Create temporary file with content
+                with tempfile.NamedTemporaryFile(mode='w', suffix=suffix, delete=False, encoding='utf-8') as tmp_file:
+                    tmp_file.write(content)
+                    tmp_file_path = Path(tmp_file.name)
+                
+                # Rename to proper filename for parser detection
+                proper_tmp_path = tmp_file_path.parent / filename
+                tmp_file_path.rename(proper_tmp_path)
+                
+                try:
+                    # Parse using SCA parser
+                    raw_packages = self.parser.parse_file(proper_tmp_path)
+                    
+                    # Convert SCA Package objects to standardized format
+                    standardized_packages = []
+                    for pkg in raw_packages:
+                        std_pkg = self._convert_sca_package_to_standard_format(pkg)
+                        if std_pkg:
+                            standardized_packages.append(std_pkg)
+                    
+                    return {
+                        "packages": standardized_packages,
+                        "parse_success": True,
+                        "file_type": file_type
+                    }
+                finally:
+                    # Clean up temporary file
+                    if proper_tmp_path.exists():
+                        os.unlink(proper_tmp_path)
             else:
-                raise ValueError(f"Unsupported file type: {file_type}")
-            
-            # Convert to standardized format
-            standardized_packages = []
-            for dep in raw_deps:
-                std_pkg = self._convert_to_standard_format(dep)
-                if std_pkg:
-                    standardized_packages.append(std_pkg)
-            
-            return {
-                "packages": standardized_packages,
-                "parse_success": True,
-                "file_type": file_type
-            }
+                # Fall back to mock parser
+                if file_type == FileType.REQUIREMENTS_TXT.value:
+                    raw_deps = self.parser.parse_requirements_txt(content)
+                elif file_type == FileType.PYPROJECT_TOML.value:
+                    raw_deps = self.parser.parse_pyproject_toml(content)
+                elif file_type == FileType.SETUP_PY.value:
+                    raw_deps = self.parser.parse_setup_py(content)
+                else:
+                    raise ValueError(f"Unsupported file type: {file_type}")
+                
+                # Convert to standardized format
+                standardized_packages = []
+                for dep in raw_deps:
+                    std_pkg = self._convert_to_standard_format(dep)
+                    if std_pkg:
+                        standardized_packages.append(std_pkg)
+                
+                return {
+                    "packages": standardized_packages,
+                    "parse_success": True,
+                    "file_type": file_type
+                }
             
         except Exception as e:
             return {
@@ -128,6 +179,104 @@ class PythonParserValidator(BaseParserValidator):
                 "error": str(e),
                 "file_type": file_type
             }
+    
+    def _convert_sca_package_to_standard_format(self, sca_package) -> Optional[Dict[str, Any]]:
+        """
+        Convert SCA Package object to standardized format.
+        
+        Args:
+            sca_package: SCA Package object
+            
+        Returns:
+            Standardized package format or None
+        """
+        if not sca_package or not sca_package.name:
+            return None
+        
+        # Extract version constraint 
+        version_constraint = None
+        if hasattr(sca_package, 'version') and sca_package.version:
+            version_constraint = sca_package.version
+        elif hasattr(sca_package, 'version_spec') and sca_package.version_spec:
+            version_constraint = sca_package.version_spec
+        
+        # For our updated parser, we need to extract info from source locations
+        # since we temporarily encoded it there
+        environment_marker = None
+        extras = []
+        url = None
+        editable = False
+        clean_name = sca_package.name
+        
+        # Check if we have source locations with encoded information
+        if hasattr(sca_package, 'source_locations') and sca_package.source_locations:
+            for source_loc in sca_package.source_locations:
+                if hasattr(source_loc, 'declaration'):
+                    declaration = source_loc.declaration
+                    
+                    # Extract editable flag
+                    if declaration.strip().startswith('-e '):
+                        editable = True
+                    
+                    # Extract environment marker (after semicolon)
+                    if ';' in declaration:
+                        _, marker_part = declaration.split(';', 1)
+                        environment_marker = marker_part.strip()
+                    
+                    # Extract extras [extra1,extra2]
+                    import re
+                    extras_match = re.search(r'\[([^\]]+)\]', declaration)
+                    if extras_match:
+                        extras_str = extras_match.group(1)
+                        extras = [extra.strip() for extra in extras_str.split(',')]
+                    
+                    # Extract URL (after @)
+                    if ' @ ' in declaration:
+                        _, url_part = declaration.split(' @ ', 1)
+                        url = url_part.strip()
+                    elif 'git+' in declaration or 'http' in declaration:
+                        # For editable installs, URL might be directly in declaration
+                        if '#egg=' in declaration:
+                            url_part = declaration.split('#egg=')[0]
+                            if url_part.startswith('-e '):
+                                url = url_part[3:].strip()
+                            else:
+                                url = url_part.strip()
+        
+        # If no specific fields extracted from SCA package, try legacy approach
+        if not environment_marker and hasattr(sca_package, 'environment_marker') and sca_package.environment_marker:
+            environment_marker = sca_package.environment_marker
+        
+        if not extras and hasattr(sca_package, 'extras') and sca_package.extras:
+            if isinstance(sca_package.extras, list):
+                extras = sca_package.extras
+            elif isinstance(sca_package.extras, str):
+                # Parse extras string
+                extras_str = sca_package.extras.strip('[]')
+                if extras_str:
+                    extras = [extra.strip() for extra in extras_str.split(',')]
+        
+        if not url and hasattr(sca_package, 'url') and sca_package.url:
+            url = sca_package.url
+        
+        if not editable and hasattr(sca_package, 'editable'):
+            editable = bool(sca_package.editable)
+        
+        # Extract hash values
+        hash_values = []
+        if hasattr(sca_package, 'hashes') and sca_package.hashes:
+            if isinstance(sca_package.hashes, list):
+                hash_values = sca_package.hashes
+        
+        return {
+            "name": clean_name,
+            "version_constraint": version_constraint,
+            "environment_marker": environment_marker,
+            "extras": extras,
+            "url": url,
+            "editable": editable,
+            "hash_values": hash_values
+        }
     
     def _convert_to_standard_format(self, raw_dep: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """
