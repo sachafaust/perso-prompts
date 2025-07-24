@@ -1,0 +1,69 @@
+# Complex Constraints Test Cases
+# Extracted from https://github.com/jazzband/pip-tools.git at 7.4.1
+# Total tests: 2
+
+test_case:
+  id: pip-tools-complex_constraints-362
+  source: pip-tools/test_cli_compile.py::test_generate_hashes_with_line_style_annotations
+  category: complex_constraints
+  input:
+    content: "\\\n        small-fake-a==0.1 \\\\\n            --hash=sha256:5e6071ee6e4c59e0d0408d366fe9b66781d2cf01be9a6e19a2433bb3c5336330\n\
+      \            # via -r requirements.in, small-fake-with-deps\n        small-fake-with-deps==0.1\
+      \ \\\\\n            --hash=sha256:71403033c0545516cc5066c9196d9490affae65a865af3198438be6923e4762e\n\
+      \            # via -r requirements.in\n        "
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: "\\\n        small-fake-a"
+      version_constraint: "==0.1 \\\\\n            --hash=sha256:5e6071ee6e4c59e0d0408d366fe9b66781d2cf01be9a6e19a2433bb3c5336330\n\
+        \            # via -r requirements.in, small-fake-with-deps\n        small-fake-with-deps==0.1\
+        \ \\\\\n            --hash=sha256:71403033c0545516cc5066c9196d9490affae65a865af3198438be6923e4762e\n\
+        \            # via -r requirements.in"
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: medium
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_generate_hashes_with_line_style_annotations
+
+---
+
+test_case:
+  id: pip-tools-complex_constraints-020
+  source: pip-tools/test_cli_compile.py::test_triple_equal_pinned_dependency_is_used
+  category: complex_constraints
+  input:
+    content: "\n    Test that pip-compile properly emits the pinned requirement with\
+      \ ===\n    torchvision 0.8.2 requires torch==1.7.1 which can resolve to versions\
+      \ with\n    patches (e.g. torch 1.7.1+cu110), we want torch===1.7.1 without\
+      \ patches\n    "
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: Test that pip-compile properly emits the pinned requirement with
+      version_constraint: "===\n    torchvision 0.8.2 requires torch==1.7.1 which\
+        \ can resolve to versions with\n    patches (e.g. torch 1.7.1+cu110), we want\
+        \ torch===1.7.1 without patches"
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: medium
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_triple_equal_pinned_dependency_is_used
+
+---
+

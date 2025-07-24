@@ -1,0 +1,88 @@
+# Extras Test Cases
+# Extracted from https://github.com/jazzband/pip-tools.git at 7.4.1
+# Total tests: 3
+
+test_case:
+  id: pip-tools-extras-484
+  source: pip-tools/test_resolver.py::test_iter_dependencies_after_combine_install_requirements_extras
+  category: extras
+  input:
+    content: package-a[click]
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: package-a
+      version_constraint: null
+      environment_marker: null
+      extras:
+      - click
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: medium
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_iter_dependencies_after_combine_install_requirements_extras
+
+---
+
+test_case:
+  id: pip-tools-extras-095
+  source: pip-tools/test_resolver.py::test_combine_install_requirements_extras_req
+  category: extras
+  input:
+    content: edx-opaque-keys[django]==1.0.1
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: edx-opaque-keys
+      version_constraint: ==1.0.1
+      environment_marker: null
+      extras:
+      - django
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: medium
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_combine_install_requirements_extras_req
+
+---
+
+test_case:
+  id: pip-tools-extras-768
+  source: pip-tools/test_resolver.py::test_combine_install_requirements_for_one_package_with_multiple_extras
+  category: extras
+  input:
+    content: ray[default]==1.1.1
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: ray
+      version_constraint: ==1.1.1
+      environment_marker: null
+      extras:
+      - default
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: medium
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_combine_install_requirements_for_one_package_with_multiple_extras
+
+---
+

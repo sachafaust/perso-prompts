@@ -47,14 +47,14 @@ pytest==6.2.4  # inline comment
         package_dict = {pkg.name: pkg for pkg in packages}
         
         assert "requests" in package_dict
-        assert package_dict["requests"].version == "2.25.1"
+        assert package_dict["requests"].version == "==2.25.1"  # Language-native format
         assert package_dict["requests"].source_locations[0].line_number == 2
         
         assert "django" in package_dict
-        assert package_dict["django"].version == "3.2.0"  # Normalized
+        assert package_dict["django"].version == ">=3.2.0"  # Language-native with first constraint
         
         assert "numpy" in package_dict
-        assert package_dict["numpy"].version == "1.21.0"
+        assert package_dict["numpy"].version == "==1.21.0"  # Language-native format
     
     def test_parse_pyproject_toml(self, parser, temp_project_dir, create_test_files):
         """Test parsing pyproject.toml files."""
@@ -169,8 +169,8 @@ missing bracket
         # Should find nested files too
         assert any("backend" in str(f) for f in files)
     
-    def test_version_normalization(self, parser, temp_project_dir, create_test_files):
-        """Test version string normalization."""
+    def test_version_preservation(self, parser, temp_project_dir, create_test_files):
+        """Test version constraint preservation (language-native format)."""
         create_test_files(temp_project_dir, {
             "requirements.txt": """
 pkg1>=1.0.0
@@ -183,10 +183,14 @@ pkg5>=5.0.0
         
         packages = parser.parse_file(temp_project_dir / "requirements.txt")
         
-        # All version operators should be stripped
-        for pkg in packages:
-            assert not any(op in pkg.version for op in ['>=', '~=', '>', '<', '==', '^', '@'])
-            assert pkg.version[0].isdigit()
+        # Version operators should be preserved (language-native format)
+        package_dict = {pkg.name: pkg for pkg in packages}
+        
+        assert package_dict["pkg1"].version == ">=1.0.0"
+        assert package_dict["pkg2"].version == "~=2.0.0" 
+        assert package_dict["pkg3"].version == ">3.0.0"  # First constraint only
+        assert package_dict["pkg4"].version == "==4.0.0"
+        assert package_dict["pkg5"].version == ">=5.0.0"
 
 
 class TestJavaScriptParser:

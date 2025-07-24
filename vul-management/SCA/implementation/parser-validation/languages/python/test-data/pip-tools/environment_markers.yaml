@@ -1,0 +1,31 @@
+# Environment Markers Test Cases
+# Extracted from https://github.com/jazzband/pip-tools.git at 7.4.1
+# Total tests: 1
+
+test_case:
+  id: pip-tools-environment_markers-857
+  source: pip-tools/test_cli_compile.py::test_setuptools_preserves_environment_markers
+  category: environment_markers
+  input:
+    content: 'foo==1.0 ; python_version >= '
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: foo
+      version_constraint: ==1.0
+      environment_marker: python_version >=
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: hard
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_setuptools_preserves_environment_markers
+
+---
+

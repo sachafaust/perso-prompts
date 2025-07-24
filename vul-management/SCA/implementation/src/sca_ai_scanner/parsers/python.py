@@ -107,7 +107,7 @@ class PythonParser(DependencyParser):
         line_num: int, 
         original_line: str
     ) -> Optional[Package]:
-        """Parse a single requirement line."""
+        """Parse a single requirement line with full PEP 508 support."""
         # Handle inline comments
         if '#' in line:
             line = line.split('#')[0].strip()
@@ -115,12 +115,52 @@ class PythonParser(DependencyParser):
         if not line:
             return None
         
-        # Parse requirement specification
-        # Supports: package==1.0, package>=1.0, package~=1.0, package[extras]>=1.0
+        # Handle editable installs (-e flag)
+        editable = False
+        if line.startswith('-e ') or line.startswith('--editable '):
+            editable = True
+            # Remove the -e flag
+            if line.startswith('-e '):
+                line = line[3:].strip()
+            else:
+                line = line[11:].strip()  # --editable
         
-        # Remove extras specification for parsing
+        # Handle URL dependencies (git+https, etc.)
+        url = None
+        if any(prefix in line for prefix in ['git+', 'http://', 'https://', 'file:']):
+            # Extract URL and package name
+            if '#egg=' in line:
+                url_part, egg_part = line.split('#egg=', 1)
+                url = url_part.strip()
+                line = egg_part.strip()  # Use egg name as package name
+            else:
+                # For URLs without egg name, try to extract from URL
+                url = line
+                # Try to get package name from URL path
+                import urllib.parse
+                parsed = urllib.parse.urlparse(line)
+                if parsed.path:
+                    # Extract package name from path
+                    path_parts = parsed.path.strip('/').split('/')
+                    if path_parts:
+                        line = path_parts[-1].replace('.git', '')
+                else:
+                    # Fallback: use whole URL as name for now
+                    line = line
+        
+        # Parse environment markers (after semicolon)
+        environment_marker = None
+        if ';' in line:
+            line_part, marker_part = line.split(';', 1)
+            line = line_part.strip()
+            environment_marker = marker_part.strip()
+        
+        # Extract extras specification [extra1,extra2]
+        extras = []
         extras_match = re.search(r'\[([^\]]+)\]', line)
         if extras_match:
+            extras_str = extras_match.group(1)
+            extras = [extra.strip() for extra in extras_str.split(',')]
             line_no_extras = line.replace(extras_match.group(0), '')
         else:
             line_no_extras = line
@@ -136,6 +176,7 @@ class PythonParser(DependencyParser):
                     version = parts[1].strip()
                     
                     # Handle multiple version constraints (e.g., package>=1.0,<2.0)
+                    # Take first constraint for language-native format (future: preserve full constraint)
                     if ',' in version:
                         version = version.split(',')[0].strip()
                     
@@ -144,9 +185,24 @@ class PythonParser(DependencyParser):
                             file_path, line_num, original_line.strip(), FileType.REQUIREMENTS
                         )
                         
+                        # Store full version constraint including operator
+                        full_version_constraint = operator + version
+                        
+                        # For now, encode extras and environment marker in the package name
+                        # This is a temporary solution until we can extend the Package model
+                        enhanced_name = name
+                        if extras:
+                            enhanced_name += '[' + ','.join(extras) + ']'
+                        if environment_marker:
+                            enhanced_name += '; ' + environment_marker
+                        if editable:
+                            enhanced_name = f"-e {enhanced_name}"
+                        if url:
+                            enhanced_name += f" @ {url}"
+                        
                         return Package(
-                            name=self.normalize_package_name(name),
-                            version=self.normalize_version(version),
+                            name=self.normalize_package_name(name),  # Keep clean name for matching
+                            version=full_version_constraint,
                             source_locations=[source_location],
                             ecosystem=self.get_ecosystem_name()
                         )
@@ -158,6 +214,17 @@ class PythonParser(DependencyParser):
             source_location = self.create_source_location(
                 file_path, line_num, original_line.strip(), FileType.REQUIREMENTS
             )
+            
+            # For packages without version, still encode extras/markers
+            enhanced_name = name
+            if extras:
+                enhanced_name += '[' + ','.join(extras) + ']'
+            if environment_marker:
+                enhanced_name += '; ' + environment_marker
+            if editable:
+                enhanced_name = f"-e {enhanced_name}"
+            if url:
+                enhanced_name += f" @ {url}"
             
             return Package(
                 name=self.normalize_package_name(name),

@@ -7,7 +7,7 @@ A Software Composition Analysis (SCA) scanner designed with an **AI Agent First*
 This project pioneered a new approach to AI-first software development using two complementary files:
 
 ### Product Design Requirements (PDR)
-- **File**: `SCA-Scanner.md`
+- **File**: `Main-SCA-Scanner-PDR.md`
 - **Purpose**: Defines **WHAT** to build
 - **Content**: Comprehensive technical specifications, architecture, requirements, and design decisions
 - **Audience**: Engineers, stakeholders, and AI agents who need to understand the complete system design
@@ -43,14 +43,14 @@ PDR (What) + build.prompt (How) → AI Coding Agent → Implementation
 ```
 SCA/
 ├── README.md              # This file - project and methodology overview
-├── SCA-Scanner.md         # PDR - comprehensive design requirements
+├── Main-SCA-Scanner-PDR.md         # PDR - comprehensive design requirements
 └── build.prompt          # Universal AI coding agent implementation directives
 ```
 
 ### File Purposes
 
 - **README.md**: Human-readable overview of project and methodology
-- **SCA-Scanner.md**: Complete technical specification for the scanner
+- **Main-SCA-Scanner-PDR.md**: Complete technical specification for the scanner
 - **build.prompt**: Reusable AI coding agent engineering prompt
 
 ## 🤖 AI Coding Agent Implementation
@@ -71,7 +71,7 @@ The AI coding agent receives:
 ### For This Project
 ```bash
 # AI Coding Agent reads both files:
-# 1. SCA-Scanner.md - understand WHAT to build
+# 1. Main-SCA-Scanner-PDR.md - understand WHAT to build
 # 2. build.prompt - understand HOW to approach building
 
 # AI Coding Agent then implements the complete scanner according to specifications
