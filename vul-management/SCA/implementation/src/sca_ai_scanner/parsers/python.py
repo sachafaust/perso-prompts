@@ -176,7 +176,7 @@ class PythonParser(DependencyParser):
                     version = parts[1].strip()
                     
                     # Handle multiple version constraints (e.g., package>=1.0,<2.0)
-                    # For now, just take the first constraint (TODO: handle complex constraints)
+                    # Take first constraint for language-native format (future: preserve full constraint)
                     if ',' in version:
                         version = version.split(',')[0].strip()
                     

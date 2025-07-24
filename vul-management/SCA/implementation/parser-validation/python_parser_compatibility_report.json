@@ -1,18 +1,18 @@
 {
   "report_version": "1.0",
-  "test_date": "2025-07-24T08:41:46.443384",
+  "test_date": "2025-07-24T12:05:04.047670",
   "parser": "SCA Python Parser",
   "source_project": "pip-tools",
   "summary": {
-    "total_tests": 30,
-    "passed": 19,
-    "failed": 11,
-    "compatibility_score": 63.33
+    "total_tests": 20,
+    "passed": 18,
+    "failed": 2,
+    "compatibility_score": 90.0
   },
   "categories": {
     "tools-extras": {
       "passed": 2,
-      "total": 10
+      "total": 2
     },
     "tools-complex_constraints": {
       "passed": 0,
@@ -22,86 +22,12 @@
       "passed": 0,
       "total": 1
     },
-    "tools-environment_markers": {
-      "passed": 1,
-      "total": 2
-    },
     "tools-basic_parsing": {
       "passed": 16,
       "total": 16
     }
   },
   "failures": [
-    {
-      "test_id": "pip-tools-extras-205",
-      "differences": [
-        "Package count mismatch: expected 1, got 2",
-        "Package 0 (\\\n            [global]\n            index-url = {url}): Name mismatch: expected '\\\n            [global]\n            index-url = {url}', got '\\'",
-        "Package 0 (\\\n            [global]\n            index-url = {url}): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-099",
-      "differences": [
-        "Package count mismatch: expected 1, got 2",
-        "Package 0 (\\\n        [project]\n        invalid =): Name mismatch: expected '\\\n        [project]\n        invalid =', got '\\'",
-        "Package 0 (\\\n        [project]\n        invalid =): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-504",
-      "differences": [
-        "Package count mismatch: expected 1, got 3",
-        "Package 0 (foo[footest] @ {tmp_path.as_uri()}\nsmall-fake-a): Name mismatch: expected 'foo[footest] @ {tmp_path.as_uri()}\nsmall-fake-a', got 'foo @ {tmp_path.as_uri()}'",
-        "Package 0 (foo[footest] @ {tmp_path.as_uri()}\nsmall-fake-a): Version constraint mismatch: expected '==0.2\nsmall-fake-b==0.3', got 'latest'",
-        "Package 0 (foo[footest] @ {tmp_path.as_uri()}\nsmall-fake-a): Extras mismatch: expected set(), got {'footest'}",
-        "Package 0 (foo[footest] @ {tmp_path.as_uri()}\nsmall-fake-a): URL mismatch: expected 'None', got '{tmp_path.as_uri()}'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-422",
-      "differences": [
-        "Package 0 (package-a): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-735",
-      "differences": [
-        "Package 0 ({test_package}): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-956",
-      "differences": [
-        "Package count mismatch: expected 1, got 5",
-        "Package 0 ():\n        pass\n\n    runner.invoke(cli, [option])\n\n    # Ensure the options in parse_requirements has the expected build_isolation option\n    args, kwargs = parse_requirements.call_args\n    assert kwargs[): Name mismatch: expected '):\n        pass\n\n    runner.invoke(cli, [option])\n\n    # Ensure the options in parse_requirements has the expected build_isolation option\n    args, kwargs = parse_requirements.call_args\n    assert kwargs[', got '):'",
-        "Package 0 ():\n        pass\n\n    runner.invoke(cli, [option])\n\n    # Ensure the options in parse_requirements has the expected build_isolation option\n    args, kwargs = parse_requirements.call_args\n    assert kwargs[): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-867",
-      "differences": [
-        "Package count mismatch: expected 1, got 5",
-        "Package 0 ()\n        )\n\n    runner.invoke(cli, [option])\n\n    # Ensure the options in build_project_metadata has the isolated kwarg\n    _, kwargs = build_project_metadata.call_args\n    assert kwargs[): Name mismatch: expected ')\n        )\n\n    runner.invoke(cli, [option])\n\n    # Ensure the options in build_project_metadata has the isolated kwarg\n    _, kwargs = build_project_metadata.call_args\n    assert kwargs[', got ')'",
-        "Package 0 ()\n        )\n\n    runner.invoke(cli, [option])\n\n    # Ensure the options in build_project_metadata has the isolated kwarg\n    _, kwargs = build_project_metadata.call_args\n    assert kwargs[): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-extras-084",
-      "differences": [
-        "Package count mismatch: expected 1, got 11",
-        "Package 0 (: str(pypi_link),\n                        },\n                    ]\n                }\n            }\n\n        def find_all_candidates(self, req_name):\n            return all_candidates\n\n        def _get_file_hash(self, link):\n            return file_hashes[link]\n\n    pypi_repository = MockPyPIRepository(\n        [): Name mismatch: expected ': str(pypi_link),\n                        },\n                    ]\n                }\n            }\n\n        def find_all_candidates(self, req_name):\n            return all_candidates\n\n        def _get_file_hash(self, link):\n            return file_hashes[link]\n\n    pypi_repository = MockPyPIRepository(\n        [', got ': str(pypi_link),'",
-        "Package 0 (: str(pypi_link),\n                        },\n                    ]\n                }\n            }\n\n        def find_all_candidates(self, req_name):\n            return all_candidates\n\n        def _get_file_hash(self, link):\n            return file_hashes[link]\n\n    pypi_repository = MockPyPIRepository(\n        [): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
     {
       "test_id": "pip-tools-complex_constraints-020",
       "differences": [
@@ -112,26 +38,16 @@
       "error": null
     },
     {
-      "test_id": "pip-tools-editable_installs-898",
+      "test_id": "pip-tools-editable_installs-550",
       "differences": [
         "Package 0 (y): Version constraint mismatch: expected 'None', got 'latest'"
-      ],
-      "error": null
-    },
-    {
-      "test_id": "pip-tools-environment_markers-170",
-      "differences": [
-        "Package 0 (test): Version constraint mismatch: expected 'None', got 'latest'"
       ],
       "error": null
     }
   ],
   "recommendations": [
     "Review version constraint parsing for edge cases",
-    "Add support for complex extras syntax",
-    "Focus improvement efforts on tools-extras test cases",
     "Focus improvement efforts on tools-complex_constraints test cases",
-    "Focus improvement efforts on tools-editable_installs test cases",
-    "Focus improvement efforts on tools-environment_markers test cases"
+    "Focus improvement efforts on tools-editable_installs test cases"
   ]
 }

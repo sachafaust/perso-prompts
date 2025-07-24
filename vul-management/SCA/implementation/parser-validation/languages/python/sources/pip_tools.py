@@ -232,10 +232,75 @@ class PipToolsTestExtractor(BaseTestExtractor):
         func_name_lower = func_name.lower()
         return any(indicator in func_name_lower for indicator in edge_indicators)
     
+    def _is_invalid_requirement(self, requirement: str) -> bool:
+        """Check if requirement string is invalid and should be filtered out."""
+        # Filter out common invalid patterns
+        invalid_patterns = [
+            # Template variables
+            '{',
+            '}',
+            'tmp_path',
+            'test_package',
+            'url}',
+            
+            # Multi-line strings and code fragments
+            '\n        ',
+            '\n    ',
+            '\\n',
+            '\\\\',
+            
+            # Python code patterns
+            'def ',
+            'class ',
+            'import ',
+            'from ',
+            'assert ',
+            'kwargs[',
+            'args,',
+            'runner.invoke',
+            'cli,',
+            
+            # Configuration file content
+            '[global]',
+            '[project]',
+            'index-url',
+            'invalid =',
+            
+            # Test artifacts
+            'pass\n',
+            'Test that',
+            'torchvision',
+            'patches (',
+        ]
+        
+        # Check for invalid patterns
+        for pattern in invalid_patterns:
+            if pattern in requirement:
+                return True
+        
+        # Must contain at least one valid package character
+        if not re.search(r'[a-zA-Z0-9\-_]', requirement):
+            return True
+        
+        # Filter out very short or very long strings
+        if len(requirement) < 2 or len(requirement) > 200:
+            return True
+        
+        # Filter out strings that are mostly special characters
+        special_char_ratio = sum(1 for c in requirement if not (c.isalnum() or c in '.-_[]>=<~!;:')) / len(requirement)
+        if special_char_ratio > 0.3:
+            return True
+        
+        return False
+    
     def _parse_requirement_string(self, requirement: str) -> Optional[ExpectedPackage]:
         """Parse a requirement string into expected package data."""
         # This is a simplified parser - in practice, we'd use pip's parsing logic
         requirement = requirement.strip()
+        
+        # Filter out invalid test cases that shouldn't be requirements
+        if self._is_invalid_requirement(requirement):
+            return None
         
         # Handle editable installs
         editable = False

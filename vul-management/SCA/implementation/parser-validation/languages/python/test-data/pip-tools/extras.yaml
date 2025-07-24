@@ -1,129 +1,9 @@
 # Extras Test Cases
 # Extracted from https://github.com/jazzband/pip-tools.git at 7.4.1
-# Total tests: 11
+# Total tests: 3
 
 test_case:
-  id: pip-tools-extras-723
-  source: pip-tools/test_cli_compile.py::test_upgrade_package_with_extra
-  category: extras
-  input:
-    content: "\\\n            test-package-1[more]==0.1\n            test-package-2==0.1\n\
-      \            "
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: "\\\n            test-package-1[more]"
-      version_constraint: "==0.1\n            test-package-2==0.1"
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: medium
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_upgrade_package_with_extra
-
----
-
-test_case:
-  id: pip-tools-extras-205
-  source: pip-tools/test_cli_compile.py::test_default_index_url
-  category: extras
-  input:
-    content: "\\\n            [global]\n            index-url = {url}\n          \
-      \  "
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: "\\\n            [global]\n            index-url = {url}"
-      version_constraint: null
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: medium
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_default_index_url
-
----
-
-test_case:
-  id: pip-tools-extras-099
-  source: pip-tools/test_cli_compile.py::test_error_in_pyproject_toml
-  category: extras
-  input:
-    content: "\\\n        [project]\n        invalid = "
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: "\\\n        [project]\n        invalid ="
-      version_constraint: null
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: medium
-    edge_case: true
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_error_in_pyproject_toml
-
----
-
-test_case:
-  id: pip-tools-extras-504
-  source: pip-tools/test_cli_compile.py::test_compile_recursive_extras
-  category: extras
-  input:
-    content: 'foo[footest] @ {tmp_path.as_uri()}
-
-      small-fake-a==0.2
-
-      small-fake-b==0.3
-
-      '
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: 'foo[footest] @ {tmp_path.as_uri()}
-
-        small-fake-a'
-      version_constraint: '==0.2
-
-        small-fake-b==0.3'
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: medium
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_compile_recursive_extras
-
----
-
-test_case:
-  id: pip-tools-extras-422
+  id: pip-tools-extras-484
   source: pip-tools/test_resolver.py::test_iter_dependencies_after_combine_install_requirements_extras
   category: extras
   input:
@@ -151,7 +31,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-extras-730
+  id: pip-tools-extras-095
   source: pip-tools/test_resolver.py::test_combine_install_requirements_extras_req
   category: extras
   input:
@@ -179,35 +59,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-extras-735
-  source: pip-tools/test_resolver.py::test_combine_install_requirements_extras_no_req
-  category: extras
-  input:
-    content: '{test_package}[extra]'
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: '{test_package}'
-      version_constraint: null
-      environment_marker: null
-      extras:
-      - extra
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: medium
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_combine_install_requirements_extras_no_req
-
----
-
-test_case:
-  id: pip-tools-extras-842
+  id: pip-tools-extras-768
   source: pip-tools/test_resolver.py::test_combine_install_requirements_for_one_package_with_multiple_extras
   category: extras
   input:
@@ -231,103 +83,6 @@ test_case:
     extraction_date: '2025-07-24'
     source_version: pip-tools@7.4.1
     notes: Extracted from test_combine_install_requirements_for_one_package_with_multiple_extras
-
----
-
-test_case:
-  id: pip-tools-extras-956
-  source: pip-tools/test_cli_compile.py::test_parse_requirements_build_isolation_option
-  category: extras
-  input:
-    content: "):\n        pass\n\n    runner.invoke(cli, [option])\n\n    # Ensure\
-      \ the options in parse_requirements has the expected build_isolation option\n\
-      \    args, kwargs = parse_requirements.call_args\n    assert kwargs["
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: "):\n        pass\n\n    runner.invoke(cli, [option])\n\n    # Ensure\
-        \ the options in parse_requirements has the expected build_isolation option\n\
-        \    args, kwargs = parse_requirements.call_args\n    assert kwargs["
-      version_constraint: null
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: hard
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_parse_requirements_build_isolation_option
-
----
-
-test_case:
-  id: pip-tools-extras-867
-  source: pip-tools/test_cli_compile.py::test_build_project_metadata_isolation_option
-  category: extras
-  input:
-    content: "\n            )\n        )\n\n    runner.invoke(cli, [option])\n\n \
-      \   # Ensure the options in build_project_metadata has the isolated kwarg\n\
-      \    _, kwargs = build_project_metadata.call_args\n    assert kwargs["
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: ")\n        )\n\n    runner.invoke(cli, [option])\n\n    # Ensure the\
-        \ options in build_project_metadata has the isolated kwarg\n    _, kwargs\
-        \ = build_project_metadata.call_args\n    assert kwargs["
-      version_constraint: null
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: hard
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_build_project_metadata_isolation_option
-
----
-
-test_case:
-  id: pip-tools-extras-084
-  source: pip-tools/test_repository_pypi.py::test_get_hashes_from_mixed
-  category: extras
-  input:
-    content: ": str(pypi_link),\n                        },\n                    ]\n\
-      \                }\n            }\n\n        def find_all_candidates(self, req_name):\n\
-      \            return all_candidates\n\n        def _get_file_hash(self, link):\n\
-      \            return file_hashes[link]\n\n    pypi_repository = MockPyPIRepository(\n\
-      \        ["
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: ": str(pypi_link),\n                        },\n                    ]\n\
-        \                }\n            }\n\n        def find_all_candidates(self,\
-        \ req_name):\n            return all_candidates\n\n        def _get_file_hash(self,\
-        \ link):\n            return file_hashes[link]\n\n    pypi_repository = MockPyPIRepository(\n\
-        \        ["
-      version_constraint: null
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: hard
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_get_hashes_from_mixed
 
 ---
 

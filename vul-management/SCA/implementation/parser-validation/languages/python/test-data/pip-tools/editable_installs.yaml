@@ -3,7 +3,7 @@
 # Total tests: 2
 
 test_case:
-  id: pip-tools-editable_installs-813
+  id: pip-tools-editable_installs-960
   source: pip-tools/test_utils.py::test_format_requirement_editable_vcs
   category: editable_installs
   input:
@@ -30,7 +30,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-editable_installs-898
+  id: pip-tools-editable_installs-550
   source: pip-tools/test_utils.py::test_format_requirement_editable_vcs_with_password
   category: editable_installs
   input:

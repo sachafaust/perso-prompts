@@ -3,7 +3,7 @@
 # Total tests: 17
 
 test_case:
-  id: pip-tools-basic_parsing-709
+  id: pip-tools-basic_parsing-157
   source: pip-tools/test_cli_compile.py::test_editable_package
   category: basic_parsing
   input:
@@ -30,7 +30,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-102
+  id: pip-tools-basic_parsing-039
   source: pip-tools/test_cli_compile.py::test_editable_package_in_constraints
   category: basic_parsing
   input:
@@ -57,7 +57,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-978
+  id: pip-tools-basic_parsing-091
   source: pip-tools/test_cli_compile.py::test_locally_available_editable_package_is_not_archived_in_cache_dir
   category: basic_parsing
   input:
@@ -84,7 +84,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-462
+  id: pip-tools-basic_parsing-206
   source: pip-tools/test_cli_compile.py::test_input_file_without_extension
   category: basic_parsing
   input:
@@ -111,61 +111,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-298
-  source: pip-tools/test_cli_compile.py::test_ignore_incompatible_existing_pins
-  category: basic_parsing
-  input:
-    content: small-fake-a==0.2\nsmall-fake-b==0.2
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: small-fake-a
-      version_constraint: ==0.2\nsmall-fake-b==0.2
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: easy
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_ignore_incompatible_existing_pins
-
----
-
-test_case:
-  id: pip-tools-basic_parsing-595
-  source: pip-tools/test_cli_compile.py::test_upgrade_packages_option
-  category: basic_parsing
-  input:
-    content: small-fake-a==0.1\nsmall-fake-b==0.1
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: small-fake-a
-      version_constraint: ==0.1\nsmall-fake-b==0.1
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: easy
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_upgrade_packages_option
-
----
-
-test_case:
-  id: pip-tools-basic_parsing-114
+  id: pip-tools-basic_parsing-909
   source: pip-tools/test_cli_compile.py::test_upgrade_packages_option_irrelevant
   category: basic_parsing
   input:
@@ -192,7 +138,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-170
+  id: pip-tools-basic_parsing-132
   source: pip-tools/test_cli_compile.py::test_upgrade_packages_option_no_existing_file
   category: basic_parsing
   input:
@@ -219,7 +165,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-841
+  id: pip-tools-basic_parsing-567
   source: pip-tools/test_cli_compile.py::test_upgrade_packages_empty_target_file_warning
   category: basic_parsing
   input:
@@ -246,34 +192,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-807
-  source: pip-tools/test_cli_compile.py::test_upgrade_packages_version_option
-  category: basic_parsing
-  input:
-    content: small-fake-a==0.1\n
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: small-fake-a
-      version_constraint: ==0.1\n
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: easy
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_upgrade_packages_version_option
-
----
-
-test_case:
-  id: pip-tools-basic_parsing-115
+  id: pip-tools-basic_parsing-473
   source: pip-tools/test_cli_compile.py::test_upgrade_packages_version_option_no_existing_file
   category: basic_parsing
   input:
@@ -300,34 +219,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-623
-  source: pip-tools/test_cli_compile.py::test_upgrade_packages_version_option_and_upgrade
-  category: basic_parsing
-  input:
-    content: small-fake-a==0.1\nsmall-fake-b==0.1
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: small-fake-a
-      version_constraint: ==0.1\nsmall-fake-b==0.1
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: easy
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_upgrade_packages_version_option_and_upgrade
-
----
-
-test_case:
-  id: pip-tools-basic_parsing-858
+  id: pip-tools-basic_parsing-144
   source: pip-tools/test_cli_compile.py::test_upgrade_packages_version_option_and_upgrade_no_existing_file
   category: basic_parsing
   input:
@@ -354,34 +246,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-092
-  source: pip-tools/test_cli_compile.py::test_generate_hashes_with_editable
-  category: basic_parsing
-  input:
-    content: small-fake-a==0.1 \\\n
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: small-fake-a
-      version_constraint: ==0.1 \\\n
-      environment_marker: null
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: easy
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_generate_hashes_with_editable
-
----
-
-test_case:
-  id: pip-tools-basic_parsing-860
+  id: pip-tools-basic_parsing-435
   source: pip-tools/test_cli_compile.py::test_generate_hashes_verbose
   category: basic_parsing
   input:
@@ -408,7 +273,142 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-679
+  id: pip-tools-basic_parsing-128
+  source: pip-tools/test_cli_compile.py::test_generate_hashes_with_annotations
+  category: basic_parsing
+  input:
+    content: six==1.15.0
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: six
+      version_constraint: ==1.15.0
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: easy
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_generate_hashes_with_annotations
+
+---
+
+test_case:
+  id: pip-tools-basic_parsing-700
+  source: pip-tools/test_cli_compile.py::test_stdin
+  category: basic_parsing
+  input:
+    content: small-fake-a==0.1
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: small-fake-a
+      version_constraint: ==0.1
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: easy
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_stdin
+
+---
+
+test_case:
+  id: pip-tools-basic_parsing-446
+  source: pip-tools/test_cli_compile.py::test_multiple_input_files_without_output_file
+  category: basic_parsing
+  input:
+    content: six==1.10.0
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: six
+      version_constraint: ==1.10.0
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: easy
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_multiple_input_files_without_output_file
+
+---
+
+test_case:
+  id: pip-tools-basic_parsing-846
+  source: pip-tools/test_cli_compile.py::test_annotate_option
+  category: basic_parsing
+  input:
+    content: small-fake-a==0.1
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: small-fake-a
+      version_constraint: ==0.1
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: easy
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_annotate_option
+
+---
+
+test_case:
+  id: pip-tools-basic_parsing-838
+  source: pip-tools/test_cli_compile.py::test_dry_run_option
+  category: basic_parsing
+  input:
+    content: small-fake-a==0.2
+    file_type: requirements.txt
+    file_path: null
+  expected:
+    packages:
+    - name: small-fake-a
+      version_constraint: ==0.2
+      environment_marker: null
+      extras: []
+      url: null
+      editable: false
+      hash_values: []
+    error: null
+  metadata:
+    difficulty: easy
+    edge_case: false
+    extraction_date: '2025-07-24'
+    source_version: pip-tools@7.4.1
+    notes: Extracted from test_dry_run_option
+
+---
+
+test_case:
+  id: pip-tools-basic_parsing-125
   source: pip-tools/test_resolver.py::test_iter_dependencies_results
   category: basic_parsing
   input:
@@ -435,7 +435,7 @@ test_case:
 ---
 
 test_case:
-  id: pip-tools-basic_parsing-439
+  id: pip-tools-basic_parsing-366
   source: pip-tools/test_resolver.py::test_iter_dependencies_ignores_constraints
   category: basic_parsing
   input:

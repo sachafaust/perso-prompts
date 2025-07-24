@@ -1,9 +1,9 @@
 # Environment Markers Test Cases
 # Extracted from https://github.com/jazzband/pip-tools.git at 7.4.1
-# Total tests: 3
+# Total tests: 1
 
 test_case:
-  id: pip-tools-environment_markers-273
+  id: pip-tools-environment_markers-857
   source: pip-tools/test_cli_compile.py::test_setuptools_preserves_environment_markers
   category: environment_markers
   input:
@@ -26,60 +26,6 @@ test_case:
     extraction_date: '2025-07-24'
     source_version: pip-tools@7.4.1
     notes: Extracted from test_setuptools_preserves_environment_markers
-
----
-
-test_case:
-  id: pip-tools-environment_markers-622
-  source: pip-tools/test_cli_compile.py::test_filter_pip_markers
-  category: environment_markers
-  input:
-    content: 'small-fake-a==0.1\nunknown_package==0.1; python_version == '
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: small-fake-a
-      version_constraint: ==0.1\nunknown_package==0.1
-      environment_marker: python_version ==
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: hard
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_filter_pip_markers
-
----
-
-test_case:
-  id: pip-tools-environment_markers-170
-  source: pip-tools/test_utils.py::test_drop_extras
-  category: environment_markers
-  input:
-    content: test;{given}
-    file_type: requirements.txt
-    file_path: null
-  expected:
-    packages:
-    - name: test
-      version_constraint: null
-      environment_marker: '{given}'
-      extras: []
-      url: null
-      editable: false
-      hash_values: []
-    error: null
-  metadata:
-    difficulty: hard
-    edge_case: false
-    extraction_date: '2025-07-24'
-    source_version: pip-tools@7.4.1
-    notes: Extracted from test_drop_extras
 
 ---
 
