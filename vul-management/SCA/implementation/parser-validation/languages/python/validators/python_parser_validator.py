@@ -116,6 +116,12 @@ class PythonParserValidator(BaseParserValidator):
                 elif file_type == FileType.SETUP_PY.value:
                     suffix = '.py'
                     filename = 'setup.py'
+                elif file_type == FileType.POETRY_LOCK.value:
+                    suffix = '.lock'
+                    filename = 'poetry.lock'
+                elif file_type == FileType.UV_LOCK.value:
+                    suffix = '.lock'
+                    filename = 'uv.lock'
                 else:
                     raise ValueError(f"Unsupported file type: {file_type}")
                 

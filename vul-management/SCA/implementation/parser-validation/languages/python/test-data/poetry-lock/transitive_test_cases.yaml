@@ -1,0 +1,261 @@
+# Poetry Lock File Transitive Dependencies Test Cases for Python Parser Validation
+# Targeting the specific gaps identified: h11 and py packages from Semgrep analysis
+
+test_case:
+  id: "poetry-transitive-001"
+  source: "poetry.lock with h11 as transitive dependency"
+  category: "transitive_dependencies"
+  input:
+    content: |
+      [[package]]
+      name = "h11"
+      version = "0.14.0"
+      description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+      optional = false
+      python-versions = ">=3.7"
+      files = [
+          {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
+          {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
+      ]
+
+      [[package]]
+      name = "httpcore"
+      version = "1.0.2"
+      description = "A minimal low-level HTTP client."
+      optional = false
+      python-versions = ">=3.8"
+      files = [
+          {file = "httpcore-1.0.2-py3-none-any.whl", hash = "sha256:096cc05bca73b8e459a1fc3dcf585148f63e534eae4339559c9b8a8d6399acc7"},
+      ]
+
+      [package.dependencies]
+      h11 = ">=0.13,<0.15"
+
+      [[package]]
+      name = "httpx"
+      version = "0.25.2"
+      description = "The next generation HTTP client."
+      optional = false
+      python-versions = ">=3.8"
+      files = [
+          {file = "httpx-0.25.2-py3-none-any.whl", hash = "sha256:a05d3d052d9ba2c0e0e6b61df42b4b6c4a2a3e0a6b70f2b4d9ebe8f38dda10b5"},
+      ]
+
+      [package.dependencies]
+      httpcore = ">=1.0.0,<2.0.0"
+    file_type: "poetry.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "h11"
+        version_constraint: "0.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "httpcore"
+        version_constraint: "1.0.2"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "httpx"
+        version_constraint: "0.25.2"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "medium"
+    edge_case: false
+    extraction_date: '2025-07-25'
+    source_version: poetry@1.8.3
+    notes: "h11 as transitive dependency through httpcore->httpx chain"
+
+---
+
+test_case:
+  id: "poetry-transitive-002"
+  source: "poetry.lock with py package (deprecated testing library)"
+  category: "deprecated_packages"
+  input:
+    content: |
+      [[package]]
+      name = "py"
+      version = "1.11.0"
+      description = "library with cross-python path, ini-parsing, io, code, log facilities"
+      optional = false
+      python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+      files = [
+          {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
+          {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
+      ]
+
+      [[package]]
+      name = "pytest"
+      version = "6.2.5"
+      description = "pytest: simple powerful testing with Python"
+      optional = false
+      python-versions = ">=3.6"
+      files = [
+          {file = "pytest-6.2.5-py3-none-any.whl", hash = "sha256:7310f8d27bc79ced999e760ca304d69f6ba6c6649c0b60fb0e04a4a77cacc134"},
+      ]
+
+      [package.dependencies]
+      py = ">=1.8.2"
+      attrs = ">=19.2.0"
+
+      [[package]]
+      name = "attrs"
+      version = "22.1.0"
+      description = "Classes Without Boilerplate"
+      optional = false
+      python-versions = ">=3.5"
+      files = [
+          {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
+      ]
+    file_type: "poetry.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "py"
+        version_constraint: "1.11.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "pytest"
+        version_constraint: "6.2.5"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "attrs"
+        version_constraint: "22.1.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "medium"
+    edge_case: true
+    extraction_date: '2025-07-25'
+    source_version: poetry@1.8.3
+    notes: "py package as pytest dependency (deprecated but still used)"
+
+---
+
+test_case:
+  id: "poetry-transitive-003"
+  source: "Real-world Rippling poetry.lock excerpt with complex dependencies"
+  category: "real_world"
+  input:
+    content: |
+      [[package]]
+      name = "jupyter-server"
+      version = "2.14.0"
+      description = "The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications."
+      optional = false
+      python-versions = ">=3.8"
+      files = [
+          {file = "jupyter_server-2.14.0-py3-none-any.whl", hash = "sha256:f9dd44133e3889c3ddb5d3d5e4fb4f93ea7a6e6aff43ccde07d90c3e8b9d5d62"},
+      ]
+
+      [package.dependencies]
+      tornado = ">=6.2.0"
+      prometheus-client = ">=0.9"
+      h11 = ">=0.8"
+
+      [[package]]
+      name = "tornado"
+      version = "6.4.0"
+      description = "Tornado is a Python web framework and asynchronous networking library"
+      optional = false
+      python-versions = ">= 3.8"
+      files = [
+          {file = "tornado-6.4.0-py3-none-any.whl", hash = "sha256:72291fa6e6bc84e626589f1c29d90a5a6d593ef5ae68052ee2ef000dfd273dee"},
+      ]
+
+      [[package]]
+      name = "prometheus-client"
+      version = "0.19.0" 
+      description = "Python client for the Prometheus monitoring system."
+      optional = false
+      python-versions = ">=3.8"
+      files = [
+          {file = "prometheus_client-0.19.0-py3-none-any.whl", hash = "sha256:c88b1e6ecf6b41cd8fb5731c7ae919bf66df6ec6fafa555cd6c0e16ca169ae92"},
+      ]
+
+      [[package]]
+      name = "h11"
+      version = "0.14.0"
+      description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+      optional = false
+      python-versions = ">=3.7"  
+      files = [
+          {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
+      ]
+
+      [[package]]
+      name = "setuptools"
+      version = "75.1.0"
+      description = "Easily download, build, install, upgrade, and uninstall Python packages"
+      optional = false
+      python-versions = ">=3.8"
+      files = [
+          {file = "setuptools-75.1.0-py3-none-any.whl", hash = "sha256:35ab7fd3bcd95e6b7fd704e4a1539513edad446c097797f2985e0e4b960772f2"},
+      ]
+    file_type: "poetry.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "jupyter-server"
+        version_constraint: "2.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "tornado"
+        version_constraint: "6.4.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "prometheus-client"
+        version_constraint: "0.19.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "h11"
+        version_constraint: "0.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "setuptools"
+        version_constraint: "75.1.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "hard"
+    edge_case: false
+    extraction_date: '2025-07-25'
+    source_version: poetry@1.8.3
+    notes: "Real-world poetry.lock with jupyter-server dependencies including h11"
