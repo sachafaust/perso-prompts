@@ -1,6 +1,6 @@
 {
   "report_version": "1.0",
-  "test_date": "2025-07-24T12:05:04.047670",
+  "test_date": "2025-07-25T08:53:46.780745",
   "parser": "SCA Python Parser",
   "source_project": "pip-tools",
   "summary": {
@@ -32,8 +32,7 @@
       "test_id": "pip-tools-complex_constraints-020",
       "differences": [
         "Package count mismatch: expected 1, got 3",
-        "Package 0 (Test that pip-compile properly emits the pinned requirement with): Name mismatch: expected 'Test that pip-compile properly emits the pinned requirement with', got 'test that pip-compile properly emits the pinned requirement with ==='",
-        "Package 0 (Test that pip-compile properly emits the pinned requirement with): Version constraint mismatch: expected '===\n    torchvision 0.8.2 requires torch==1.7.1 which can resolve to versions with\n    patches (e.g. torch 1.7.1+cu110), we want torch===1.7.1 without patches', got 'latest'"
+        "Package 0 (Test that pip-compile properly emits the pinned requirement with): Version constraint mismatch: expected '===\n    torchvision 0.8.2 requires torch==1.7.1 which can resolve to versions with\n    patches (e.g. torch 1.7.1+cu110), we want torch===1.7.1 without patches', got '==='"
       ],
       "error": null
     },

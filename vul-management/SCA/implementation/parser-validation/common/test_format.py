@@ -16,6 +16,8 @@ class FileType(Enum):
     SETUP_PY = "setup.py"
     SETUP_CFG = "setup.cfg"
     PIPFILE = "Pipfile"
+    POETRY_LOCK = "poetry.lock"
+    UV_LOCK = "uv.lock"
     PACKAGE_JSON = "package.json"
     PACKAGE_LOCK_JSON = "package-lock.json"
     YARN_LOCK = "yarn.lock"
@@ -35,6 +37,10 @@ class TestCategory(Enum):
     RECURSIVE_REQUIREMENTS = "recursive_requirements"
     COMMENTS_HANDLING = "comments_handling"
     MALFORMED_INPUT = "malformed_input"
+    TRANSITIVE_DEPENDENCIES = "transitive_dependencies"
+    SPECIAL_FORMATS = "special_formats"
+    REAL_WORLD = "real_world" 
+    DEPRECATED_PACKAGES = "deprecated_packages"
 
 
 class Difficulty(Enum):

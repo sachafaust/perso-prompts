@@ -1,0 +1,236 @@
+# UV Lock File Test Cases for Python Parser Validation
+# Following the established test format from pip-tools validation
+
+test_case:
+  id: "uv-lock-001"
+  source: "uv.lock basic package parsing"
+  category: "basic_parsing"
+  input:
+    content: |
+      [[package]]
+      name = "h11"
+      version = "0.14.0"
+      
+      [[package]]
+      name = "jupyter-server"
+      version = "2.14.0"
+      
+      [[package]]
+      name = "setuptools"
+      version = "70.0.0"
+      
+      [[package]]
+      name = "tornado"
+      version = "6.4.0"
+    file_type: "uv.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "h11"
+        version_constraint: "0.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "jupyter-server"
+        version_constraint: "2.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "setuptools"
+        version_constraint: "70.0.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "tornado"
+        version_constraint: "6.4.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "easy"
+    edge_case: false
+    extraction_date: '2025-07-25'
+    source_version: uv@0.4.15
+    notes: "Basic uv.lock package parsing"
+
+---
+
+test_case:
+  id: "uv-lock-002"
+  source: "uv.lock with dependencies section"
+  category: "transitive_dependencies"
+  input:
+    content: |
+      [[package]]
+      name = "jupyter-server"
+      version = "2.14.0"
+      dependencies = [
+          "anyio>=3.1.0",
+          "argon2-cffi>=21.1",
+          "tornado>=6.2.0",
+      ]
+      
+      [[package]]
+      name = "tornado"
+      version = "6.4.0"
+      
+      [[package]]
+      name = "anyio"
+      version = "4.3.0"
+    file_type: "uv.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "jupyter-server"
+        version_constraint: "2.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "tornado"
+        version_constraint: "6.4.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "anyio"
+        version_constraint: "4.3.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "medium"
+    edge_case: false
+    extraction_date: '2025-07-25'
+    source_version: uv@0.4.15
+    notes: "uv.lock with dependency relationships"
+
+---
+
+test_case:
+  id: "uv-lock-003"
+  source: "uv.lock with source distributions"
+  category: "special_formats"
+  input:
+    content: |
+      [[package]]
+      name = "py"
+      version = "1.11.0"
+      source = { registry = "https://pypi.org/simple" }
+      
+      [[package]]
+      name = "h11"
+      version = "0.14.0"
+      source = { url = "https://files.pythonhosted.org/packages/..." }
+    file_type: "uv.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "py"
+        version_constraint: "1.11.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "h11"
+        version_constraint: "0.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "medium"
+    edge_case: true
+    extraction_date: '2025-07-25'
+    source_version: uv@0.4.15
+    notes: "Different source types in uv.lock"
+
+---
+
+test_case:
+  id: "uv-lock-004"
+  source: "Real-world Rippling uv.lock excerpt"
+  category: "real_world"
+  input:
+    content: |
+      [[package]]
+      name = "cryptography"
+      version = "43.0.3"
+      dependencies = [
+          "cffi>=1.12; platform_python_implementation != 'PyPy'",
+      ]
+      
+      [[package]]
+      name = "cffi"
+      version = "1.17.0"
+      dependencies = [
+          "pycparser",
+      ]
+      
+      [[package]]
+      name = "setuptools"
+      version = "75.1.0"
+      
+      [[package]]
+      name = "jupyter-server"
+      version = "2.14.0"
+      dependencies = [
+          "tornado>=6.2.0",
+          "prometheus-client>=0.9",
+      ]
+    file_type: "uv.lock"
+    file_path: null
+  expected:
+    packages:
+      - name: "cryptography"
+        version_constraint: "43.0.3"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "cffi"
+        version_constraint: "1.17.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "setuptools"
+        version_constraint: "75.1.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+      - name: "jupyter-server"
+        version_constraint: "2.14.0"
+        environment_marker: null
+        extras: []
+        url: null
+        editable: false
+        hash_values: []
+    error: null
+  metadata:
+    difficulty: "hard"
+    edge_case: false
+    extraction_date: '2025-07-25'
+    source_version: uv@0.4.15
+    notes: "Real-world complex uv.lock with transitive dependencies"
