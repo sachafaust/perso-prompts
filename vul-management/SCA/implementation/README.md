@@ -609,6 +609,8 @@ Per Package Analysis (Balanced Efficiency):
 - ❌ `docker-compose.yml` - Use Trivy or Grype for containers
 - ❌ OS package managers (apt, yum, brew) - Focus on code dependencies only
 
+> **📋 Strategic Rationale**: See [Strategic-Focus-Code-Not-Infrastructure.md](Strategic-Focus-Code-Not-Infrastructure.md) for complete design rationale and competitive positioning behind our code-only approach.
+
 ## 🔍 Validation & Quality
 
 ### Hybrid Validation System
