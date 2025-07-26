@@ -2,7 +2,7 @@
 
 ## Test Environment
 - **Target Repository**: rippling-main
-- **Total Packages Analyzed**: 1,202 (555 Python, 598 JavaScript, 49 Docker)
+- **Total Packages Analyzed**: 1,153 (555 Python, 598 JavaScript)
 - **Test Date**: 2025-07-22
 
 ## Model Performance Summary
@@ -42,8 +42,6 @@
 
 **Grok-3 additional**: nth-check, semver, https-proxy-agent, js-yaml, marked, open, undici, fill-range, node-fetch, uglify-js, chalk, core-js, dotenv, fs-extra, postcss, ws, yaml
 
-#### Docker/Container Vulnerabilities
-**Only detected by Grok-3**: postgres, localstack, alpine, yarn
 
 ### 4. Severity Distribution Patterns
 - **Grok-3**: More aggressive in finding critical vulnerabilities (4 vs 1-2)
@@ -56,7 +54,7 @@
 ✅ **Strengths**:
 - Most comprehensive vulnerability detection
 - Excellent coverage across all ecosystems
-- Finds container/Docker vulnerabilities others miss
+- Comprehensive detection across code ecosystems
 
 ❌ **Weaknesses**:
 - Slowest performance (218.4s)
@@ -71,7 +69,7 @@
 
 ❌ **Weaknesses**:
 - Misses some JavaScript vulnerabilities
-- No Docker/container vulnerability detection
+- Focused primarily on critical vulnerabilities
 - No live search capability (despite model name)
 
 ### o1-mini (OpenAI)
