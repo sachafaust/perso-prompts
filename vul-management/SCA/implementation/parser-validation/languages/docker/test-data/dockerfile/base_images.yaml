@@ -1,0 +1,96 @@
+# Docker Parser Validation Test Cases - Base Images
+# Tests for FROM instruction parsing and base image detection
+
+test_cases:
+  - name: "Ubuntu with specific version"
+    description: "Standard Ubuntu base image with version tag"
+    input: |
+      FROM ubuntu:20.04
+      RUN apt-get update
+    expected_packages:
+      - name: "ubuntu"
+        version: "20.04"
+        ecosystem: "docker"
+    validation_notes: "Should parse Ubuntu version correctly"
+
+  - name: "Alpine minimal"
+    description: "Alpine Linux base image - minimal container"
+    input: |
+      FROM alpine:3.14
+      RUN apk add --no-cache python3
+    expected_packages:
+      - name: "alpine"
+        version: "3.14"
+        ecosystem: "docker"
+      - name: "python3"
+        version: "latest"
+        ecosystem: "alpine"
+
+  - name: "Multi-stage build"
+    description: "Multi-stage Dockerfile with different base images"
+    input: |
+      FROM golang:1.17 AS builder
+      WORKDIR /app
+      COPY . .
+      RUN go build -o main .
+      
+      FROM alpine:3.14
+      COPY --from=builder /app/main /app/main
+    expected_packages:
+      - name: "golang"
+        version: "1.17"
+        ecosystem: "docker"
+      - name: "alpine"
+        version: "3.14"
+        ecosystem: "docker"
+
+  - name: "Latest tag handling"
+    description: "Base image with implicit latest tag"
+    input: |
+      FROM node
+      RUN npm install express
+    expected_packages:
+      - name: "node"
+        version: "latest"
+        ecosystem: "docker"
+      - name: "express"
+        version: "latest"
+        ecosystem: "npm"
+
+  - name: "Registry with port"
+    description: "Private registry with port number"
+    input: |
+      FROM registry.example.com:5000/my-app:v1.2.3
+    expected_packages:
+      - name: "registry.example.com:5000/my-app"
+        version: "v1.2.3"
+        ecosystem: "docker"
+
+  - name: "Digest format"
+    description: "Image referenced by digest"
+    input: |
+      FROM ubuntu@sha256:abcdef123456
+    expected_packages:
+      - name: "ubuntu"
+        version: "latest"
+        ecosystem: "docker"
+    validation_notes: "Digest should be handled but version defaults to latest"
+
+  - name: "Scratch image exclusion"
+    description: "Scratch base image should be excluded"
+    input: |
+      FROM scratch
+      COPY app /app
+    expected_packages: []
+    validation_notes: "Scratch is not a real image, should be excluded"
+
+  - name: "Build args in FROM"
+    description: "FROM with build arguments"
+    input: |
+      ARG BASE_IMAGE=ubuntu:20.04
+      FROM ${BASE_IMAGE}
+    expected_packages:
+      - name: "ubuntu"
+        version: "20.04"
+        ecosystem: "docker"
+    validation_notes: "Should resolve build args when possible"

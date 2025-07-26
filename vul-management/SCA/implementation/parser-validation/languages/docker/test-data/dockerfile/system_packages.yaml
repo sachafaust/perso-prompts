@@ -1,0 +1,151 @@
+# Docker Parser Validation Test Cases - System Packages
+# Tests for various package manager installations
+
+test_cases:
+  - name: "apt-get with versions"
+    description: "Debian/Ubuntu packages with specific versions"
+    input: |
+      FROM ubuntu:20.04
+      RUN apt-get update && apt-get install -y \
+          nginx=1.18.0-0ubuntu1.2 \
+          openssl=1.1.1f-1ubuntu2 \
+          curl
+    expected_packages:
+      - name: "ubuntu"
+        version: "20.04"
+        ecosystem: "docker"
+      - name: "nginx"
+        version: "1.18.0-0ubuntu1.2"
+        ecosystem: "debian"
+      - name: "openssl"
+        version: "1.1.1f-1ubuntu2"
+        ecosystem: "debian"
+    validation_notes: "curl excluded as common utility"
+
+  - name: "yum/dnf packages"
+    description: "RHEL/CentOS package installation"
+    input: |
+      FROM centos:8
+      RUN yum install -y httpd-2.4.37 php-7.2.24
+    expected_packages:
+      - name: "centos"
+        version: "8"
+        ecosystem: "docker"
+      - name: "httpd"
+        version: "2.4.37"
+        ecosystem: "rpm"
+      - name: "php"
+        version: "7.2.24"
+        ecosystem: "rpm"
+
+  - name: "apk packages"
+    description: "Alpine Linux package installation"
+    input: |
+      FROM alpine:3.14
+      RUN apk add --no-cache \
+          postgresql=13.8-r0 \
+          redis=6.2.6-r0 \
+          nodejs
+    expected_packages:
+      - name: "alpine"
+        version: "3.14"
+        ecosystem: "docker"
+      - name: "postgresql"
+        version: "13.8-r0"
+        ecosystem: "alpine"
+      - name: "redis"
+        version: "6.2.6-r0"
+        ecosystem: "alpine"
+      - name: "nodejs"
+        version: "latest"
+        ecosystem: "alpine"
+
+  - name: "Mixed package managers"
+    description: "Multiple package managers in one Dockerfile"
+    input: |
+      FROM ubuntu:20.04
+      RUN apt-get update && apt-get install -y python3 python3-pip nodejs npm
+      RUN pip3 install django==3.2.0 requests>=2.25.0
+      RUN npm install -g yarn@1.22.10
+    expected_packages:
+      - name: "ubuntu"
+        version: "20.04"
+        ecosystem: "docker"
+      - name: "python3"
+        version: "latest"
+        ecosystem: "debian"
+      - name: "python3-pip"
+        version: "latest"
+        ecosystem: "debian"
+      - name: "nodejs"
+        version: "latest"
+        ecosystem: "debian"
+      - name: "npm"
+        version: "latest"
+        ecosystem: "debian"
+      - name: "django"
+        version: "3.2.0"
+        ecosystem: "pypi"
+      - name: "requests"
+        version: "2.25.0"
+        ecosystem: "pypi"
+      - name: "yarn"
+        version: "1.22.10"
+        ecosystem: "npm"
+
+  - name: "Complex apt command"
+    description: "apt with environment variables and flags"
+    input: |
+      FROM debian:bullseye
+      RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+          apt-get install -y --no-install-recommends \
+          libssl1.1 \
+          libpq5 \
+          && rm -rf /var/lib/apt/lists/*
+    expected_packages:
+      - name: "debian"
+        version: "bullseye"
+        ecosystem: "docker"
+      - name: "libssl1.1"
+        version: "latest"
+        ecosystem: "debian"
+      - name: "libpq5"
+        version: "latest"
+        ecosystem: "debian"
+
+  - name: "Line continuation handling"
+    description: "Multi-line RUN commands with backslashes"
+    input: |
+      FROM ubuntu:20.04
+      RUN apt-get update \
+          && apt-get install -y \
+             postgresql-client-12 \
+             mysql-client \
+          && apt-get clean
+    expected_packages:
+      - name: "ubuntu"
+        version: "20.04"
+        ecosystem: "docker"
+      - name: "postgresql-client-12"
+        version: "latest"
+        ecosystem: "debian"
+      - name: "mysql-client"
+        version: "latest"
+        ecosystem: "debian"
+
+  - name: "Excluded utilities"
+    description: "Common utilities should be excluded"
+    input: |
+      FROM ubuntu:20.04
+      RUN apt-get update && apt-get install -y \
+          curl wget ca-certificates gnupg \
+          build-essential git make \
+          nginx
+    expected_packages:
+      - name: "ubuntu"
+        version: "20.04"
+        ecosystem: "docker"
+      - name: "nginx"
+        version: "latest"
+        ecosystem: "debian"
+    validation_notes: "All common utilities should be excluded"

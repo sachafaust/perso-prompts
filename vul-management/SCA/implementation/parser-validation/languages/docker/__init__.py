@@ -1,0 +1,1 @@
+"""Docker parser validation module."""
