@@ -1,0 +1,414 @@
+{
+  "test_config": {
+    "model": "grok-3",
+    "packages": [
+      "requests:2.25.1",
+      "django:3.2.0",
+      "lodash:4.17.20",
+      "numpy:1.19.0",
+      "express:4.17.0"
+    ],
+    "num_runs": 5
+  },
+  "raw_results": [
+    {
+      "run_number": 1,
+      "timestamp": "2025-07-26T17:46:23.045768",
+      "packages": {
+        "requests:2.25.1": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "django:3.2.0": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-33203",
+              "severity": "MEDIUM"
+            },
+            {
+              "id": "CVE-2021-33571",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.98
+        },
+        "lodash:4.17.20": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-23337",
+              "severity": "HIGH"
+            },
+            {
+              "id": "CVE-2020-8203",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.99
+        },
+        "express:4.17.0": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-24999",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.9
+        }
+      }
+    },
+    {
+      "run_number": 2,
+      "timestamp": "2025-07-26T17:46:30.259825",
+      "packages": {
+        "requests:2.25.1": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "django:3.2.0": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-33203",
+              "severity": "MEDIUM"
+            },
+            {
+              "id": "CVE-2021-33571",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.98
+        },
+        "lodash:4.17.20": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-23337",
+              "severity": "HIGH"
+            },
+            {
+              "id": "CVE-2020-8203",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.99
+        },
+        "express:4.17.0": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-24999",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.9
+        }
+      }
+    },
+    {
+      "run_number": 3,
+      "timestamp": "2025-07-26T17:46:36.964043",
+      "packages": {
+        "requests:2.25.1": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "django:3.2.0": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-33203",
+              "severity": "MEDIUM"
+            },
+            {
+              "id": "CVE-2021-33571",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.98
+        },
+        "lodash:4.17.20": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-23337",
+              "severity": "HIGH"
+            },
+            {
+              "id": "CVE-2020-8203",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.99
+        },
+        "express:4.17.0": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-24999",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.97
+        }
+      }
+    },
+    {
+      "run_number": 4,
+      "timestamp": "2025-07-26T17:46:47.316391",
+      "packages": {
+        "requests:2.25.1": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "django:3.2.0": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-33203",
+              "severity": "MEDIUM"
+            },
+            {
+              "id": "CVE-2021-33571",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.98
+        },
+        "lodash:4.17.20": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-23337",
+              "severity": "HIGH"
+            },
+            {
+              "id": "CVE-2020-8203",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.99
+        },
+        "express:4.17.0": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-24999",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.97
+        }
+      }
+    },
+    {
+      "run_number": 5,
+      "timestamp": "2025-07-26T17:46:53.987810",
+      "packages": {
+        "requests:2.25.1": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "django:3.2.0": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-33203",
+              "severity": "MEDIUM"
+            },
+            {
+              "id": "CVE-2021-33571",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.98
+        },
+        "lodash:4.17.20": {
+          "cve_count": 2,
+          "cves": [
+            {
+              "id": "CVE-2021-23337",
+              "severity": "HIGH"
+            },
+            {
+              "id": "CVE-2020-8203",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.99
+        },
+        "express:4.17.0": {
+          "cve_count": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-24999",
+              "severity": "HIGH"
+            }
+          ],
+          "confidence": 0.97
+        }
+      }
+    }
+  ],
+  "variance_analysis": {
+    "summary": {
+      "total_runs": 5,
+      "packages_tested": 5,
+      "variance_detected": false
+    },
+    "package_variance": {
+      "requests:2.25.1": {
+        "cve_detection_consistent": true,
+        "severity_assignment_consistent": true,
+        "unique_cves_found": [
+          "CVE-2023-32681"
+        ],
+        "cve_sets_by_run": [
+          [
+            "CVE-2023-32681"
+          ],
+          [
+            "CVE-2023-32681"
+          ],
+          [
+            "CVE-2023-32681"
+          ],
+          [
+            "CVE-2023-32681"
+          ],
+          [
+            "CVE-2023-32681"
+          ]
+        ]
+      },
+      "django:3.2.0": {
+        "cve_detection_consistent": true,
+        "severity_assignment_consistent": true,
+        "unique_cves_found": [
+          "CVE-2021-33203",
+          "CVE-2021-33571"
+        ],
+        "cve_sets_by_run": [
+          [
+            "CVE-2021-33203",
+            "CVE-2021-33571"
+          ],
+          [
+            "CVE-2021-33203",
+            "CVE-2021-33571"
+          ],
+          [
+            "CVE-2021-33203",
+            "CVE-2021-33571"
+          ],
+          [
+            "CVE-2021-33203",
+            "CVE-2021-33571"
+          ],
+          [
+            "CVE-2021-33203",
+            "CVE-2021-33571"
+          ]
+        ]
+      },
+      "lodash:4.17.20": {
+        "cve_detection_consistent": true,
+        "severity_assignment_consistent": true,
+        "unique_cves_found": [
+          "CVE-2020-8203",
+          "CVE-2021-23337"
+        ],
+        "cve_sets_by_run": [
+          [
+            "CVE-2020-8203",
+            "CVE-2021-23337"
+          ],
+          [
+            "CVE-2020-8203",
+            "CVE-2021-23337"
+          ],
+          [
+            "CVE-2020-8203",
+            "CVE-2021-23337"
+          ],
+          [
+            "CVE-2020-8203",
+            "CVE-2021-23337"
+          ],
+          [
+            "CVE-2020-8203",
+            "CVE-2021-23337"
+          ]
+        ]
+      },
+      "numpy:1.19.0": {
+        "cve_detection_consistent": true,
+        "severity_assignment_consistent": true,
+        "unique_cves_found": [],
+        "cve_sets_by_run": [
+          [],
+          [],
+          [],
+          [],
+          []
+        ]
+      },
+      "express:4.17.0": {
+        "cve_detection_consistent": true,
+        "severity_assignment_consistent": true,
+        "unique_cves_found": [
+          "CVE-2022-24999"
+        ],
+        "cve_sets_by_run": [
+          [
+            "CVE-2022-24999"
+          ],
+          [
+            "CVE-2022-24999"
+          ],
+          [
+            "CVE-2022-24999"
+          ],
+          [
+            "CVE-2022-24999"
+          ],
+          [
+            "CVE-2022-24999"
+          ]
+        ]
+      }
+    }
+  }
+}

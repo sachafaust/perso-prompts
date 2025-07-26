@@ -1,0 +1,298 @@
+{
+  "requests:2.25.1": [
+    {
+      "run": 1,
+      "cve_count": 1,
+      "cves": [
+        {
+          "id": "CVE-2023-32681",
+          "severity": "MEDIUM",
+          "description": "Requests library before 2.31.0 allows unintended information disclosure through Proxy-Authorization ..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:07.292234"
+    },
+    {
+      "run": 2,
+      "cve_count": 1,
+      "cves": [
+        {
+          "id": "CVE-2023-32681",
+          "severity": "MEDIUM",
+          "description": "Requests library before 2.31.0 allows unintended information disclosure through a Proxy-Authorizatio..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:08.783771"
+    },
+    {
+      "run": 3,
+      "cve_count": 1,
+      "cves": [
+        {
+          "id": "CVE-2023-32681",
+          "severity": "MEDIUM",
+          "description": "Requests library before 2.31.0 allows unintended information disclosure through Proxy-Authorization ..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:10.488459"
+    },
+    {
+      "run": 4,
+      "cve_count": 1,
+      "cves": [
+        {
+          "id": "CVE-2023-32681",
+          "severity": "MEDIUM",
+          "description": "Requests library before 2.31.0 allows unintended information disclosure through proxy settings due t..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:12.054127"
+    },
+    {
+      "run": 5,
+      "cve_count": 1,
+      "cves": [
+        {
+          "id": "CVE-2023-32681",
+          "severity": "MEDIUM",
+          "description": "Requests library before 2.31.0 allows unintended information disclosure through Proxy-Authorization ..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:13.817922"
+    }
+  ],
+  "django:3.2.0": [
+    {
+      "run": 1,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33203",
+          "severity": "MEDIUM",
+          "description": "Django before 3.2.4 allows file-upload path traversal via a certain crafted filename in the admin in..."
+        },
+        {
+          "id": "CVE-2021-33571",
+          "severity": "HIGH",
+          "description": "Django before 3.2.3 allows remote attackers to cause a denial of service (DoS) via a crafted request..."
+        },
+        {
+          "id": "CVE-2021-35042",
+          "severity": "HIGH",
+          "description": "Django before 3.2.5 is vulnerable to SQL injection via a crafted queryset name in the admin interfac..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:18.668257"
+    },
+    {
+      "run": 2,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33203",
+          "severity": "MEDIUM",
+          "description": "Django before 3.2.4 allows file-upload path traversal via a certain crafted filename in the admin in..."
+        },
+        {
+          "id": "CVE-2021-33571",
+          "severity": "HIGH",
+          "description": "Django before 3.2.4 has a potential SQL injection vulnerability in QuerySet.annotate(), values(), an..."
+        },
+        {
+          "id": "CVE-2021-35042",
+          "severity": "HIGH",
+          "description": "Django before 3.2.5 allows SQL injection via a certain crafted argument to the QuerySet.annotate(), ..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:22.142345"
+    },
+    {
+      "run": 3,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33203",
+          "severity": "MEDIUM",
+          "description": "Django before 3.2.4 allows file-upload path traversal via a certain crafted filename in the admin in..."
+        },
+        {
+          "id": "CVE-2021-33571",
+          "severity": "HIGH",
+          "description": "Django before 3.2.4 has a potential SQL injection vulnerability in QuerySet.annotate(), values(), an..."
+        },
+        {
+          "id": "CVE-2021-35042",
+          "severity": "HIGH",
+          "description": "Django before 3.2.5 allows SQL injection via a certain crafted argument to the QuerySet.filter() met..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:25.419556"
+    },
+    {
+      "run": 4,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33203",
+          "severity": "MEDIUM",
+          "description": "Django before 3.2.4 allows file-upload path traversal via a certain crafted filename in the admin in..."
+        },
+        {
+          "id": "CVE-2021-33571",
+          "severity": "HIGH",
+          "description": "Django before 3.2.4 has a potential SQL injection vulnerability in QuerySet.annotate(), values(), an..."
+        },
+        {
+          "id": "CVE-2021-35042",
+          "severity": "HIGH",
+          "description": "Django before 3.2.5 allows SQL injection via a certain crafted argument to the QuerySet.annotate(), ..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:28.645468"
+    },
+    {
+      "run": 5,
+      "cve_count": 2,
+      "cves": [
+        {
+          "id": "CVE-2021-33203",
+          "severity": "MEDIUM",
+          "description": "Django before 3.2.4 allows file-upload path traversal via a certain crafted filename in the admin in..."
+        },
+        {
+          "id": "CVE-2021-33571",
+          "severity": "HIGH",
+          "description": "Django before 3.2.4 has a potential SQL injection vulnerability in QuerySet.annotate(), values(), an..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:31.717245"
+    }
+  ],
+  "numpy:1.19.0": [
+    {
+      "run": 1,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33430",
+          "severity": "MEDIUM",
+          "description": "A Buffer Overflow vulnerability in the PyArray_NewFromDescrInt function of ctors.c in numpy:1.19.0 a..."
+        },
+        {
+          "id": "CVE-2021-41495",
+          "severity": "MEDIUM",
+          "description": "Null Pointer Dereference vulnerability in numpy:1.19.0 in the PyArray_DescrNew function due to inval..."
+        },
+        {
+          "id": "CVE-2021-41496",
+          "severity": "MEDIUM",
+          "description": "Buffer Overflow vulnerability in numpy:1.19.0 in the array_from_pyobj function of fortranobject.c, w..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:35.284195"
+    },
+    {
+      "run": 2,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33430",
+          "severity": "MEDIUM",
+          "description": "A Buffer Overflow vulnerability in the PyArray_NewFromDescr function of the NumPy package could allo..."
+        },
+        {
+          "id": "CVE-2021-41495",
+          "severity": "MEDIUM",
+          "description": "Null Pointer Dereference vulnerability in the array_from_pyobj function of the NumPy package, which ..."
+        },
+        {
+          "id": "CVE-2021-41496",
+          "severity": "MEDIUM",
+          "description": "Buffer Overflow vulnerability in the array_from_pyobj function of the NumPy package, potentially all..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:38.371201"
+    },
+    {
+      "run": 3,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33430",
+          "severity": "MEDIUM",
+          "description": "A Buffer Overflow vulnerability in the PyArray_NewFromDescr function of the NumPy package could allo..."
+        },
+        {
+          "id": "CVE-2021-41495",
+          "severity": "MEDIUM",
+          "description": "Null Pointer Dereference vulnerability in the array_from_pyobj function of the NumPy package, which ..."
+        },
+        {
+          "id": "CVE-2021-41496",
+          "severity": "MEDIUM",
+          "description": "Buffer Overflow vulnerability in the array_from_pyobj function of the NumPy package, potentially all..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:41.704173"
+    },
+    {
+      "run": 4,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33430",
+          "severity": "MEDIUM",
+          "description": "A Buffer Overflow vulnerability in the PyArray_NewFromDescrInt function of ctors.c in numpy:1.19.0 a..."
+        },
+        {
+          "id": "CVE-2021-41495",
+          "severity": "MEDIUM",
+          "description": "Null Pointer Dereference vulnerability in numpy:1.19.0 in the PyArray_DescrNew function due to inval..."
+        },
+        {
+          "id": "CVE-2021-41496",
+          "severity": "MEDIUM",
+          "description": "Buffer Overflow vulnerability in numpy:1.19.0 in the array_from_pyobj function of fortranobject.c, w..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:45.617932"
+    },
+    {
+      "run": 5,
+      "cve_count": 3,
+      "cves": [
+        {
+          "id": "CVE-2021-33430",
+          "severity": "MEDIUM",
+          "description": "A Buffer Overflow vulnerability in the PyArray_NewFromDescr function of the NumPy package could allo..."
+        },
+        {
+          "id": "CVE-2021-41495",
+          "severity": "MEDIUM",
+          "description": "Null Pointer Dereference vulnerability in the array_from_pyobj function of the NumPy package, which ..."
+        },
+        {
+          "id": "CVE-2021-41496",
+          "severity": "MEDIUM",
+          "description": "Buffer Overflow vulnerability in the array_from_pyobj function of the NumPy package, potentially all..."
+        }
+      ],
+      "confidence": 0.95,
+      "timestamp": "2025-07-26T17:48:50.122162"
+    }
+  ]
+}

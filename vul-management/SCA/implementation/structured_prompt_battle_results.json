@@ -1,0 +1,394 @@
+{
+  "test_config": {
+    "model": "gemini-1.5-flash",
+    "num_runs": 5,
+    "packages": [
+      [
+        "requests",
+        "2.25.1"
+      ],
+      [
+        "django",
+        "3.2.0"
+      ],
+      [
+        "numpy",
+        "1.19.0"
+      ]
+    ]
+  },
+  "unstructured": {
+    "results": [
+      {
+        "error": "Failed to parse JSON",
+        "raw": "I do not have access to real-time information, including live vulnerability databases like the NVD (National Vulnerability Database).  My knowledge is based on the data I was trained on, which has a cutoff point.  Therefore, I cannot provide a completely exhaustive and up-to-the-minute list of CVEs for the specified packages.\n\nTo find the most current information, you should consult these resources directly:\n\n* **National Vulnerability Database (NVD):**  Search for each package and version individually (e.g., \"requests 2.25.1\").  This is the most authoritative source for CVE information.\n* **Package maintainers' websites:** Check the official websites or repositories for the projects (requests, Django, NumPy). They often have security advisories or release notes mentioning known vulnerabilities.\n* **Snyk Advisor:** This website provides vulnerability information for various packages and versions.\n* **GitHub advisories:** Search for security advisories related to the packages on GitHub.\n\n\n**Example of how the JSON would look (this is NOT exhaustive and likely outdated):**\n\n```json\n{\n  \"requests:2.25.1\": {\n    \"cves\": [],\n    \"confidence\": 0.8 \n  },\n  \"django:3.2.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-YYYY-NNNNN\",  // Replace with actual CVE ID if found\n        \"severity\": \"HIGH\",       // Replace with actual severity\n        \"description\": \"Example:  A vulnerability allowing for XSS attacks.\",\n        \"cvss_score\": 7.5         // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.7\n  },\n  \"numpy:1.19.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-ZZZZ-MMMMM\", // Replace with actual CVE ID if found\n        \"severity\": \"MEDIUM\",    // Replace with actual severity\n        \"description\": \"Example:  A potential memory leak.\",\n        \"cvss_score\": 5.0        // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.9\n  }\n}\n```\n\n**Important Note:** The `confidence` score reflects my uncertainty about the completeness of the CVE list due to my limitations.  A higher confidence score indicates a more thorough search (based on my training data), but it's still crucial to verify the information using the resources mentioned above.  The example CVEs and descriptions are placeholders; you must replace them with actual data from the vulnerability databases.\n"
+      },
+      {
+        "error": "Failed to parse JSON",
+        "raw": "I do not have access to real-time information, including live vulnerability databases like the NVD (National Vulnerability Database).  My knowledge is based on the data I was trained on, which has a cutoff point.  Therefore, I cannot provide a completely exhaustive and up-to-the-minute list of CVEs for the specified packages.\n\nTo find the most current information, you should consult these resources directly:\n\n* **National Vulnerability Database (NVD):**  Search for each package and version individually (e.g., \"requests 2.25.1\").  This is the most authoritative source for CVE information.\n* **Package maintainers' websites:** Check the official websites or repositories for the projects (requests, Django, NumPy). They often have security advisories or release notes mentioning known vulnerabilities.\n* **Snyk Advisor:** This website provides vulnerability information for various packages and versions.\n* **GitHub advisories:** Search for security advisories related to the packages on GitHub.\n\n\n**Example of how the JSON would look (this is NOT exhaustive and likely outdated):**\n\n```json\n{\n  \"requests:2.25.1\": {\n    \"cves\": [],\n    \"confidence\": 0.8 \n  },\n  \"django:3.2.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-YYYY-NNNNN\",  // Replace with actual CVE ID if found\n        \"severity\": \"HIGH\",       // Replace with actual severity\n        \"description\": \"Example:  A vulnerability allowing for XSS attacks.\",\n        \"cvss_score\": 7.5         // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.7\n  },\n  \"numpy:1.19.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-ZZZZ-MMMMM\", // Replace with actual CVE ID if found\n        \"severity\": \"MEDIUM\",    // Replace with actual severity\n        \"description\": \"Example:  A potential memory leak.\",\n        \"cvss_score\": 5.0        // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.9\n  }\n}\n```\n\n**Important Note:** The `confidence` score reflects my uncertainty about the completeness of the CVE list due to my limitations.  A higher confidence score indicates a more thorough search (based on my training data), but it's still crucial to verify the information using the resources mentioned above.  The example CVEs and descriptions are placeholders; you must replace them with actual data from the vulnerability databases.\n"
+      },
+      {
+        "error": "Failed to parse JSON",
+        "raw": "I do not have access to real-time information, including live vulnerability databases like the NVD (National Vulnerability Database).  My knowledge is based on the data I was trained on, which has a cutoff point.  Therefore, I cannot provide a completely exhaustive and up-to-the-minute list of CVEs for the specified packages.\n\nTo find the most current information, you should consult these resources directly:\n\n* **National Vulnerability Database (NVD):**  Search for each package and version individually (e.g., \"requests 2.25.1\").  This is the most authoritative source for CVE information.\n* **Package maintainers' websites:** Check the official websites or repositories for the projects (requests, Django, NumPy). They often have security advisories or release notes mentioning known vulnerabilities.\n* **Snyk Advisor:** This website provides vulnerability information for various packages and versions.\n* **GitHub advisories:** Search for security advisories related to the packages on GitHub.\n\n\n**Example of how the JSON would look (this is NOT exhaustive and likely outdated):**\n\n```json\n{\n  \"requests:2.25.1\": {\n    \"cves\": [],\n    \"confidence\": 0.8 \n  },\n  \"django:3.2.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-YYYY-NNNNN\",  // Replace with actual CVE ID if found\n        \"severity\": \"MEDIUM\",     // Replace with actual severity\n        \"description\": \"Example: Potential XSS vulnerability in a specific template engine.\",\n        \"cvss_score\": 5.5        // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.7\n  },\n  \"numpy:1.19.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-ZZZZ-MMMMM\", // Replace with actual CVE ID if found\n        \"severity\": \"LOW\",      // Replace with actual severity\n        \"description\": \"Example: Minor memory leak in a specific function.\",\n        \"cvss_score\": 3.0       // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.9\n  }\n}\n```\n\n**Important Notes:**\n\n* The `confidence` score reflects my uncertainty about the completeness of the CVE list due to my limitations.  A higher confidence score indicates a more thorough search (based on my training data), but it's still not a guarantee of completeness.\n*  Always prioritize information from official sources like the NVD and package maintainers.  My response is for illustrative purposes only and should not be considered a definitive security assessment.\n*  The versions you provided are relatively old.  It's crucial to keep your packages updated to the latest versions to benefit from security patches.\n\n\nRemember to replace the placeholder CVE information with actual data from the resources mentioned above.\n"
+      },
+      {
+        "error": "Failed to parse JSON",
+        "raw": "I do not have access to real-time information, including live vulnerability databases like the NVD (National Vulnerability Database).  My knowledge is based on the data I was trained on, which has a cutoff point.  Therefore, I cannot provide a completely exhaustive and up-to-the-minute list of CVEs for the specified packages.\n\nTo find the most current information, you should consult these resources directly:\n\n* **National Vulnerability Database (NVD):**  Search for each package and version individually (e.g., \"requests 2.25.1\").  This is the most authoritative source for CVE information.\n* **Package maintainers' websites:** Check the official websites or repositories for the projects (requests, Django, NumPy). They often have security advisories or release notes mentioning known vulnerabilities.\n* **Snyk Advisor:** This website provides vulnerability information for various packages and versions.\n* **GitHub advisories:** Search for security advisories related to the packages on GitHub.\n\n\n**Example of how the JSON would look (this is NOT exhaustive and likely outdated):**\n\n```json\n{\n  \"requests:2.25.1\": {\n    \"cves\": [],\n    \"confidence\": 0.8 \n  },\n  \"django:3.2.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-YYYY-NNNNN\",  // Replace with actual CVE ID if found\n        \"severity\": \"MEDIUM\",     // Replace with actual severity\n        \"description\": \"Example vulnerability description.  This is a placeholder.\",\n        \"cvss_score\": 5.5         // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.7\n  },\n  \"numpy:1.19.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-ZZZZ-MMMMM\", // Replace with actual CVE ID if found\n        \"severity\": \"LOW\",      // Replace with actual severity\n        \"description\": \"Another placeholder vulnerability description.\",\n        \"cvss_score\": 2.0       // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.9\n  }\n}\n```\n\n**Important Note:** The `confidence` score reflects my uncertainty about the completeness of the CVE list due to my limitations.  A higher confidence score indicates a more thorough search (based on my training data), but it's still crucial to verify the information using the resources mentioned above.  The CVE IDs, severities, descriptions, and CVSS scores are placeholders and must be replaced with actual data from official sources.\n"
+      },
+      {
+        "error": "Failed to parse JSON",
+        "raw": "I do not have access to real-time information, including live vulnerability databases like the NVD (National Vulnerability Database).  My knowledge is based on the data I was trained on, which has a cutoff point.  Therefore, I cannot provide a completely exhaustive and up-to-the-minute list of CVEs for the specified packages.\n\nTo find the most current information, you should consult these resources directly:\n\n* **National Vulnerability Database (NVD):**  Search for each package and version individually (e.g., \"requests 2.25.1\").  This is the most authoritative source for CVE information.\n* **Package maintainers' websites:** Check the official websites or repositories for the packages (requests, Django, NumPy). They often have security advisories or release notes mentioning known vulnerabilities.\n* **Snyk Advisor:** This website provides vulnerability information for various packages and versions.\n* **GitHub advisories:** Search for security advisories related to the packages on GitHub.\n\n\n**Example of how the JSON would look (this is NOT exhaustive and likely outdated):**\n\n```json\n{\n  \"requests:2.25.1\": {\n    \"cves\": [],\n    \"confidence\": 0.8 \n  },\n  \"django:3.2.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-YYYY-NNNNN\",  // Replace with actual CVE ID if found\n        \"severity\": \"HIGH\",       // Replace with actual severity\n        \"description\": \"Example:  A vulnerability allowing for XSS attacks.\",\n        \"cvss_score\": 7.5         // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.9\n  },\n  \"numpy:1.19.0\": {\n    \"cves\": [\n      {\n        \"id\": \"CVE-ZZZZ-MMMMM\", // Replace with actual CVE ID if found\n        \"severity\": \"MEDIUM\",    // Replace with actual severity\n        \"description\": \"Example:  A potential memory leak.\",\n        \"cvss_score\": 5.0        // Replace with actual CVSS score\n      }\n    ],\n    \"confidence\": 0.7\n  }\n}\n```\n\n**Important Note:** The `confidence` score reflects my uncertainty about the completeness of the CVE list due to my limitations.  A higher confidence score indicates a more thorough search (based on my training data), but it's still crucial to verify the information using the resources mentioned above.  The example CVEs and descriptions are placeholders; you must replace them with actual data from vulnerability databases.\n"
+      }
+    ],
+    "variance": {
+      "cve_variance": false,
+      "severity_variance": false,
+      "count_variance": false,
+      "details": {
+        "requests:2.25.1": {
+          "counts": [],
+          "unique_cve_count": 0
+        },
+        "django:3.2.0": {
+          "counts": [],
+          "unique_cve_count": 0
+        },
+        "numpy:1.19.0": {
+          "counts": [],
+          "unique_cve_count": 0
+        }
+      }
+    }
+  },
+  "structured": {
+    "results": [
+      {
+        "scan_metadata": {
+          "search_depth_years": 10,
+          "search_method": "systematic_year_by_year",
+          "completeness": "exhaustive"
+        },
+        "requests:2.25.1": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "django:3.2.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "numpy:1.19.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        }
+      },
+      {
+        "scan_metadata": {
+          "search_depth_years": 10,
+          "search_method": "systematic_year_by_year",
+          "completeness": "exhaustive"
+        },
+        "requests:2.25.1": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "django:3.2.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "numpy:1.19.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        }
+      },
+      {
+        "scan_metadata": {
+          "search_depth_years": 10,
+          "search_method": "systematic_year_by_year",
+          "completeness": "exhaustive"
+        },
+        "requests:2.25.1": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "django:3.2.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "numpy:1.19.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        }
+      },
+      {
+        "scan_metadata": {
+          "search_depth_years": 10,
+          "search_method": "systematic_year_by_year",
+          "completeness": "exhaustive"
+        },
+        "requests:2.25.1": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "django:3.2.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "numpy:1.19.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        }
+      },
+      {
+        "scan_metadata": {
+          "search_depth_years": 10,
+          "search_method": "systematic_year_by_year",
+          "completeness": "exhaustive"
+        },
+        "requests:2.25.1": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "django:3.2.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        },
+        "numpy:1.19.0": {
+          "total_cves_found": 0,
+          "cves": [],
+          "search_years_completed": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015",
+            "2014"
+          ]
+        }
+      }
+    ],
+    "variance": {
+      "cve_variance": false,
+      "severity_variance": false,
+      "count_variance": false,
+      "details": {
+        "requests:2.25.1": {
+          "counts": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "unique_cve_count": 0
+        },
+        "django:3.2.0": {
+          "counts": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "unique_cve_count": 0
+        },
+        "numpy:1.19.0": {
+          "counts": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "unique_cve_count": 0
+        }
+      }
+    }
+  }
+}

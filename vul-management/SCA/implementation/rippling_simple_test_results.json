@@ -1,0 +1,728 @@
+{
+  "test_packages": [
+    {
+      "name": "django",
+      "version": "3.2.12"
+    },
+    {
+      "name": "requests",
+      "version": "2.27.1"
+    },
+    {
+      "name": "psycopg2",
+      "version": "2.9.1"
+    },
+    {
+      "name": "celery",
+      "version": "5.2.3"
+    },
+    {
+      "name": "redis",
+      "version": "4.1.4"
+    },
+    {
+      "name": "boto3",
+      "version": "1.21.21"
+    },
+    {
+      "name": "flask",
+      "version": "2.0.3"
+    },
+    {
+      "name": "sqlalchemy",
+      "version": "1.4.32"
+    },
+    {
+      "name": "pyjwt",
+      "version": "2.3.0"
+    },
+    {
+      "name": "cryptography",
+      "version": "36.0.1"
+    }
+  ],
+  "unstructured": {
+    "results": [
+      {
+        "django:3.2.12": {
+          "cves": [
+            {
+              "id": "CVE-2022-22818",
+              "severity": "HIGH",
+              "description": "Django 3.2.x before 3.2.12 is vulnerable to XSS via the admin interface when using certain template tags with unescaped user input.",
+              "cvss_score": 7.5
+            },
+            {
+              "id": "CVE-2022-23833",
+              "severity": "MEDIUM",
+              "description": "Denial of service vulnerability in Django 3.2.x before 3.2.13 due to potential resource exhaustion in file uploads.",
+              "cvss_score": 5.3
+            }
+          ],
+          "confidence": 0.95
+        },
+        "requests:2.27.1": {
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM",
+              "description": "Requests 2.3.0 through 2.30.0 is vulnerable to leaking Proxy-Authorization headers to destination servers when redirected to an HTTPS endpoint.",
+              "cvss_score": 6.1
+            }
+          ],
+          "confidence": 0.9
+        },
+        "flask:2.0.3": {
+          "cves": [
+            {
+              "id": "CVE-2023-30861",
+              "severity": "HIGH",
+              "description": "Flask 2.0.0 through 2.2.4 is vulnerable to improper handling of JSON data, potentially leading to information disclosure or code execution.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.92
+        },
+        "pyjwt:2.3.0": {
+          "cves": [
+            {
+              "id": "CVE-2022-29217",
+              "severity": "HIGH",
+              "description": "PyJWT 2.0.0 through 2.3.0 is vulnerable to a key confusion attack, allowing attackers to use a public key as a private key for token verification.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.95
+        },
+        "cryptography:36.0.1": {
+          "cves": [
+            {
+              "id": "CVE-2023-0286",
+              "severity": "HIGH",
+              "description": "Cryptography versions before 39.0.1 are vulnerable to a timing attack in RSA decryption, potentially leading to private key recovery.",
+              "cvss_score": 7.4
+            }
+          ],
+          "confidence": 0.93
+        }
+      },
+      {
+        "django:3.2.12": {
+          "cves": [
+            {
+              "id": "CVE-2022-22818",
+              "severity": "HIGH",
+              "description": "Potential XSS vulnerability in the handling of error messages in Django's admin interface.",
+              "cvss_score": 7.5
+            },
+            {
+              "id": "CVE-2022-23833",
+              "severity": "MEDIUM",
+              "description": "Denial of service vulnerability in Django's URLValidator with certain inputs.",
+              "cvss_score": 5.3
+            }
+          ],
+          "confidence": 0.95
+        },
+        "requests:2.27.1": {
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM",
+              "description": "Exposure of Proxy-Authorization headers to unintended hosts due to improper stripping of credentials.",
+              "cvss_score": 6.1
+            }
+          ],
+          "confidence": 0.9
+        },
+        "celery:5.2.3": {
+          "cves": [
+            {
+              "id": "CVE-2022-23772",
+              "severity": "CRITICAL",
+              "description": "Potential remote code execution due to improper input validation in Celery's message deserialization.",
+              "cvss_score": 9.8
+            }
+          ],
+          "confidence": 0.85
+        },
+        "flask:2.0.3": {
+          "cves": [
+            {
+              "id": "CVE-2023-30861",
+              "severity": "HIGH",
+              "description": "Improper input validation in Flask's request handling could lead to potential security bypass.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.9
+        },
+        "pyjwt:2.3.0": {
+          "cves": [
+            {
+              "id": "CVE-2022-29217",
+              "severity": "HIGH",
+              "description": "Key confusion vulnerability allowing attackers to bypass signature verification with a public key.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.95
+        },
+        "cryptography:36.0.1": {
+          "cves": [
+            {
+              "id": "CVE-2023-0286",
+              "severity": "HIGH",
+              "description": "X.509 certificate parsing vulnerability leading to potential denial of service.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.95
+        }
+      },
+      {
+        "django:3.2.12": {
+          "cves": [
+            {
+              "id": "CVE-2022-28346",
+              "severity": "HIGH",
+              "description": "Django 3.2.x before 3.2.13 allows SQL Injection via a certain invalid keyword argument to QuerySet.annotate(), values(), or values_list().",
+              "cvss_score": 7.5
+            },
+            {
+              "id": "CVE-2022-28347",
+              "severity": "HIGH",
+              "description": "Django 3.2.x before 3.2.13 has a potential memory disclosure in the handling of large multi-part file uploads.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.95
+        },
+        "requests:2.27.1": {
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM",
+              "description": "Requests before 2.31.0 is vulnerable to leaking Proxy-Authorization headers to destination servers when redirected to an HTTPS endpoint. This is a supply chain issue if sensitive proxy credentials are exposed.",
+              "cvss_score": 6.1
+            }
+          ],
+          "confidence": 0.9
+        },
+        "flask:2.0.3": {
+          "cves": [
+            {
+              "id": "CVE-2023-30861",
+              "severity": "HIGH",
+              "description": "Flask before 2.3.2 is vulnerable to session cookie theft due to improper handling of cookie values, potentially allowing attackers to steal session data.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.92
+        },
+        "pyjwt:2.3.0": {
+          "cves": [
+            {
+              "id": "CVE-2022-29217",
+              "severity": "HIGH",
+              "description": "PyJWT before 2.4.0 is vulnerable to key confusion attacks when a malicious JWT token specifies a public key as the verification key, potentially allowing attackers to bypass authentication.",
+              "cvss_score": 7.5
+            }
+          ],
+          "confidence": 0.95
+        },
+        "cryptography:36.0.1": {
+          "cves": [
+            {
+              "id": "CVE-2023-0286",
+              "severity": "HIGH",
+              "description": "Cryptography before 39.0.1 is vulnerable to a timing attack in the handling of invalid PKCS1 padding, potentially allowing attackers to recover plaintext.",
+              "cvss_score": 7.4
+            }
+          ],
+          "confidence": 0.93
+        }
+      }
+    ],
+    "analysis": {
+      "successful_runs": 3,
+      "total_packages": 6,
+      "consistent_packages": 4,
+      "variant_packages": 2,
+      "consistency_percentage": 66.66666666666666,
+      "packages_found": [
+        "celery:5.2.3",
+        "cryptography:36.0.1",
+        "django:3.2.12",
+        "flask:2.0.3",
+        "pyjwt:2.3.0",
+        "requests:2.27.1"
+      ]
+    }
+  },
+  "structured": {
+    "results": [
+      {
+        "search_metadata": {
+          "packages_analyzed": 10,
+          "search_years": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ],
+          "method": "systematic"
+        },
+        "django:3.2.12": {
+          "total_cves": 3,
+          "cves": [
+            {
+              "id": "CVE-2023-36053",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2023-36053 in django: Denial of Service via memory exhaustion in re.compile(). CVSS: 7.5",
+              "year": "2023"
+            },
+            {
+              "id": "CVE-2022-28346",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-28346 in django: SQL Injection vulnerability in QuerySet.annotate(). CVSS: 7.5",
+              "year": "2022"
+            },
+            {
+              "id": "CVE-2021-35042",
+              "severity": "HIGH",
+              "cvss_score": 7.2,
+              "description": "CVE-2021-35042 in django: SQL Injection via QuerySet.order_by(). CVSS: 7.2",
+              "year": "2021"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "requests:2.27.1": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM",
+              "cvss_score": 6.1,
+              "description": "CVE-2023-32681 in requests: Unintended leak of Proxy-Authorization header. CVSS: 6.1",
+              "year": "2023"
+            }
+          ],
+          "confidence": 0.9
+        },
+        "psycopg2:2.9.1": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "celery:5.2.3": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2021-23727",
+              "severity": "HIGH",
+              "cvss_score": 7.8,
+              "description": "CVE-2021-23727 in celery: Command injection via task message deserialization. CVSS: 7.8",
+              "year": "2021"
+            }
+          ],
+          "confidence": 0.88
+        },
+        "redis:4.1.4": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "boto3:1.21.21": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "flask:2.0.3": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-30861",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2023-30861 in flask: Cookie parsing vulnerability leading to session tampering. CVSS: 7.5",
+              "year": "2023"
+            }
+          ],
+          "confidence": 0.9
+        },
+        "sqlalchemy:1.4.32": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-40720",
+              "severity": "MEDIUM",
+              "cvss_score": 5.3,
+              "description": "CVE-2022-40720 in sqlalchemy: Improper handling of special characters in SQL queries. CVSS: 5.3",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.87
+        },
+        "pyjwt:2.3.0": {
+          "total_cves": 2,
+          "cves": [
+            {
+              "id": "CVE-2022-29217",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-29217 in pyjwt: Key confusion vulnerability in JWT verification. CVSS: 7.5",
+              "year": "2022"
+            },
+            {
+              "id": "CVE-2020-28469",
+              "severity": "MEDIUM",
+              "cvss_score": 6.5,
+              "description": "CVE-2020-28469 in pyjwt: Improper validation of JWT tokens. CVSS: 6.5",
+              "year": "2020"
+            }
+          ],
+          "confidence": 0.92
+        },
+        "cryptography:36.0.1": {
+          "total_cves": 2,
+          "cves": [
+            {
+              "id": "CVE-2023-0286",
+              "severity": "HIGH",
+              "cvss_score": 7.4,
+              "description": "CVE-2023-0286 in cryptography: Timing attack in RSA decryption. CVSS: 7.4",
+              "year": "2023"
+            },
+            {
+              "id": "CVE-2022-3602",
+              "severity": "HIGH",
+              "cvss_score": 7.8,
+              "description": "CVE-2022-3602 in cryptography: Buffer overflow in X.509 certificate parsing. CVSS: 7.8",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.95
+        }
+      },
+      {
+        "search_metadata": {
+          "packages_analyzed": 10,
+          "search_years": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ],
+          "method": "systematic"
+        },
+        "django:3.2.12": {
+          "total_cves": 3,
+          "cves": [
+            {
+              "id": "CVE-2023-41164",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2023-41164 in django: Denial of Service. CVSS: 7.5",
+              "year": "2023"
+            },
+            {
+              "id": "CVE-2022-28346",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-28346 in django: SQL Injection. CVSS: 7.5",
+              "year": "2022"
+            },
+            {
+              "id": "CVE-2021-35042",
+              "severity": "HIGH",
+              "cvss_score": 7.2,
+              "description": "CVE-2021-35042 in django: SQL Injection. CVSS: 7.2",
+              "year": "2021"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "requests:2.27.1": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM",
+              "cvss_score": 6.1,
+              "description": "CVE-2023-32681 in requests: Information Disclosure. CVSS: 6.1",
+              "year": "2023"
+            }
+          ],
+          "confidence": 0.9
+        },
+        "psycopg2:2.9.1": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "celery:5.2.3": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-23772",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-23772 in celery: Remote Code Execution. CVSS: 7.5",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.88
+        },
+        "redis:4.1.4": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.8
+        },
+        "boto3:1.21.21": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "flask:2.0.3": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-30861",
+              "severity": "MEDIUM",
+              "cvss_score": 6.5,
+              "description": "CVE-2023-30861 in flask: Cookie Parsing Vulnerability. CVSS: 6.5",
+              "year": "2023"
+            }
+          ],
+          "confidence": 0.92
+        },
+        "sqlalchemy:1.4.32": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-40720",
+              "severity": "MEDIUM",
+              "cvss_score": 5.4,
+              "description": "CVE-2022-40720 in sqlalchemy: Information Disclosure. CVSS: 5.4",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.87
+        },
+        "pyjwt:2.3.0": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-29217",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-29217 in pyjwt: Key Confusion Attack. CVSS: 7.5",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.93
+        },
+        "cryptography:36.0.1": {
+          "total_cves": 2,
+          "cves": [
+            {
+              "id": "CVE-2023-0286",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2023-0286 in cryptography: Denial of Service. CVSS: 7.5",
+              "year": "2023"
+            },
+            {
+              "id": "CVE-2022-3602",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-3602 in cryptography: Buffer Overflow. CVSS: 7.5",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.94
+        }
+      },
+      {
+        "search_metadata": {
+          "packages_analyzed": 10,
+          "search_years": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ],
+          "method": "systematic"
+        },
+        "django:3.2.12": {
+          "total_cves": 3,
+          "cves": [
+            {
+              "id": "CVE-2023-41164",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2023-41164 in django: Denial of Service. CVSS: 7.5",
+              "year": "2023"
+            },
+            {
+              "id": "CVE-2022-28346",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-28346 in django: SQL Injection. CVSS: 7.5",
+              "year": "2022"
+            },
+            {
+              "id": "CVE-2021-35042",
+              "severity": "HIGH",
+              "cvss_score": 7.2,
+              "description": "CVE-2021-35042 in django: SQL Injection. CVSS: 7.2",
+              "year": "2021"
+            }
+          ],
+          "confidence": 0.95
+        },
+        "requests:2.27.1": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-32681",
+              "severity": "MEDIUM",
+              "cvss_score": 6.1,
+              "description": "CVE-2023-32681 in requests: Information Disclosure. CVSS: 6.1",
+              "year": "2023"
+            }
+          ],
+          "confidence": 0.9
+        },
+        "psycopg2:2.9.1": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "celery:5.2.3": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-23772",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-23772 in celery: Denial of Service. CVSS: 7.5",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.88
+        },
+        "redis:4.1.4": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "boto3:1.21.21": {
+          "total_cves": 0,
+          "cves": [],
+          "confidence": 0.85
+        },
+        "flask:2.0.3": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2023-30861",
+              "severity": "MEDIUM",
+              "cvss_score": 6.5,
+              "description": "CVE-2023-30861 in flask: Information Disclosure. CVSS: 6.5",
+              "year": "2023"
+            }
+          ],
+          "confidence": 0.9
+        },
+        "sqlalchemy:1.4.32": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-40720",
+              "severity": "MEDIUM",
+              "cvss_score": 5.4,
+              "description": "CVE-2022-40720 in sqlalchemy: Information Disclosure. CVSS: 5.4",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.87
+        },
+        "pyjwt:2.3.0": {
+          "total_cves": 1,
+          "cves": [
+            {
+              "id": "CVE-2022-29217",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-29217 in pyjwt: Key Confusion. CVSS: 7.5",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.92
+        },
+        "cryptography:36.0.1": {
+          "total_cves": 2,
+          "cves": [
+            {
+              "id": "CVE-2023-50782",
+              "severity": "MEDIUM",
+              "cvss_score": 5.9,
+              "description": "CVE-2023-50782 in cryptography: Denial of Service. CVSS: 5.9",
+              "year": "2023"
+            },
+            {
+              "id": "CVE-2022-3602",
+              "severity": "HIGH",
+              "cvss_score": 7.5,
+              "description": "CVE-2022-3602 in cryptography: Buffer Overflow. CVSS: 7.5",
+              "year": "2022"
+            }
+          ],
+          "confidence": 0.93
+        }
+      }
+    ],
+    "analysis": {
+      "successful_runs": 3,
+      "total_packages": 10,
+      "consistent_packages": 6,
+      "variant_packages": 4,
+      "consistency_percentage": 60.0,
+      "packages_found": [
+        "boto3:1.21.21",
+        "celery:5.2.3",
+        "cryptography:36.0.1",
+        "django:3.2.12",
+        "flask:2.0.3",
+        "psycopg2:2.9.1",
+        "pyjwt:2.3.0",
+        "redis:4.1.4",
+        "requests:2.27.1",
+        "sqlalchemy:1.4.32"
+      ]
+    }
+  }
+}

@@ -1,0 +1,888 @@
+{
+  "test_package": "django:3.2.12",
+  "approach_a": {
+    "name": "Explicit Line Per Year",
+    "results": [
+      {
+        "cves": [
+          "CVE-2022-41765",
+          "CVE-2022-36394",
+          "CVE-2022-34265",
+          "CVE-2022-28737",
+          "CVE-2021-35042"
+        ],
+        "years_with_cves": [
+          "2021",
+          "2022"
+        ],
+        "total_cves": 5,
+        "search_metadata": {
+          "years_searched": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ]
+        },
+        "raw_cves": [
+          {
+            "id": "CVE-2022-41765",
+            "year": "2022",
+            "description": "Django before 3.2.17 and 4.1 before 4.1.5 allows Host header poisoning via django.utils.http.is_safe_url."
+          },
+          {
+            "id": "CVE-2022-36394",
+            "year": "2022",
+            "description": "Potential SQL injection vulnerability in contrib.postgres.search lookup."
+          },
+          {
+            "id": "CVE-2022-34265",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.14 and 4.0 before 4.0.6 allows Denial of Service (DoS) via a large number of requests with certain query string parameters."
+          },
+          {
+            "id": "CVE-2022-28737",
+            "year": "2022",
+            "description": "Trunc(kind) and other similar database functions in Django 3.2 before 3.2.13 and 4.0 before 4.0.4 allow queryset modification during iteration."
+          },
+          {
+            "id": "CVE-2021-35042",
+            "year": "2021",
+            "description": "A potential denial-of-service vulnerability was discovered in versions of Django prior to 3.2.9 and 4.0b1.  A carefully crafted string could trigger excessive regular expression backtracking in django.utils.html.urlize."
+          }
+        ]
+      },
+      {
+        "cves": [
+          "CVE-2022-41138",
+          "CVE-2022-36390",
+          "CVE-2022-34265",
+          "CVE-2022-28346",
+          "CVE-2021-45115",
+          "CVE-2021-35042",
+          "CVE-2021-33203"
+        ],
+        "years_with_cves": [
+          "2021",
+          "2022"
+        ],
+        "total_cves": 7,
+        "search_metadata": {
+          "years_searched": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ]
+        },
+        "raw_cves": [
+          {
+            "id": "CVE-2022-41138",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.16 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+          },
+          {
+            "id": "CVE-2022-36390",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.15 and 4.1 before 4.1.1 allows Denial of Service (DoS) via a large number of requests with certain HTTP headers."
+          },
+          {
+            "id": "CVE-2022-34265",
+            "year": "2022",
+            "description": "Possible SQL injection via StringAgg(delimiter)."
+          },
+          {
+            "id": "CVE-2022-28346",
+            "year": "2022",
+            "description": "Trunc(kind) and Extract(lookup_name) database functions were vulnerable to SQL injection if untrusted data was used in the kind or lookup_name arguments."
+          },
+          {
+            "id": "CVE-2021-45115",
+            "year": "2021",
+            "description": "A potential denial of service vulnerability was discovered in versions prior to 3.2.10, 3.1.14, and 2.2.25 in the implementation of the Trunc and Extract database functions. By passing carefully crafted arguments to these functions, it was possible to cause excessive database server CPU usage."
+          },
+          {
+            "id": "CVE-2021-35042",
+            "year": "2021",
+            "description": "Potential SQL injection vulnerability via StringAgg delimiter in Django 3.2.x before 3.2.4 and 3.1.x before 3.1.13."
+          },
+          {
+            "id": "CVE-2021-33203",
+            "year": "2021",
+            "description": "Limited regular expression denial of service (ReDoS) vulnerability in urlresolvers in Django 2.2 before 2.2.18, 3.1 before 3.1.13, and 3.2 before 3.2.4."
+          }
+        ]
+      },
+      {
+        "cves": [
+          "CVE-2022-45343",
+          "CVE-2022-36390",
+          "CVE-2022-34265",
+          "CVE-2022-28346",
+          "CVE-2021-35370",
+          "CVE-2021-33281"
+        ],
+        "years_with_cves": [
+          "2021",
+          "2022"
+        ],
+        "total_cves": 6,
+        "search_metadata": {
+          "years_searched": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ]
+        },
+        "raw_cves": [
+          {
+            "id": "CVE-2022-45343",
+            "year": "2022",
+            "description": "Django before 3.2.17 and 4.0 before 4.0.8 allows Host header poisoning via django.http.request.HttpRequest.get_host() because a double slash can be used in the HTTP_HOST header."
+          },
+          {
+            "id": "CVE-2022-36390",
+            "year": "2022",
+            "description": "Possible SQL injection via StringAgg(delimiter)."
+          },
+          {
+            "id": "CVE-2022-34265",
+            "year": "2022",
+            "description": "Trunc(kind) and Extract(kind) database functions were subject to a potential SQL injection vulnerability when used with untrusted data in query parameters."
+          },
+          {
+            "id": "CVE-2022-28346",
+            "year": "2022",
+            "description": "Potential denial of service vulnerability in URLValidator."
+          },
+          {
+            "id": "CVE-2021-35370",
+            "year": "2021",
+            "description": "Improper restriction of XML external entity reference in the contrib.gis.gdal module allows attackers to conduct server-side request forgery (SSRF) attacks via a crafted GDAL dataset."
+          },
+          {
+            "id": "CVE-2021-33281",
+            "year": "2021",
+            "description": "Potential SQL injection vulnerability via StringAgg(delimiter)."
+          }
+        ]
+      }
+    ],
+    "analysis": {
+      "successful_runs": 3,
+      "total_unique_cves": 13,
+      "all_cves": [
+        "CVE-2021-33203",
+        "CVE-2021-33281",
+        "CVE-2021-35042",
+        "CVE-2021-35370",
+        "CVE-2021-45115",
+        "CVE-2022-28346",
+        "CVE-2022-28737",
+        "CVE-2022-34265",
+        "CVE-2022-36390",
+        "CVE-2022-36394",
+        "CVE-2022-41138",
+        "CVE-2022-41765",
+        "CVE-2022-45343"
+      ],
+      "years_with_cves": [
+        "2021",
+        "2022"
+      ],
+      "year_coverage": 2,
+      "is_consistent": false,
+      "variance_count": 3,
+      "cve_lists": [
+        [
+          "CVE-2021-35042",
+          "CVE-2022-28737",
+          "CVE-2022-34265",
+          "CVE-2022-36394",
+          "CVE-2022-41765"
+        ],
+        [
+          "CVE-2021-33203",
+          "CVE-2021-35042",
+          "CVE-2021-45115",
+          "CVE-2022-28346",
+          "CVE-2022-34265",
+          "CVE-2022-36390",
+          "CVE-2022-41138"
+        ],
+        [
+          "CVE-2021-33281",
+          "CVE-2021-35370",
+          "CVE-2022-28346",
+          "CVE-2022-34265",
+          "CVE-2022-36390",
+          "CVE-2022-45343"
+        ]
+      ],
+      "raw_results": [
+        {
+          "cves": [
+            "CVE-2022-41765",
+            "CVE-2022-36394",
+            "CVE-2022-34265",
+            "CVE-2022-28737",
+            "CVE-2021-35042"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 5,
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-41765",
+              "year": "2022",
+              "description": "Django before 3.2.17 and 4.1 before 4.1.5 allows Host header poisoning via django.utils.http.is_safe_url."
+            },
+            {
+              "id": "CVE-2022-36394",
+              "year": "2022",
+              "description": "Potential SQL injection vulnerability in contrib.postgres.search lookup."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.14 and 4.0 before 4.0.6 allows Denial of Service (DoS) via a large number of requests with certain query string parameters."
+            },
+            {
+              "id": "CVE-2022-28737",
+              "year": "2022",
+              "description": "Trunc(kind) and other similar database functions in Django 3.2 before 3.2.13 and 4.0 before 4.0.4 allow queryset modification during iteration."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "A potential denial-of-service vulnerability was discovered in versions of Django prior to 3.2.9 and 4.0b1.  A carefully crafted string could trigger excessive regular expression backtracking in django.utils.html.urlize."
+            }
+          ]
+        },
+        {
+          "cves": [
+            "CVE-2022-41138",
+            "CVE-2022-36390",
+            "CVE-2022-34265",
+            "CVE-2022-28346",
+            "CVE-2021-45115",
+            "CVE-2021-35042",
+            "CVE-2021-33203"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 7,
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-41138",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.16 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+            },
+            {
+              "id": "CVE-2022-36390",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.15 and 4.1 before 4.1.1 allows Denial of Service (DoS) via a large number of requests with certain HTTP headers."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Possible SQL injection via StringAgg(delimiter)."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Trunc(kind) and Extract(lookup_name) database functions were vulnerable to SQL injection if untrusted data was used in the kind or lookup_name arguments."
+            },
+            {
+              "id": "CVE-2021-45115",
+              "year": "2021",
+              "description": "A potential denial of service vulnerability was discovered in versions prior to 3.2.10, 3.1.14, and 2.2.25 in the implementation of the Trunc and Extract database functions. By passing carefully crafted arguments to these functions, it was possible to cause excessive database server CPU usage."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "Potential SQL injection vulnerability via StringAgg delimiter in Django 3.2.x before 3.2.4 and 3.1.x before 3.1.13."
+            },
+            {
+              "id": "CVE-2021-33203",
+              "year": "2021",
+              "description": "Limited regular expression denial of service (ReDoS) vulnerability in urlresolvers in Django 2.2 before 2.2.18, 3.1 before 3.1.13, and 3.2 before 3.2.4."
+            }
+          ]
+        },
+        {
+          "cves": [
+            "CVE-2022-45343",
+            "CVE-2022-36390",
+            "CVE-2022-34265",
+            "CVE-2022-28346",
+            "CVE-2021-35370",
+            "CVE-2021-33281"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 6,
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-45343",
+              "year": "2022",
+              "description": "Django before 3.2.17 and 4.0 before 4.0.8 allows Host header poisoning via django.http.request.HttpRequest.get_host() because a double slash can be used in the HTTP_HOST header."
+            },
+            {
+              "id": "CVE-2022-36390",
+              "year": "2022",
+              "description": "Possible SQL injection via StringAgg(delimiter)."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Trunc(kind) and Extract(kind) database functions were subject to a potential SQL injection vulnerability when used with untrusted data in query parameters."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Potential denial of service vulnerability in URLValidator."
+            },
+            {
+              "id": "CVE-2021-35370",
+              "year": "2021",
+              "description": "Improper restriction of XML external entity reference in the contrib.gis.gdal module allows attackers to conduct server-side request forgery (SSRF) attacks via a crafted GDAL dataset."
+            },
+            {
+              "id": "CVE-2021-33281",
+              "year": "2021",
+              "description": "Potential SQL injection vulnerability via StringAgg(delimiter)."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "approach_b": {
+    "name": "Compact Systematic",
+    "results": [
+      {
+        "cves": [
+          "CVE-2022-41765",
+          "CVE-2022-36390",
+          "CVE-2022-34265",
+          "CVE-2022-28346",
+          "CVE-2021-45115",
+          "CVE-2021-35042"
+        ],
+        "years_with_cves": [
+          "2021",
+          "2022"
+        ],
+        "total_cves": 6,
+        "search_metadata": {
+          "years_searched": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ]
+        },
+        "raw_cves": [
+          {
+            "id": "CVE-2022-41765",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.13 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+          },
+          {
+            "id": "CVE-2022-36390",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.4 allows denial of service via regular expression backtracking in django.utils.html.urlize."
+          },
+          {
+            "id": "CVE-2022-34265",
+            "year": "2022",
+            "description": "Possible SQL injection via StringAgg(delimiter)."
+          },
+          {
+            "id": "CVE-2022-28346",
+            "year": "2022",
+            "description": "Trunc(kind='month') can cause a ValueError."
+          },
+          {
+            "id": "CVE-2021-45115",
+            "year": "2021",
+            "description": "Django 3.1 before 3.1.14 and 3.2 before 3.2.9 allows denial of service via regular expression backtracking in django.utils.html.urlize."
+          },
+          {
+            "id": "CVE-2021-35042",
+            "year": "2021",
+            "description": "Potential SQL injection vulnerability via StringAgg(delimiter)."
+          }
+        ]
+      },
+      {
+        "cves": [
+          "CVE-2022-41765",
+          "CVE-2022-36390",
+          "CVE-2022-34265",
+          "CVE-2022-28346",
+          "CVE-2021-45115",
+          "CVE-2021-41857",
+          "CVE-2021-35042"
+        ],
+        "years_with_cves": [
+          "2021",
+          "2022"
+        ],
+        "total_cves": 7,
+        "search_metadata": {
+          "years_searched": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ]
+        },
+        "raw_cves": [
+          {
+            "id": "CVE-2022-41765",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.13 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+          },
+          {
+            "id": "CVE-2022-36390",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.4 allows denial of service via regular expression backtracking in URLValidator."
+          },
+          {
+            "id": "CVE-2022-34265",
+            "year": "2022",
+            "description": "Possible account takeover via password reset in Django 3.2 before 3.2.9 and 4.0 before 4.0.3."
+          },
+          {
+            "id": "CVE-2022-28346",
+            "year": "2022",
+            "description": "Improper Access Control vulnerability in get_object_or_404() in Django 3.2 before 3.2.5 and 4.0 before 4.0.1 allows attackers to bypass intended access restrictions."
+          },
+          {
+            "id": "CVE-2021-45115",
+            "year": "2021",
+            "description": "Potential SQL injection vulnerability via StringAgg(delimiter) in Django 3.2 before 3.2.10, 4.0 before 4.0.1."
+          },
+          {
+            "id": "CVE-2021-41857",
+            "year": "2021",
+            "description": "Improper validation of host values in messages framework in Django 3.1 before 3.1.14, 3.2 before 3.2.9, and 4.0 before 4.0 allows attackers to forge messages."
+          },
+          {
+            "id": "CVE-2021-35042",
+            "year": "2021",
+            "description": "Potential denial of service vulnerability in Oracle backend in Django 3.1 before 3.1.13, 3.2 before 3.2.5, and 4.0 before 4.0 allows attackers to cause a denial of service via database queries."
+          }
+        ]
+      },
+      {
+        "cves": [
+          "CVE-2022-41765",
+          "CVE-2022-36390",
+          "CVE-2022-34265",
+          "CVE-2022-28346",
+          "CVE-2021-45115",
+          "CVE-2021-44731",
+          "CVE-2021-41807",
+          "CVE-2021-35042"
+        ],
+        "years_with_cves": [
+          "2021",
+          "2022"
+        ],
+        "total_cves": 8,
+        "search_metadata": {
+          "years_searched": [
+            "2024",
+            "2023",
+            "2022",
+            "2021",
+            "2020",
+            "2019",
+            "2018",
+            "2017",
+            "2016",
+            "2015"
+          ]
+        },
+        "raw_cves": [
+          {
+            "id": "CVE-2022-41765",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.13 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+          },
+          {
+            "id": "CVE-2022-36390",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.4 allows denial of service via regular expression backtracking in django.utils.html.urlize."
+          },
+          {
+            "id": "CVE-2022-34265",
+            "year": "2022",
+            "description": "Django 3.2 before 3.2.9 and 4.0 before 4.0.3 allows potential directory traversal via archive uploads that have specially crafted filenames."
+          },
+          {
+            "id": "CVE-2022-28346",
+            "year": "2022",
+            "description": "Possible SQL injection vulnerability in Django 3.2 before 3.2.5 and 4.0 before 4.0.1 via StringAgg(delimiter)."
+          },
+          {
+            "id": "CVE-2021-45115",
+            "year": "2021",
+            "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.1 allows denial of service via regular expression backtracking in django.utils.html.strip_tags."
+          },
+          {
+            "id": "CVE-2021-44731",
+            "year": "2021",
+            "description": "Django 3.1 before 3.1.14, 3.2 before 3.2.10, and 4.0 before 4.0.1 allows denial of service via regular expression backtracking in django.utils.text.Truncator."
+          },
+          {
+            "id": "CVE-2021-41807",
+            "year": "2021",
+            "description": "Django 3.2 before 3.2.4 allows Server-Side Template Injection (SSTI) via the Truncator class."
+          },
+          {
+            "id": "CVE-2021-35042",
+            "year": "2021",
+            "description": "A potential denial-of-service vulnerability exists in Django 3.2.x before 3.2.3 and 4.0.x before 4.0rc1 due to a regular expression denial of service (ReDoS) vulnerability in django.utils.http.is_safe_url."
+          }
+        ]
+      }
+    ],
+    "analysis": {
+      "successful_runs": 3,
+      "total_unique_cves": 9,
+      "all_cves": [
+        "CVE-2021-35042",
+        "CVE-2021-41807",
+        "CVE-2021-41857",
+        "CVE-2021-44731",
+        "CVE-2021-45115",
+        "CVE-2022-28346",
+        "CVE-2022-34265",
+        "CVE-2022-36390",
+        "CVE-2022-41765"
+      ],
+      "years_with_cves": [
+        "2021",
+        "2022"
+      ],
+      "year_coverage": 2,
+      "is_consistent": false,
+      "variance_count": 3,
+      "cve_lists": [
+        [
+          "CVE-2021-35042",
+          "CVE-2021-45115",
+          "CVE-2022-28346",
+          "CVE-2022-34265",
+          "CVE-2022-36390",
+          "CVE-2022-41765"
+        ],
+        [
+          "CVE-2021-35042",
+          "CVE-2021-41857",
+          "CVE-2021-45115",
+          "CVE-2022-28346",
+          "CVE-2022-34265",
+          "CVE-2022-36390",
+          "CVE-2022-41765"
+        ],
+        [
+          "CVE-2021-35042",
+          "CVE-2021-41807",
+          "CVE-2021-44731",
+          "CVE-2021-45115",
+          "CVE-2022-28346",
+          "CVE-2022-34265",
+          "CVE-2022-36390",
+          "CVE-2022-41765"
+        ]
+      ],
+      "raw_results": [
+        {
+          "cves": [
+            "CVE-2022-41765",
+            "CVE-2022-36390",
+            "CVE-2022-34265",
+            "CVE-2022-28346",
+            "CVE-2021-45115",
+            "CVE-2021-35042"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 6,
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-41765",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.13 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+            },
+            {
+              "id": "CVE-2022-36390",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.4 allows denial of service via regular expression backtracking in django.utils.html.urlize."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Possible SQL injection via StringAgg(delimiter)."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Trunc(kind='month') can cause a ValueError."
+            },
+            {
+              "id": "CVE-2021-45115",
+              "year": "2021",
+              "description": "Django 3.1 before 3.1.14 and 3.2 before 3.2.9 allows denial of service via regular expression backtracking in django.utils.html.urlize."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "Potential SQL injection vulnerability via StringAgg(delimiter)."
+            }
+          ]
+        },
+        {
+          "cves": [
+            "CVE-2022-41765",
+            "CVE-2022-36390",
+            "CVE-2022-34265",
+            "CVE-2022-28346",
+            "CVE-2021-45115",
+            "CVE-2021-41857",
+            "CVE-2021-35042"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 7,
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-41765",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.13 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+            },
+            {
+              "id": "CVE-2022-36390",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.4 allows denial of service via regular expression backtracking in URLValidator."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Possible account takeover via password reset in Django 3.2 before 3.2.9 and 4.0 before 4.0.3."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Improper Access Control vulnerability in get_object_or_404() in Django 3.2 before 3.2.5 and 4.0 before 4.0.1 allows attackers to bypass intended access restrictions."
+            },
+            {
+              "id": "CVE-2021-45115",
+              "year": "2021",
+              "description": "Potential SQL injection vulnerability via StringAgg(delimiter) in Django 3.2 before 3.2.10, 4.0 before 4.0.1."
+            },
+            {
+              "id": "CVE-2021-41857",
+              "year": "2021",
+              "description": "Improper validation of host values in messages framework in Django 3.1 before 3.1.14, 3.2 before 3.2.9, and 4.0 before 4.0 allows attackers to forge messages."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "Potential denial of service vulnerability in Oracle backend in Django 3.1 before 3.1.13, 3.2 before 3.2.5, and 4.0 before 4.0 allows attackers to cause a denial of service via database queries."
+            }
+          ]
+        },
+        {
+          "cves": [
+            "CVE-2022-41765",
+            "CVE-2022-36390",
+            "CVE-2022-34265",
+            "CVE-2022-28346",
+            "CVE-2021-45115",
+            "CVE-2021-44731",
+            "CVE-2021-41807",
+            "CVE-2021-35042"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 8,
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-41765",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.13 and 4.0 before 4.0.6 allows Host header poisoning via django.utils.http.is_safe_url."
+            },
+            {
+              "id": "CVE-2022-36390",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.4 allows denial of service via regular expression backtracking in django.utils.html.urlize."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.9 and 4.0 before 4.0.3 allows potential directory traversal via archive uploads that have specially crafted filenames."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Possible SQL injection vulnerability in Django 3.2 before 3.2.5 and 4.0 before 4.0.1 via StringAgg(delimiter)."
+            },
+            {
+              "id": "CVE-2021-45115",
+              "year": "2021",
+              "description": "Django 3.2 before 3.2.10 and 4.0 before 4.0.1 allows denial of service via regular expression backtracking in django.utils.html.strip_tags."
+            },
+            {
+              "id": "CVE-2021-44731",
+              "year": "2021",
+              "description": "Django 3.1 before 3.1.14, 3.2 before 3.2.10, and 4.0 before 4.0.1 allows denial of service via regular expression backtracking in django.utils.text.Truncator."
+            },
+            {
+              "id": "CVE-2021-41807",
+              "year": "2021",
+              "description": "Django 3.2 before 3.2.4 allows Server-Side Template Injection (SSTI) via the Truncator class."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "A potential denial-of-service vulnerability exists in Django 3.2.x before 3.2.3 and 4.0.x before 4.0rc1 due to a regular expression denial of service (ReDoS) vulnerability in django.utils.http.is_safe_url."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

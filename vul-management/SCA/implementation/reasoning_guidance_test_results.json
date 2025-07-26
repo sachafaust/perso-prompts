@@ -1,0 +1,119 @@
+{
+  "test_package": "cryptography:36.0.1",
+  "current_approach": {
+    "results": [
+      [
+        "CVE-2022-3602",
+        "CVE-2022-3786"
+      ],
+      [
+        "CVE-2022-21166"
+      ],
+      [
+        "CVE-2022-3602",
+        "CVE-2022-3786"
+      ],
+      [
+        "CVE-2022-3602",
+        "CVE-2022-3786"
+      ],
+      [
+        "CVE-2022-3602",
+        "CVE-2022-3786"
+      ]
+    ],
+    "analysis": {
+      "unique_cves_found": 3,
+      "all_cves": [
+        "CVE-2022-21166",
+        "CVE-2022-3602",
+        "CVE-2022-3786"
+      ],
+      "is_consistent": false,
+      "variance_count": 2,
+      "max_cves_per_run": 2,
+      "min_cves_per_run": 1,
+      "avg_cves_per_run": 1.8,
+      "run_details": [
+        [
+          "CVE-2022-3602",
+          "CVE-2022-3786"
+        ],
+        [
+          "CVE-2022-21166"
+        ],
+        [
+          "CVE-2022-3602",
+          "CVE-2022-3786"
+        ],
+        [
+          "CVE-2022-3602",
+          "CVE-2022-3786"
+        ],
+        [
+          "CVE-2022-3602",
+          "CVE-2022-3786"
+        ]
+      ]
+    }
+  },
+  "reasoning_enhanced": {
+    "results": [
+      [
+        "CVE-2023-0286",
+        "CVE-2023-50782"
+      ],
+      [
+        "CVE-2023-0286",
+        "CVE-2023-50782"
+      ],
+      [
+        "CVE-2023-0286",
+        "CVE-2023-50782"
+      ],
+      [
+        "CVE-2023-0286",
+        "CVE-2023-50782"
+      ],
+      [
+        "CVE-2023-0286",
+        "CVE-2023-50782"
+      ]
+    ],
+    "analysis": {
+      "unique_cves_found": 2,
+      "all_cves": [
+        "CVE-2023-0286",
+        "CVE-2023-50782"
+      ],
+      "is_consistent": true,
+      "variance_count": 1,
+      "max_cves_per_run": 2,
+      "min_cves_per_run": 2,
+      "avg_cves_per_run": 2.0,
+      "run_details": [
+        [
+          "CVE-2023-0286",
+          "CVE-2023-50782"
+        ],
+        [
+          "CVE-2023-0286",
+          "CVE-2023-50782"
+        ],
+        [
+          "CVE-2023-0286",
+          "CVE-2023-50782"
+        ],
+        [
+          "CVE-2023-0286",
+          "CVE-2023-50782"
+        ],
+        [
+          "CVE-2023-0286",
+          "CVE-2023-50782"
+        ]
+      ]
+    }
+  },
+  "hypothesis_validated": true
+}

@@ -1,0 +1,395 @@
+{
+  "test_package": "django:3.2.12",
+  "model_analyses": [
+    {
+      "model_name": "OpenAI",
+      "successful_runs": 2,
+      "total_unique_cves": 0,
+      "all_cves": [],
+      "years_with_cves": [],
+      "year_span": {
+        "min": null,
+        "max": null
+      },
+      "year_coverage": 0,
+      "raw_results": [
+        {
+          "cves": [],
+          "years_with_cves": [],
+          "total_cves": 0,
+          "model_info": "CVE Search Model",
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": []
+        },
+        {
+          "cves": [],
+          "years_with_cves": [],
+          "total_cves": 0,
+          "model_info": "CVE Search Model",
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": []
+        }
+      ]
+    },
+    {
+      "model_name": "Grok",
+      "successful_runs": 2,
+      "total_unique_cves": 8,
+      "all_cves": [
+        "CVE-2022-28346",
+        "CVE-2022-28347",
+        "CVE-2022-34265",
+        "CVE-2022-36359",
+        "CVE-2022-41323",
+        "CVE-2023-24580",
+        "CVE-2023-31047",
+        "CVE-2023-36053"
+      ],
+      "years_with_cves": [
+        "2022",
+        "2023"
+      ],
+      "year_span": {
+        "min": "2022",
+        "max": "2023"
+      },
+      "year_coverage": 2,
+      "raw_results": [
+        {
+          "cves": [
+            "CVE-2023-36053",
+            "CVE-2023-31047",
+            "CVE-2023-24580",
+            "CVE-2022-41323",
+            "CVE-2022-36359",
+            "CVE-2022-34265",
+            "CVE-2022-28347",
+            "CVE-2022-28346"
+          ],
+          "years_with_cves": [
+            "2022",
+            "2023"
+          ],
+          "total_cves": 8,
+          "model_info": "I am Grok, created by xAI",
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2023-36053",
+              "year": "2023",
+              "description": "Django 3.2.x before 3.2.20 does not validate email addresses properly, allowing untrusted input to affect email header content."
+            },
+            {
+              "id": "CVE-2023-31047",
+              "year": "2023",
+              "description": "Django 3.2.x before 3.2.19 has a validation bypass in the django.contrib.auth.backends.ModelBackend class, potentially allowing authentication with invalid passwords."
+            },
+            {
+              "id": "CVE-2023-24580",
+              "year": "2023",
+              "description": "Django 3.2.x before 3.2.17 is vulnerable to a denial of service via file upload due to excessive memory consumption in file processing."
+            },
+            {
+              "id": "CVE-2022-41323",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.16 is vulnerable to potential directory traversal in the handling of locale files."
+            },
+            {
+              "id": "CVE-2022-36359",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.15 has a potential denial of service in file uploads due to improper validation of file extensions."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.14 is vulnerable to SQL injection in the Trunc() and Extract() database functions under certain conditions."
+            },
+            {
+              "id": "CVE-2022-28347",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.13 is vulnerable to SQL injection via certain query expressions with large numbers of parameters."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.13 is vulnerable to denial of service via certain inputs to the django.db.models.query_utils.Q class."
+            }
+          ]
+        },
+        {
+          "cves": [
+            "CVE-2023-36053",
+            "CVE-2023-31047",
+            "CVE-2023-24580",
+            "CVE-2022-41323",
+            "CVE-2022-36359",
+            "CVE-2022-34265",
+            "CVE-2022-28347",
+            "CVE-2022-28346"
+          ],
+          "years_with_cves": [
+            "2022",
+            "2023"
+          ],
+          "total_cves": 8,
+          "model_info": "I am Grok, created by xAI",
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2023-36053",
+              "year": "2023",
+              "description": "Django 3.2.x before 3.2.20 does not validate email addresses properly, allowing remote attackers to cause a denial of service via a crafted email address."
+            },
+            {
+              "id": "CVE-2023-31047",
+              "year": "2023",
+              "description": "Django 3.2.x before 3.2.19 has a vulnerability in password reset URLs, allowing remote attackers to obtain sensitive information."
+            },
+            {
+              "id": "CVE-2023-24580",
+              "year": "2023",
+              "description": "Django 3.2.x before 3.2.17 is vulnerable to a denial of service attack via file upload functionality with specially crafted filenames."
+            },
+            {
+              "id": "CVE-2022-41323",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.16 is vulnerable to a potential directory traversal issue in the handling of static files."
+            },
+            {
+              "id": "CVE-2022-36359",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.15 has a potential denial of service issue in the handling of certain input validations."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.14 is vulnerable to SQL injection in certain database query operations."
+            },
+            {
+              "id": "CVE-2022-28347",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.13 has a potential SQL injection vulnerability in QuerySet.explain() method."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Django 3.2.x before 3.2.13 is vulnerable to a denial of service attack via certain database queries."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "model_name": "Gemini",
+      "successful_runs": 2,
+      "total_unique_cves": 9,
+      "all_cves": [
+        "CVE-2021-33203",
+        "CVE-2021-35042",
+        "CVE-2021-45115",
+        "CVE-2022-28346",
+        "CVE-2022-34265",
+        "CVE-2022-36387",
+        "CVE-2022-36390",
+        "CVE-2022-41168",
+        "CVE-2022-45343"
+      ],
+      "years_with_cves": [
+        "2021",
+        "2022"
+      ],
+      "year_span": {
+        "min": "2021",
+        "max": "2022"
+      },
+      "year_coverage": 2,
+      "raw_results": [
+        {
+          "cves": [
+            "CVE-2022-45343",
+            "CVE-2022-36390",
+            "CVE-2022-34265",
+            "CVE-2022-28346",
+            "CVE-2021-45115",
+            "CVE-2021-35042",
+            "CVE-2021-33203"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 7,
+          "model_info": "gpt-3.5-turbo",
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-45343",
+              "year": "2022",
+              "description": "Django 4.1 before 4.1.5 and 3.2 before 3.2.17 allows Host header poisoning via django.utils.http.is_safe_url."
+            },
+            {
+              "id": "CVE-2022-36390",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.14 and 4.0 before 4.0.6 allows denial of service via a large number of requests with certain query string parameters."
+            },
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Django 3.2 before 3.2.13 and 4.1 before 4.1.1 allows potential directory traversal via archive member filenames when using archive formats such as tarfiles."
+            },
+            {
+              "id": "CVE-2022-28346",
+              "year": "2022",
+              "description": "Possible SQL injection vulnerability in contrib.postgres.search lookup in Django 4.0 before 4.0.4 and 3.2 before 3.2.10."
+            },
+            {
+              "id": "CVE-2021-45115",
+              "year": "2021",
+              "description": "Improper validation of host values in CSRF middleware in Django 3.2 before 3.2.9 and 4.0 before 4.0.1 allows attackers to bypass CSRF protections by setting the Host HTTP header to an allowed host."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "Potential SQL injection via StringAgg(delimiter) in Django 3.2 before 3.2.4 and 4.0 before 4.0rc1."
+            },
+            {
+              "id": "CVE-2021-33203",
+              "year": "2021",
+              "description": "A potential denial of service vulnerability in URLValidator in Django 2.2 before 2.2.25, 3.1 before 3.1.13, and 3.2 before 3.2.3 allows attackers to cause a denial of service via a large number of nested URLs."
+            }
+          ]
+        },
+        {
+          "cves": [
+            "CVE-2022-34265",
+            "CVE-2022-36387",
+            "CVE-2022-41168",
+            "CVE-2021-45115",
+            "CVE-2021-35042"
+          ],
+          "years_with_cves": [
+            "2021",
+            "2022"
+          ],
+          "total_cves": 5,
+          "model_info": "gpt-3.5-turbo",
+          "search_metadata": {
+            "years_searched": [
+              "2024",
+              "2023",
+              "2022",
+              "2021",
+              "2020",
+              "2019",
+              "2018",
+              "2017",
+              "2016",
+              "2015"
+            ]
+          },
+          "raw_cves": [
+            {
+              "id": "CVE-2022-34265",
+              "year": "2022",
+              "description": "Django before 3.2.14 and 4.0 before 4.0.6 allows Host header poisoning via django.http.request.HttpRequest.get_host() because a double slash can be interpreted as two slashes rather than one."
+            },
+            {
+              "id": "CVE-2022-36387",
+              "year": "2022",
+              "description": "Possible account takeover via password reset in Django 3.2 before 3.2.13, 4.0 before 4.0.5, and 4.1 before 4.1a1."
+            },
+            {
+              "id": "CVE-2022-41168",
+              "year": "2022",
+              "description": "Improper Access Control vulnerability in contrib.admin.ModelAdmin.changeform_view in Django 3.2 before 3.2.16 and 4.1 before 4.1.4 allows attackers to bypass intended access restrictions via crafted requests."
+            },
+            {
+              "id": "CVE-2021-45115",
+              "year": "2021",
+              "description": "Potential SQL injection vulnerability in Django 3.2 before 3.2.10, 4.0 before 4.0.2. An attacker could trigger a SQL injection vulnerability by providing specially crafted arguments to a QuerySet's annotate(), aggregate(), or extra() methods."
+            },
+            {
+              "id": "CVE-2021-35042",
+              "year": "2021",
+              "description": "Server-Side Template Injection (SSTI) vulnerability in Django 3.1 before 3.1.13 and 3.2 before 3.2.5 allows remote attackers to achieve arbitrary code execution via the engine keyword argument of the render() function."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_models_tested": 3,
+    "combined_unique_cves": 15,
+    "combined_years": [
+      "2021",
+      "2022",
+      "2023"
+    ]
+  }
+}
