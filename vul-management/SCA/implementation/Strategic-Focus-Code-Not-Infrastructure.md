@@ -45,19 +45,19 @@ install_requires=[
 // yarn.lock, package-lock.json, pnpm-lock.yaml
 ```
 
-#### Future Language Support (Planned)
+#### Future Language Support (Potential)
 ```go
-// go.mod (PLANNED - not yet supported)
+// go.mod (FUTURE - not yet supported)
 require (
     github.com/gin-gonic/gin v1.9.1
     github.com/gorilla/mux v1.8.0
 )
 
-// Gemfile (Ruby) - PLANNED
+// Gemfile (Ruby) - FUTURE
 gem 'rails', '~> 7.0.0'
 gem 'devise', '>= 4.9.0'
 
-// pom.xml (Java/Maven) - PLANNED
+// pom.xml (Java/Maven) - FUTURE
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-core</artifactId>
@@ -205,7 +205,7 @@ services:
 AI-Powered SCA Scanner
 Focus: Application code dependencies
 Supported: Python, JavaScript packages
-Planned: Go, Ruby, Java packages
+Future coverage: Go, Ruby, Java packages
 Not Supported: Docker images, OS packages, infrastructure
 
 For infrastructure scanning, we recommend:

@@ -164,7 +164,7 @@ We maintain accuracy through **AI-only analysis** - leveraging models with live 
 ```
 Python:     ==1.0, >=2.0, ~=1.5, !=1.3  
 JavaScript: ^1.0, ~1.2, 1.0.0, >=1.5.0
-Future:     (Go, Ruby, Java planned)
+Future:     (Go, Ruby, Java possible)
 ```
 
 **Evidence**: Parser validation testing achieved 63.3% compatibility with pip-tools community tests by preserving Python-native syntax (`==0.1`), demonstrating the effectiveness of this approach.

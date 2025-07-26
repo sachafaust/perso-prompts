@@ -11,7 +11,7 @@ Enterprise-grade vulnerability scanning powered by Large Language Models. Built 
 - 🌐 **Live CVE Data**: Real-time vulnerability lookup with web search capabilities
 - 📊 **Complete Data Integrity**: NO sampling or truncation - every vulnerability and source location captured
 - 🎯 **AI Agent Optimized**: Structured JSON output designed for downstream AI automation
-- 🔍 **Multi-Language Support**: Python, JavaScript/Node.js, with more languages planned
+- 🔍 **Multi-Language Support**: Python, JavaScript/Node.js, with future language expansion possible
 - 💰 **Cost Efficient**: $0.75 per 1000 packages vs $2.50+ traditional scanners
 - 🔒 **Security First**: Environment-only API keys, comprehensive audit trails
 - 📍 **Source Location Tracking**: Absolute file paths and line numbers for precise remediation
