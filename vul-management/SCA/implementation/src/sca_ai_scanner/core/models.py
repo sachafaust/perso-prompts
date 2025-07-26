@@ -24,7 +24,6 @@ class FileType(str, Enum):
     PYPROJECT_TOML = "pyproject_toml"
     PACKAGE_JSON = "package_json"
     YARN_LOCK = "yarn_lock"
-    DOCKERFILE = "dockerfile"
     COMPOSER_JSON = "composer_json"
     GEMFILE = "gemfile"
     GO_MOD = "go_mod"

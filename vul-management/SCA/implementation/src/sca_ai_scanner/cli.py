@@ -22,8 +22,7 @@ from .core.client import AIVulnerabilityClient
 from .core.models import ScanConfig, VulnerabilityResults
 # ValidationPipeline removed - using AI-only approach
 from .parsers.python import PythonParser
-from .parsers.javascript import JavaScriptParser  
-from .parsers.docker import DockerParser
+from .parsers.javascript import JavaScriptParser
 from .formatters.json_output import JSONOutputFormatter
 from .formatters.markdown_report import MarkdownReportFormatter
 from .config.manager import ConfigManager
@@ -385,8 +384,7 @@ async def discover_dependencies(target_path: Path, telemetry: TelemetryEngine) -
     # Initialize parsers
     parsers = [
         PythonParser(str(target_path)),
-        JavaScriptParser(str(target_path)),
-        DockerParser(str(target_path))
+        JavaScriptParser(str(target_path))
     ]
     
     # Parse dependencies from each language

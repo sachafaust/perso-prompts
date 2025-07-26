@@ -44,7 +44,7 @@ class DependencyParser(ABC):
     
     @abstractmethod
     def get_ecosystem_name(self) -> str:
-        """Return the ecosystem name (e.g., 'pypi', 'npm', 'docker')."""
+        """Return the ecosystem name (e.g., 'pypi', 'npm')."""
         pass
     
     def discover_dependency_files(self) -> List[Path]:

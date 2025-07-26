@@ -315,8 +315,6 @@ class JSONOutputFormatter:
             return "pypi"
         elif file_type in ['package_json', 'yarn_lock']:
             return "npm"
-        elif file_type == 'dockerfile':
-            return "docker"
         else:
             return "unknown"
     

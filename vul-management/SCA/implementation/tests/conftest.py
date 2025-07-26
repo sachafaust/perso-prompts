@@ -234,54 +234,6 @@ lodash@4.17.20:
     }
 
 
-@pytest.fixture
-def docker_test_files():
-    """Sample Docker files for testing."""
-    return {
-        "Dockerfile": """
-FROM python:3.9-slim
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \\
-    curl \\
-    git \\
-    build-essential \\
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Python packages
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Install additional packages
-RUN pip install gunicorn==20.1.0 celery[redis]==5.2.0
-
-WORKDIR /app
-COPY . .
-
-CMD ["gunicorn", "app:app"]
-""",
-        "docker-compose.yml": """
-version: '3.8'
-
-services:
-  app:
-    image: python:3.9-slim
-    ports:
-      - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql://user:pass@db:5432/app
-    
-  db:
-    image: postgres:13-alpine
-    environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-    
-  redis:
-    image: redis:6-alpine
-"""
-    }
 
 
 # Performance testing utilities
