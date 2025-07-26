@@ -52,8 +52,10 @@ class TestTokenOptimizer:
         """Test prompt generation for knowledge-only models."""
         prompt = optimizer.create_prompt(test_packages)
         
-        # Verify prompt structure
-        assert "Find ALL known CVEs and security vulnerabilities for these 3 packages" in prompt
+        # Verify optimized prompt structure
+        assert "Find ALL CVEs affecting these 3 packages" in prompt
+        assert "CRITICAL: Each CVE ID represents a DISTINCT vulnerability" in prompt
+        assert "YEAR-BY-YEAR REASONING CHECKLIST" in prompt
         assert "requests:2.25.1" in prompt
         assert "django:3.2.0" in prompt
         assert "express:4.17.1" in prompt
@@ -64,12 +66,14 @@ class TestTokenOptimizer:
         """Test prompt generation for live search models."""
         prompt = optimizer.create_prompt_with_live_search(test_packages)
         
-        # Verify live search instructions
-        assert "Search current vulnerability databases" in prompt
-        assert "Use web search" in prompt
-        assert "CVE databases" in prompt
+        # Verify optimized live search instructions
+        assert "Find ALL CVEs affecting these 3 packages using live web search" in prompt
+        assert "CRITICAL: Each CVE ID represents a DISTINCT vulnerability" in prompt
+        assert "SYSTEMATIC LIVE SEARCH PROCEDURE" in prompt
+        assert "Year-by-year CVE database searches" in prompt
+        assert "Search NVD" in prompt
         assert "live_search" in prompt
-        assert "current" in prompt.lower()
+        assert "Search OSV.dev" in prompt
     
     def test_format_package_list_strategies(self, optimizer, test_packages):
         """Test different formatting strategies."""
