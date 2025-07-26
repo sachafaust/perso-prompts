@@ -45,19 +45,19 @@ install_requires=[
 // yarn.lock, package-lock.json, pnpm-lock.yaml
 ```
 
-#### Other Language Ecosystems (Future)
+#### Future Language Support (Planned)
 ```go
-// go.mod
+// go.mod (PLANNED - not yet supported)
 require (
     github.com/gin-gonic/gin v1.9.1
     github.com/gorilla/mux v1.8.0
 )
 
-// Gemfile (Ruby)
+// Gemfile (Ruby) - PLANNED
 gem 'rails', '~> 7.0.0'
 gem 'devise', '>= 4.9.0'
 
-// pom.xml (Java/Maven)
+// pom.xml (Java/Maven) - PLANNED
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-core</artifactId>
@@ -166,7 +166,7 @@ services:
 **WE SCAN:**
 - `/backend/requirements.txt` - Python dependencies ✅
 - `/frontend/package.json` - JavaScript dependencies ✅
-- `/api/go.mod` - Go dependencies ✅
+- `/api/pyproject.toml` - Python Poetry dependencies ✅
 
 **WE DON'T SCAN:**
 - `/Dockerfile` - Container configuration ❌
@@ -204,7 +204,8 @@ services:
 # In documentation and CLI output
 AI-Powered SCA Scanner
 Focus: Application code dependencies
-Supported: Python, JavaScript, Go, Ruby, Java packages
+Supported: Python, JavaScript packages
+Planned: Go, Ruby, Java packages
 Not Supported: Docker images, OS packages, infrastructure
 
 For infrastructure scanning, we recommend:
@@ -219,7 +220,7 @@ $ sca-scanner .
 Scanning for code dependencies...
 ✓ Found: requirements.txt
 ✓ Found: package.json
-✓ Found: go.mod
+✓ Found: pyproject.toml
 ⚠ Skipped: Dockerfile (infrastructure not scanned)
 
 # Clear error if user expects Docker scanning

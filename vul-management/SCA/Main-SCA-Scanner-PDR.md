@@ -162,9 +162,9 @@ We maintain accuracy through **AI-only analysis** - leveraging models with live 
 
 **Implementation**:
 ```
-Python:     ==1.0, >=2.0, ~=1.5, !=1.3
+Python:     ==1.0, >=2.0, ~=1.5, !=1.3  
 JavaScript: ^1.0, ~1.2, 1.0.0, >=1.5.0
-Go:         v1.0.0, v1.2.3, latest
+Future:     (Go, Ruby, Java planned)
 ```
 
 **Evidence**: Parser validation testing achieved 63.3% compatibility with pip-tools community tests by preserving Python-native syntax (`==0.1`), demonstrating the effectiveness of this approach.
@@ -1462,7 +1462,7 @@ Fast, accurate vulnerability scanning powered by AI agents for multi-language co
 
 - 🚀 **10x Faster**: Scan 1000+ dependencies in <30 minutes vs 3+ hours
 - 🤖 **AI-Powered**: Bulk vulnerability analysis using OpenAI, Anthropic, Google, X AI
-- 🔍 **Multi-Language**: Python, JavaScript, Go dependency detection
+- 🔍 **Multi-Language**: Python, JavaScript dependency detection
 - 💰 **Cost Efficient**: $0.75 per 1000 packages vs $2.50 traditional methods
 - 🎯 **AI Agent Ready**: Structured output optimized for downstream AI automation
 - 🔒 **Security First**: Environment-only API keys, comprehensive audit trails
@@ -1749,7 +1749,7 @@ The implementation provides comprehensive, self-contained documentation in a sin
 7. **🧪 Supported Languages & Files**
    - **Python**: requirements.txt, pyproject.toml, setup.py, Pipfile, conda.yml
    - **JavaScript/Node.js**: package.json, yarn.lock, package-lock.json, pnpm-lock.yaml
-   - **Go**: go.mod, go.sum (planned)
+   - **Future Languages**: Go (go.mod), Ruby (Gemfile), Java (pom.xml)
 
 8. **🚨 Error Handling & Troubleshooting**
    - **Common Issues**: API key errors, model availability, rate limiting, budget exceeded
