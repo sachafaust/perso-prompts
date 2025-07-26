@@ -410,13 +410,12 @@ class TestFileTypeEnum:
         assert FileType.REQUIREMENTS.value == "requirements"
         assert FileType.PYPROJECT_TOML.value == "pyproject_toml"
         assert FileType.PACKAGE_JSON.value == "package_json"
-        assert FileType.DOCKERFILE.value == "dockerfile"
     
     def test_all_supported_file_types(self):
         """Test that all expected file types are defined."""
         expected_types = {
             "requirements", "pyproject_toml", "package_json", 
-            "yarn_lock", "dockerfile", "composer_json", 
+            "yarn_lock", "composer_json", 
             "gemfile", "go_mod"
         }
         

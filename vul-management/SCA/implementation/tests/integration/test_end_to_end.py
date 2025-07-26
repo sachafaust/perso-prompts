@@ -14,7 +14,6 @@ from sca_ai_scanner.core.models import ScanConfig, VulnerabilityResults
 from sca_ai_scanner.core.validator import ValidationPipeline
 from sca_ai_scanner.parsers.python import PythonParser
 from sca_ai_scanner.parsers.javascript import JavaScriptParser
-from sca_ai_scanner.parsers.docker import DockerParser
 from sca_ai_scanner.formatters.json_output import JSONOutputFormatter
 from sca_ai_scanner.telemetry.engine import TelemetryEngine
 
@@ -48,11 +47,6 @@ pandas==1.3.0
     "axios": "0.21.1"
   }
 }""",
-            "Dockerfile": """
-FROM python:3.9-slim
-RUN pip install gunicorn==20.1.0
-RUN apt-get update && apt-get install -y nginx
-"""
         })
         return temp_project_dir
     
@@ -120,8 +114,7 @@ RUN apt-get update && apt-get install -y nginx
         all_packages = []
         parsers = [
             PythonParser(str(test_project)),
-            JavaScriptParser(str(test_project)),
-            DockerParser(str(test_project))
+            JavaScriptParser(str(test_project))
         ]
         
         for parser in parsers:
@@ -133,7 +126,6 @@ RUN apt-get update && apt-get install -y nginx
         package_names = {pkg.name for pkg in all_packages}
         assert "requests" in package_names  # Python
         assert "express" in package_names   # JavaScript
-        assert "python" in package_names    # Docker
         
         # 2. Run AI vulnerability analysis
         config = ScanConfig(
@@ -353,25 +345,13 @@ react@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz"
 """,
-            "docker-compose.yml": """
-services:
-  db:
-    image: postgres:13
-  cache:
-    image: redis:6-alpine
-""",
-            "services/api/Dockerfile": """
-FROM node:14
-RUN npm install express@4.17.1 cors@2.8.5
-"""
         })
         
         # Discover all dependencies
         all_packages = []
         parsers = [
             PythonParser(str(temp_project_dir)),
-            JavaScriptParser(str(temp_project_dir)),
-            DockerParser(str(temp_project_dir))
+            JavaScriptParser(str(temp_project_dir))
         ]
         
         for parser in parsers:
@@ -389,9 +369,6 @@ RUN npm install express@4.17.1 cors@2.8.5
         assert "react" in package_names
         assert "express" in package_names
         
-        # Docker images
-        assert "postgres" in package_names
-        assert "redis" in package_names
         
         # Verify source tracking
         flask_pkg = next(p for p in all_packages if p.name == "flask")

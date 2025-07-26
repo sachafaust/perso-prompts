@@ -162,9 +162,9 @@ We maintain accuracy through **AI-only analysis** - leveraging models with live 
 
 **Implementation**:
 ```
-Python:     ==1.0, >=2.0, ~=1.5, !=1.3
+Python:     ==1.0, >=2.0, ~=1.5, !=1.3  
 JavaScript: ^1.0, ~1.2, 1.0.0, >=1.5.0
-Docker:     latest, 1.0, 1.0-alpine, sha256:abc123
+Future:     (Go, Ruby, Java possible)
 ```
 
 **Evidence**: Parser validation testing achieved 63.3% compatibility with pip-tools community tests by preserving Python-native syntax (`==0.1`), demonstrating the effectiveness of this approach.
@@ -439,6 +439,9 @@ If NO vulnerabilities found across all packages, return empty JSON object: {{}}"
 - **Actionable Intelligence**: Structured vulnerability data optimized for AI agent consumption
 - **Source Location Tracking**: **MANDATORY** - Precise file/line mapping for each vulnerable dependency to enable automated remediation
 - **Multi-Provider Support**: Flexible AI model selection across providers
+- **Code Dependencies Only**: Application packages (Python, JavaScript, etc.) - **excludes infrastructure** per strategic focus
+
+> **📋 Strategic Design Choice**: This scanner focuses exclusively on **code dependencies**, not infrastructure scanning. See [implementation/Strategic-Focus-Code-Not-Infrastructure.md](implementation/Strategic-Focus-Code-Not-Infrastructure.md) for complete rationale and competitive positioning.
 
 ### **Out of Scope: Remediation Implementation**
 The following capabilities are **explicitly out of scope** and should be handled by specialized remediation AI agents:
@@ -581,7 +584,7 @@ Estimated Token Usage:
 
 #### **Multiple Location Examples**
 Real-world scenarios where packages appear in multiple files (with absolute paths):
-- `requests:2.25.1` in `/project/requirements.txt:15` AND `/project/backend/pyproject.toml:23` AND `/project/docker/Dockerfile:8`
+- `requests:2.25.1` in `/project/requirements.txt:15` AND `/project/backend/pyproject.toml:23` AND `/project/api/setup.py:12`
 - `numpy:1.20.0` in `/project/requirements.txt:8` AND `/project/dev-requirements.txt:12` 
 - `express:4.18.2` in `/project/package.json:15` AND `/project/services/api/package.json:8`
 
@@ -616,7 +619,7 @@ Package: requests:2.25.1 (CRITICAL vulnerability)
 Source Locations: 4 files found
 - /project/requirements.txt:15 (main dependencies)
 - /project/dev-requirements.txt:7 (development environment) 
-- /project/docker/Dockerfile:8 (container image)
+- /project/api/setup.py:12 (setuptools configuration)
 - /project/backend/pyproject.toml:23 (Poetry configuration)
 
 AI Agent Decision: High-priority update required across ALL 4 locations
@@ -630,7 +633,7 @@ Validation: Verify all 4 locations updated successfully
 - **ALL source locations** - Every file where package appears, no exceptions
 - **ALL vulnerabilities** - Every CVE found, regardless of count or severity
 - **ALL affected packages** - Complete dependency inventory, no sampling
-- **ALL file declarations** - Every requirements.txt, package.json, Dockerfile, etc.
+- **ALL file declarations** - Every requirements.txt, package.json, setup.py, etc.
 
 **PROHIBITED BEHAVIORS** (Security Failures):
 - ❌ "Showing first 10 of 50 vulnerabilities" 
@@ -696,10 +699,10 @@ Markdown: **AI Model:** gemini-2.0-flash
           "file_type": "pyproject_toml"
         },
         {
-          "file_path": "/Users/dev/myproject/docker/api/Dockerfile",
+          "file_path": "/Users/dev/myproject/api/setup.py",
           "line_number": 8,
-          "declaration": "RUN pip install requests==2.25.1",
-          "file_type": "dockerfile"
+          "declaration": "install_requires=['requests==2.25.1']",
+          "file_type": "setup_py"
         },
         {
           "file_path": "/Users/dev/myproject/dev-requirements.txt",
@@ -1459,7 +1462,7 @@ Fast, accurate vulnerability scanning powered by AI agents for multi-language co
 
 - 🚀 **10x Faster**: Scan 1000+ dependencies in <30 minutes vs 3+ hours
 - 🤖 **AI-Powered**: Bulk vulnerability analysis using OpenAI, Anthropic, Google, X AI
-- 🔍 **Multi-Language**: Python, JavaScript, Docker dependency detection
+- 🔍 **Multi-Language**: Python, JavaScript dependency detection
 - 💰 **Cost Efficient**: $0.75 per 1000 packages vs $2.50 traditional methods
 - 🎯 **AI Agent Ready**: Structured output optimized for downstream AI automation
 - 🔒 **Security First**: Environment-only API keys, comprehensive audit trails
@@ -1746,7 +1749,7 @@ The implementation provides comprehensive, self-contained documentation in a sin
 7. **🧪 Supported Languages & Files**
    - **Python**: requirements.txt, pyproject.toml, setup.py, Pipfile, conda.yml
    - **JavaScript/Node.js**: package.json, yarn.lock, package-lock.json, pnpm-lock.yaml
-   - **Docker**: Dockerfile, docker-compose.yml, package installations
+   - **Future Languages**: Go (go.mod), Ruby (Gemfile), Java (pom.xml)
 
 8. **🚨 Error Handling & Troubleshooting**
    - **Common Issues**: API key errors, model availability, rate limiting, budget exceeded
